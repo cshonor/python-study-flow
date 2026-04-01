@@ -6,6 +6,9 @@ Card = collections.namedtuple('Card', ['rank', 'suit'])
 
 # 2. 用普通类定义一摞纸牌的逻辑容器
 class FrenchDeck:
+    # 定义纸牌的rank和suit
+    # rank: 2-10, J, Q, K, A
+    # suit: spades, diamonds, clubs, hearts
     ranks = [str(n) for n in range(2, 11)] + list('JQKA')
     suits = 'spades diamonds clubs hearts'.split()
 
