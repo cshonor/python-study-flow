@@ -13,27 +13,57 @@
 from collections import namedtuple
 
 # 创建具名元组类型
-类型名 = namedtuple(类型名称字符串, 字段名字符串/可迭代对象)
+TypeName = namedtuple(typename, field_names)
 
 # 创建实例
-实例 = 类型名(值1, 值2, ...)
+instance = TypeName(value1, value2, ...)
 ```
 
 你看到的典型写法：
+
 ```python
 Card = namedtuple('Card', ['rank', 'suit'])
 ```
 
 ### 参数说明
-1. **第一个参数**：`'Card'`
-   具名元组的**类型名称**，一般和变量名保持一致。
+### 2.1 参数说明（必选 + 可选）
 
-2. **第二个参数**：`['rank', 'suit']`
-   这是一个**列表（你说的数组）**，里面是字段名。
-   也可以写成空格分隔的字符串：
-   ```python
-   Card = namedtuple('Card', 'rank suit')
-   ```
+#### 2.1.1 `typename`（必选）
+- **含义**：类型名（字符串），也就是生成的类名
+- **示例**：`'Card'`
+
+#### 2.1.2 `field_names`（必选）
+- **含义**：字段名的**可迭代集合**；每一项都是字段名字符串
+- **最常见写法**：传 `list`（你口语说的“数组”指的就是这里的 list）
+
+```python
+Card = namedtuple('Card', ['rank', 'suit'])
+```
+
+也可以写成空格分隔的字符串，或传 `tuple`：
+
+```python
+Card = namedtuple('Card', 'rank suit')
+Card = namedtuple('Card', ('rank', 'suit'))
+```
+
+##### `field_names` 和 `array.array` 无关
+
+- `array.array` 面向的是**同类型数值存储**（int/float 等）
+- `namedtuple` 的 `field_names` 面向的是**字段名字符串**（定义“属性标签”）
+
+#### 2.1.3 `rename`（可选，默认 `False`）
+当 `field_names` 中出现 **Python 关键字**、**重复字段名**、或 **非法标识符** 时：
+
+- `rename=False`：直接报错
+- `rename=True`：自动重命名无效字段为 `_0`、`_1`…（保证字段名合法）
+
+```python
+from collections import namedtuple
+
+Person = namedtuple('Person', ['name', 'class', 'name'], rename=True)
+print(Person._fields)  # ('name', '_1', '_2')
+```
 
 ## 3. 完整示例（以扑克牌为例）
 
@@ -96,20 +126,27 @@ new_card = card1._replace(rank='2')
 
 ## 5. 特点与注意事项
 
-1. **不可变**
-   和 tuple 一样，创建后不能修改字段值：
+### 5.1 关键特性
+
+1. **不可变（immutable）**
    ```python
    # card1.rank = 'B'  # 报错
    ```
 
-2. **是 tuple 的子类**
-   所有 tuple 操作都支持：索引、切片、拼接、比较等。
+2. **是 `tuple` 的子类**
+   - 支持索引、迭代、解包、比较等所有元组能力
 
-3. **比普通 class 更轻量**
-   不需要写 `__init__`，内存占用更低。
+3. **比手写 class 更省代码**
+   - 不用手写 `__init__` / `__repr__` 等常见样板代码
 
-4. **非常适合结构化数据**
-   如：K线、订单、坐标、配置项、返回值等。
+4. **适合结构化数据**
+   - 例如：K 线、订单、持仓、坐标、配置项、返回值等
+
+### 5.2 更精确的理解（避免误解）
+
+- `namedtuple('Card', ['rank', 'suit'])` **生成的是一个类**（这里类名是 `Card`），字段名列表是 `rank/suit`。
+- 但它**不是“只有属性、没有方法”**：生成的类是 `tuple` 的子类，自带元组的能力，并且还有 `_make()` / `_asdict()` / `_replace()` 等辅助方法。
+- 它也**不等价于你手写的普通可变类**：`namedtuple` 实例是不可变对象，字段不能重新赋值（想“改值”用 `_replace()` 生成新实例）。
 
 ## 6. 适用场景
 
