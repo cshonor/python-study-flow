@@ -25,8 +25,10 @@
 - **内置数据结构**：`list`、`tuple`、`namedtuple`、`dict`、`set` / `frozenset` 等；`array.array` 与 `namedtuple` 的字段名列表**不是同一概念**。
 - **组合模式**：用 `self._cards` 等内部容器 + 委托 `__len__` / `__getitem__` / `__setitem__`，得到 **Pythonic** 序列行为。
 - **排序与工具**：`sorted(..., key=自定义函数)`；`random.choice` / `shuffle` 与序列协议的关系。
+- **容器抽象**：`collections.abc`（`Sized` / `Iterable` / `Container` / `Sequence` 等）用于理解协议与类型注解；**鸭子类型**与 **`isinstance` + `register()`** 可并存。
 
-更系统的特殊方法对照与分类见：`chapter-01/11-special-methods-implicit-invocation.md`。
+更系统的特殊方法对照与分类见：`chapter-01/11-special-methods-implicit-invocation.md`。  
+容器 ABC 与 `FrenchDeck` 的对照见：`chapter-01/12-collections-abc-container-api.md`。
 
 ---
 
@@ -45,6 +47,7 @@
 | 09 | `09-dunder-getitem-and-contains` | `__getitem__`、`__contains__` 与 set / bisect 优化 |
 | 10 | `10-french-deck-composition-setitem-shuffle` | 组合、`__setitem__`、`shuffle`、`spades_high` |
 | 11 | `11-special-methods-implicit-invocation` | 隐式调用原则 + 对照表 + 三类归纳 |
+| 12 | `12-collections-abc-container-api` | `collections.abc`、Collection / Sequence / Mapping / Set、鸭子类型 |
 
 可运行脚本（均在 `chapter-01/`）：
 
@@ -55,6 +58,7 @@
 | `namedtuple_usage_demo.py` | 与 `05` 笔记配套 |
 | `random_choice_special_methods_demo.py` | 与 `08` 笔记配套 |
 | `getitem_contains_demo.py` | 与 `09` 笔记配套 |
+| `collections_abc_minimal_demo.py` | 与 `12` 笔记配套（`isinstance` + `Sequence.register`） |
 
 在仓库根目录执行示例：
 
