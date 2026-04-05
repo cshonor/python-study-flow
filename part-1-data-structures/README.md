@@ -1,17 +1,69 @@
 # Part 1：Python 数据结构与特殊方法
-本部分对应《流畅的 Python》核心开篇，深入 Python 数据模型。
+
+本部分对应《流畅的 Python》**数据模型与基础容器**相关章节，聚焦：内置序列/映射、**特殊方法（魔术方法）**，以及用 **组合** 让自定义类表现得像序列。
+
+---
+
+## 目录说明
+
+| 目录 | 对应（本书章节编号按你本地划分） | 说明 |
+|------|----------------------------------|------|
+| `chapter-01/` | 第 1–6 章范围的学习材料 | 当前主要笔记与示例脚本均在此 |
+| `chapter-02/` … `chapter-06/` | 预留 | 仅占位 `.gitkeep`，后续可按章填充 |
+
+每章目录内约定：**两位编号**的 `NN-主题.md` 为笔记，同名主题的 `*_demo.py` 为可运行示例（见下）。
+
+---
 
 ## 核心知识点
-- **Python 数据模型**：对象、类型与协议的底层逻辑。
-- **特殊方法（魔术方法）**：
-  - `__repr__`：自定义对象打印字符串。
-  - `__len__`：支持 `len()` 函数。
-  - `__getitem__`：支持索引 `[]` 取值，实现序列/迭代。
-- **内置数据结构**：
-  - 列表 (list)、元组 (tuple)、命名元组 (namedtuple)。
-  - 字典 (dict)、默认字典 (defaultdict)、有序字典 (OrderedDict)。
-  - 集合 (set)、不可变集合 (frozenset)。
-- **高级用法**：切片、排序、可哈希性。
+
+- **Python 数据模型**：对象、类型与协议；特殊方法由解释器**隐式**调用（优先写 `len(x)`，而非 `x.__len__()`）。
+- **常用特殊方法**（示例）：
+  - `__repr__` / `__str__`：字符串表示
+  - `__len__`、`__getitem__`、`__setitem__`：`len`、`[]` 取值、赋值（如支持 `random.shuffle` 写回）
+  - `__contains__`：`in` 运算符（可实现 set / bisect 等优化）
+- **内置数据结构**：`list`、`tuple`、`namedtuple`、`dict`、`set` / `frozenset` 等；`array.array` 与 `namedtuple` 的字段名列表**不是同一概念**。
+- **组合模式**：用 `self._cards` 等内部容器 + 委托 `__len__` / `__getitem__` / `__setitem__`，得到 **Pythonic** 序列行为。
+- **排序与工具**：`sorted(..., key=自定义函数)`；`random.choice` / `shuffle` 与序列协议的关系。
+
+更系统的特殊方法对照与分类见：`chapter-01/11-special-methods-implicit-invocation.md`。
+
+---
+
+## `chapter-01/` 笔记与脚本（当前进度）
+
+笔记（按编号顺序，主题简述）：
+
+| 编号 | 文件（前缀） | 主题简述 |
+|------|----------------|----------|
+| 01 | `01-python-list-tuple-array` | list / tuple / array / namedtuple 对比 |
+| 02–04 | `02`…`04` | 基础语法、魔法方法与类属性/推导式等 |
+| 05 | `05-python-namedtuple-usage-guide` | `namedtuple` 参数、`rename`、与 `array` 区别 |
+| 06 | `06-class-vs-namedtuple-attributes` | 普通类与 namedtuple 的属性与可读性 |
+| 07 | `07-pythonic-french-deck-namedtuple-and-class` | `Card` + `FrenchDeck` 协作 |
+| 08 | `08-random-choice-and-special-methods` | `random.choice` 与 `__len__` / `__getitem__` |
+| 09 | `09-dunder-getitem-and-contains` | `__getitem__`、`__contains__` 与 set / bisect 优化 |
+| 10 | `10-french-deck-composition-setitem-shuffle` | 组合、`__setitem__`、`shuffle`、`spades_high` |
+| 11 | `11-special-methods-implicit-invocation` | 隐式调用原则 + 对照表 + 三类归纳 |
+
+可运行脚本（均在 `chapter-01/`）：
+
+| 脚本 | 说明 |
+|------|------|
+| `french_deck_demo.py` | 基础 `FrenchDeck` + `Card` |
+| `french_deck_shuffle_demo.py` | `__setitem__`、`shuffle`、`spades_high`、权重打印 |
+| `namedtuple_usage_demo.py` | 与 `05` 笔记配套 |
+| `random_choice_special_methods_demo.py` | 与 `08` 笔记配套 |
+| `getitem_contains_demo.py` | 与 `09` 笔记配套 |
+
+在仓库根目录执行示例：
+
+```bash
+python part-1-data-structures/chapter-01/french_deck_shuffle_demo.py
+```
+
+---
 
 ## 学习目标
-能够熟练使用 Python 内置数据结构，并能通过自定义特殊方法，让任意类具备“列表”或“字典”般的行为。
+
+能熟练使用内置数据结构，并能为自定义类型实现合适的特殊方法，使对象在 **`len` / `[]` / `for` / `in` / 排序 / 洗牌** 等场景下行为清晰、符合 Python 习惯。
