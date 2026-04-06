@@ -1,11 +1,16 @@
-# Python 对象模型总览：以 `a = 123` 串起来（CPython）
+# （已合并）对象模型：`a = 123`、对象头、`ob_type`
 
-> **本篇定位**：把「名字绑定到对象」落到 CPython 的实现直觉：**对象头（`ob_refcnt`/`ob_type`）+ 类型载荷**，以及 `ob_type → PyTypeObject` 如何支撑动态分派。  
-> **本篇不负责**：详讲扁平/容器的序列选型（去 `02-container-vs-flat-sequences.md`），也不详讲可变/不可变与 hashable（去 `05-mutability-open-api-and-hash.md`），ABC 与虚拟子类（去 `03-sequence-flat-container-mutable-immutable-abc.md`）。
+本文件内容已合并进主文档 `02-container-vs-flat-sequences.md`，对应章节：
+
+- **§一**：对象模型总览（名字绑定、对象头、`ob_type`）
 
 ---
 
-## 一、核心前提：CPython 与「一切皆对象」
+---
+
+## 原文已迁移
+
+请直接阅读：`part-1-data-structures/chapter-02/02-container-vs-flat-sequences.md`。
 
 日常默认用的 **Python** 多半是 **CPython**（C 实现的解释器）：把 Python 语义落到 **C 里的数据结构与控制流**上，可类比「Java 代码跑在 JVM 上」这种**实现层**直觉。
 

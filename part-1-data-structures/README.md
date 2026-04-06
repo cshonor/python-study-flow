@@ -74,10 +74,10 @@ python part-1-data-structures/chapter-01/french_deck_shuffle_demo.py
 | 编号 | 文件 | 主题简述 |
 |------|------|----------|
 | 01 | `01-rich-sequences-chapter2-overview.md` | 第 2 章路线、**Fluent Python 本章骨架**（§二）、学习优先级 |
-| 02 | `02-container-vs-flat-sequences.md` | 容器 vs 扁平：存储布局、取舍与选型（聚焦序列载荷） |
-| 03 | `03-sequence-flat-container-mutable-immutable-abc.md` | 书里两套分类、`PyFloatObject` 对照、`collections.abc`、交叉表 |
-| 04 | `04-python-object-model-a-equals-123.md` | 以 `a=123` 串联：对象头、`PyLongObject`、容器/扁平（零基础总览） |
-| 05 | `05-mutability-open-api-and-hash.md` | 可变/不可变由「开放修改接口」决定；`__setitem__`；哈希与 key |
+| 02 | `02-container-vs-flat-sequences.md` | **合并版主文档**：对象头→容器/扁平→可变性/hashable→ABC |
+| 03 | `03-sequence-flat-container-mutable-immutable-abc.md` | （已合并到 02）ABC/虚拟子类跳转页 |
+| 04 | `04-python-object-model-a-equals-123.md` | （已合并到 02）对象模型跳转页 |
+| 05 | `05-mutability-open-api-and-hash.md` | （已合并到 02）可变性/hashable 跳转页 |
 
 | 脚本 | 说明 |
 |------|------|

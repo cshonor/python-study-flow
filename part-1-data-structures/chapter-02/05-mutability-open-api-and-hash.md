@@ -1,8 +1,13 @@
-# 可变 vs 不可变：到底是谁决定的？（协议视角 + hashable）
+# （已合并）可变性与 hashable（dict key）
 
-> **一句话**：一个类型是「可变」还是「不可变」，取决于**语言/实现是否为「在同一对象身份下改内容」开放了接口**——在 Python 层常体现为**有没有**元素级写入、原地增删等**协议**（如 `__setitem__`、`append`）。  
-> 这与 **「名字重新绑定到另一个对象」**（`a = a + 1` 对不可变类型常是**新对象**）不是同一回事。  
-> 设计权衡与 ABC 见：`03-sequence-flat-container-mutable-immutable-abc.md`；对象头与 `ob_type` 见：`04-python-object-model-a-equals-123.md`。
+本文件内容已合并进主文档 `02-container-vs-flat-sequences.md`，对应章节：
+
+- **§三**：可变 vs 不可变（开放不开放“改自己”的接口）
+- **§四**：hashable 与 dict key（含 tuple 里藏 list 的坑）
+
+---
+
+请直接阅读：`part-1-data-structures/chapter-02/02-container-vs-flat-sequences.md`。
 
 ---
 
