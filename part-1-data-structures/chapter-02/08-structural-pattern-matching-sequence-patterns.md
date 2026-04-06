@@ -134,3 +134,145 @@ match message:
 - **通用模式靠后**：尤其是带 `*rest` 的“宽泛匹配”，否则后面的分支到不了。
 - **结构严格**：长度不匹配直接跳过该 `case`，不会“自动补齐”。
 
+---
+
+## 七、语法速查表（工程常用）
+
+### 1. 基础结构
+
+- `match subject:` 后面跟多个 `case ...:`
+- **从上到下**依次尝试，命中第一个就结束
+- 建议总是写 `case _:` 做兜底：否则不匹配时会“什么都不做”，调试成本高
+
+### 2. 常量/字面量匹配（value pattern）
+
+```python
+match x:
+    case 0 | 1:
+        ...
+    case "quote":
+        ...
+    case None:
+        ...
+```
+
+### 3. 变量绑定（capture pattern）与忽略（`_`）
+
+- `name` 会**绑定**（捕获）值，而不是“比较 name 的值”
+- `_` 是通配符：匹配任意值且不绑定
+
+```python
+match msg:
+    case ["NECK", angle]:
+        ...
+    case ["BEEPER", _, times]:
+        ...
+```
+
+### 4. 序列模式（sequence pattern）
+
+- **长度严格匹配**（除非用 `*rest`）
+- 支持**嵌套匹配**
+
+```python
+match exp:
+    case ["if", test, consequence, alternative]:
+        ...
+    case ["quote", value]:
+        ...
+    case ["LED", ident, (r, g, b)]:
+        ...
+```
+
+### 5. `*rest`：可变长度匹配（只能一个）
+
+```python
+match exp:
+    case ["lambda", params, *body] if body:
+        ...
+```
+
+#### 5.1 解释器实战：用嵌套序列模式做“安全校验”
+
+在解释器/DSL 场景中，模式匹配不仅是“分支选择”，也可以顺便完成**语法结构校验**。
+
+例如 Scheme 的 `lambda` 句法要求第二项必须是“参数列表”（即使无参也应是空列表）。下面两种写法的差异在于：是否强制校验 `parms` 的结构。
+
+不够安全（`parms` 可以是任意对象，比如字符串）：
+
+```python
+case ["lambda", parms, *body] if body:
+    ...
+```
+
+更安全：用嵌套序列模式 `[*parms]`，强制 `lambda` 后必须是“序列/列表结构”：
+
+```python
+case ["lambda", [*parms], *body] if body:
+    ...
+```
+
+注意：**每个序列模式内只能有一个 `*`**；这里的 `*parms` 与 `*body` 分别处于“内层列表模式”和“外层列表模式”，因此是允许的。
+
+### 6. 守卫（guard）：`case ... if ...`
+
+规则：**先模式匹配成功**，才会计算 `if ...`。
+
+```python
+match exp:
+    case ["BEEPER", f, t] if f > 0 and t > 0:
+        ...
+```
+
+### 7. `as`：绑定整体
+
+```python
+match exp:
+    case ["define", name, value] as form:
+        ...
+```
+
+### 8. 类匹配（class pattern）
+
+```python
+match token:
+    case Token(kind="NAME", value=v):
+        ...
+    case Point(x, y):
+        ...
+```
+
+### 9. 映射/字典匹配（mapping pattern）
+
+```python
+match payload:
+    case {"op": "add", "args": [a, b]}:
+        ...
+    case {"type": t, **rest}:
+        ...
+```
+
+### 10. 兜底与错误处理（解释器/AST 常用）
+
+```python
+match exp:
+    case _:
+        raise SyntaxError(f"bad form: {exp!r}")
+```
+
+### 11. Scheme 风格 `define` 的“函数快捷句法”（多模式匹配）
+
+Scheme 常见两种 `define`：
+
+- `(define name exp)`：绑定变量
+- `(define (name parm...) body...)`：快捷定义具名函数
+
+用模式匹配写成“声明式”分支会非常贴近语法本身：
+
+```python
+case ["define", Symbol() as name, exp]:
+    ...
+case ["define", [Symbol() as name, *parms], *body] if body:
+    ...
+```
+

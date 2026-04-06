@@ -11,6 +11,7 @@ Run:
 from __future__ import annotations
 
 import sys
+from dataclasses import dataclass
 
 
 def section(title: str) -> None:
@@ -26,6 +27,17 @@ def safe_text(s: str) -> str:
 
 class InvalidCommand(Exception):
     pass
+
+
+class Symbol(str):
+    """A tiny stand-in for Scheme symbols (demo only)."""
+
+
+@dataclass(frozen=True, slots=True)
+class Procedure:
+    parms: list[Symbol]
+    body: list[object]
+    env: dict[Symbol, object]
 
 
 class Robot:
@@ -56,6 +68,46 @@ class Robot:
                 self.set_led_color(ident, red, green, blue)
             case _:
                 raise InvalidCommand(message)
+
+
+def demo_tiny_evaluator_forms() -> None:
+    section("4) tiny evaluator-style matching (quote/if/lambda/define)")
+    env: dict[Symbol, object] = {}
+
+    def eval_form(exp: object) -> object:
+        match exp:
+            case ["quote", value]:
+                return value
+            case ["define", Symbol() as name, value]:
+                env[name] = eval_form(value)
+                return None
+            case ["if", test, consequence, alternative]:
+                return eval_form(consequence) if eval_form(test) else eval_form(alternative)
+            case ["lambda", [*parms], *body] if body:
+                # demo only: build a minimal Procedure object
+                return Procedure(parms, body, env)
+            case ["define", [Symbol() as name, *parms], *body] if body:
+                env[name] = Procedure(parms, body, env)
+                return None
+            case _:
+                raise SyntaxError(f"bad form: {exp!r}")
+
+    print("quote:", eval_form(["quote", 42]))
+    eval_form(["define", Symbol("x"), ["quote", 10]])
+    print("define x ->", env[Symbol("x")])
+    print("if:", eval_form(["if", ["quote", True], ["quote", "yes"], ["quote", "no"]]))
+    print(
+        "lambda:",
+        eval_form(["lambda", [Symbol("n")], ["quote", "body1"], ["quote", "body2"]]),
+    )
+    eval_form(
+        [
+            "define",
+            [Symbol("square"), Symbol("x")],
+            ["quote", "(* x x)"],
+        ]
+    )
+    print("define (square x) ->", env[Symbol("square")])
 
 
 def demo_command_matching() -> None:
@@ -129,6 +181,7 @@ def main() -> None:
     demo_command_matching()
     demo_guard_and_nested_pattern()
     demo_star_rest_ordering_pitfall()
+    demo_tiny_evaluator_forms()
 
 
 if __name__ == "__main__":

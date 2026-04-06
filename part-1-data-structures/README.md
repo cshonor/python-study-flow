@@ -81,6 +81,7 @@ python part-1-data-structures/chapter-01/french_deck_shuffle_demo.py
 | 06 | `06-listcomps-and-genexps.md` | 列表推导式 vs 生成器表达式：模板、可读性准则、面试题 |
 | 07 | `07-tuples-as-records-and-unpacking.md` | 元组的双重角色：结构化记录与拆包（含选型与避坑） |
 | 08 | `08-structural-pattern-matching-sequence-patterns.md` | Python 3.10+ `match/case`：序列模式匹配、守卫与 `*rest` |
+| 09 | `09-slicing.md` | 切片：左闭右开、步距、`slice` 对象、切片赋值与 `...` |
 
 | 脚本 | 说明 |
 |------|------|
@@ -89,6 +90,7 @@ python part-1-data-structures/chapter-01/french_deck_shuffle_demo.py
 | `listcomps_and_genexps_demo.py` | 列表推导式 / genexp / map+filter / 作用域 / `:=` 演示 |
 | `tuples_as_records_and_unpaking_demo.py` | 元组作为记录、`*` 拆包、嵌套拆包、hashable 判断 |
 | `pattern_matching_sequence_demo.py` | Python 3.10+ `match/case`：序列模式、guard、`*rest` 顺序坑 |
+| `slicing_demo.py` | 切片：步距/反转、命名 `slice`、切片赋值与 `Ellipsis` |
 
 ```bash
 python part-1-data-structures/chapter-02/container_vs_flat_memory_demo.py
@@ -96,6 +98,7 @@ python part-1-data-structures/chapter-02/sequence_virtual_subclass_demo.py
 python part-1-data-structures/chapter-02/listcomps_and_genexps_demo.py
 python part-1-data-structures/chapter-02/tuples_as_records_and_unpaking_demo.py
 python part-1-data-structures/chapter-02/pattern_matching_sequence_demo.py
+python part-1-data-structures/chapter-02/slicing_demo.py
 ```
 
 ---
