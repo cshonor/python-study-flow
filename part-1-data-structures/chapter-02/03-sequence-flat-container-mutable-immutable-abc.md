@@ -1,6 +1,7 @@
 # 序列的两套分类：《流畅的 Python》视角（扁平/容器 × 可变/不可变 + `collections.abc`）
 
-> 与 `02-container-vs-flat-sequences.md` 配套：**那一篇**侧重内存、`PyObject*` 与多语言对照；**本篇**按书里思路，把「扁平 vs 容器」「可变 vs 不可变」和 **ABC 继承**、**交叉表**收拢成一块。
+> 与 `02-container-vs-flat-sequences.md` 配套：**那一篇**侧重内存、`PyObject*` 与多语言对照；**本篇**按书里思路，把「扁平 vs 容器」「可变 vs 不可变」和 **ABC 继承**、**交叉表**收拢成一块。  
+> **与书对齐的一页纸骨架**（对象头 + 两套分类 + ABC）：`01-rich-sequences-chapter2-overview.md` **§二**。
 
 ---
 
