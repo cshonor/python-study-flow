@@ -71,7 +71,121 @@ for country, _ in traveler_ids:
 
 ---
 
-## 五、元组 vs 列表：工程选型边界
+## 五、星号 `*` 拆包：获取“余下的项”（2.5.1）
+
+Python 3 把 `*args` 的思想延伸到了**并行赋值**：`*name` 会捕获“剩余的所有项”，并打包成一个 **list**。
+
+关键规则：
+
+- **同一条赋值语句只能有一个 `*` 变量**（否则语法错误）。
+- `*` 变量可以放在**开头/中间/末尾**。
+- `*` 捕获的结果**永远是 list**（不管原 iterable 是 tuple、range 还是生成器）。
+
+### 1. `*` 放末尾（最常用）
+
+```python
+a, b, *rest = range(5)
+assert (a, b, rest) == (0, 1, [2, 3, 4])
+
+a, b, *rest = range(2)
+assert (a, b, rest) == (0, 1, [])
+```
+
+### 2. `*` 放中间/开头
+
+```python
+a, *body, c, d = range(5)
+assert (a, body, c, d) == (0, [1, 2], 3, 4)
+
+*head, b, c, d = range(5)
+assert (head, b, c, d) == ([0, 1], 2, 3, 4)
+```
+
+### 3. 只取首尾、忽略中间：`*_`
+
+```python
+first, *_, last = range(6)
+assert (first, last) == (0, 5)
+```
+
+---
+
+## 六、`*` 在函数调用与序列字面量中的拆包（2.5.2 / PEP 448）
+
+### 1. 函数调用：可以多次 `*` 拆包并自动拼起来
+
+```python
+def fun(a, b, c, d, *rest):
+    return a, b, c, d, rest
+
+assert fun(*[1, 2], 3, *range(4, 7)) == (1, 2, 3, 4, (5, 6))
+```
+
+### 2. 序列字面量：`[*it1, *it2, x]` 合并更直接
+
+```python
+assert [*range(4), 4] == [0, 1, 2, 3, 4]
+assert [*range(4), 4, *(5, 6, 7)] == [0, 1, 2, 3, 4, 5, 6, 7]
+```
+
+注意：你可能在网上看到 `(*range(4), 4)` 这种写法（tuple 字面量拆包），它和上面的 list 形式语义一致：把多个可迭代对象“摊平”拼成一个新 tuple。
+
+---
+
+## 七、嵌套拆包（Nested Unpacking，2.5.3）
+
+拆包不只适用于“扁平序列”，也可以直接作用于**嵌套结构**：只要**变量结构**与**数据结构**匹配，Python 就能一次性把多层字段拆出来，避免写 `data[3][0]` 这种多层索引。
+
+### 1. 经典例子：城市记录 + 经纬度嵌套元组
+
+数据结构：每条记录是 `(城市名, 国家代码, 人口, (纬度, 经度))`。
+
+```python
+metro_areas = [
+    ("Tokyo", "JP", 36.933, (35.689722, 139.691667)),
+    ("Delhi NCR", "IN", 21.935, (28.613889, 77.208889)),
+    ("Mexico City", "MX", 20.142, (19.433333, -99.133333)),
+    ("New York-Newark", "US", 20.104, (40.808611, -74.020386)),
+    ("São Paulo", "BR", 19.649, (-23.547778, -46.635833)),
+]
+
+print(f"{'':15} | {'latitude':>9} | {'longitude':>9}")
+for name, _, _, (lat, lon) in metro_areas:
+    if lon <= 0:
+        print(f"{name:15} | {lat:9.4f} | {lon:9.4f}")
+```
+
+要点：
+
+- `(lat, lon)` 直接拆包嵌套坐标元组，不需要 `coord[0] / coord[1]`。
+- `_` 用作“我不关心这个字段”的占位符，让读者一眼看出你刻意忽略了哪些字段。
+
+### 2. “只允许一条记录”：用单元素拆包做数据校验
+
+当你**期望返回恰好一条结果**时，拆包本身就能做校验（多了/少了都会直接抛异常，避免静默 bug）：
+
+```python
+[record] = query_returning_single_row()
+[[field]] = query_returning_single_row_with_single_field()
+```
+
+同理，用 tuple 也可以，但要注意单元素 tuple 的逗号：
+
+```python
+(record,) = query_returning_single_row()
+```
+
+### 3. 避坑：结构必须严格匹配
+
+变量结构与数据结构不匹配时会抛 `ValueError`：
+
+```python
+name, _, _, lat, lon = metro_areas[0]  # ❌ lat/lon 实际嵌在第 4 项里
+```
+
+---
+
+## 八、元组 vs 列表：工程选型边界
 
 | 场景 | 推荐用 tuple | 推荐用 list |
 | :--- | :--- | :--- |
@@ -81,26 +195,78 @@ for country, _ in traveler_ids:
 
 ---
 
-## 六、避坑：tuple 的“不可变”不是你想的那种绝对
+## 九、作为“不可变列表”：tuple 的价值与边界
+
+### 1. 两个直接收益：意图清晰 + 更少开销
+
+- **意图清晰**：看到 tuple，就知道它的槽位数不会变，减少“被意外修改”的风险。
+- **性能与内存**：同长度下 tuple 往往更省内存；解释器也能对“固定长度”做更多优化。
+
+（经验法则：**固定长度且不需要增删改** → tuple；**动态集合** → list。）
+
+### 2. 关键认知：tuple 的不可变是“引用不可变”，不是“深不可变”
+
+tuple 的不可变，主要是指 **槽位引用不可变**：你不能把某个位置“换成另一个对象”；但如果某个位置本身是可变对象（例如 list），它的内容仍然可以被修改。
+
+```python
+a = (10, "alpha", [1, 2])
+b = (10, "alpha", [1, 2])
+assert a == b
+
+b[-1].append(99)  # ✅ 可以：修改的是内部 list
+assert a != b
+```
+
+### 3. 可哈希性：tuple 能否当 `dict` key 的必要条件
+
+- tuple **是否可哈希**，取决于它的元素是否都可哈希。  
+- **包含可变元素（如 list / dict / set）** 的 tuple 通常不可哈希。
+
+一个通用的判断方法是“试一下 `hash`”：
+
+```python
+def fixed(o):
+    try:
+        hash(o)
+        return True
+    except TypeError:
+        return False
+
+tf = (10, "alpha", (1, 2))  # 全不可变
+tm = (10, "alpha", [1, 2])  # 含可变 list
+
+assert fixed(tf) is True
+assert fixed(tm) is False
+```
+
+---
+
+## 十、列表 vs 元组：接口差异与使用提示
+
+### 1. 你真正需要的是“变长能力”吗？
+
+- list 有 `append/extend/insert/pop/remove` 等**变长/原地修改**方法。
+- tuple 不提供这些方法：它的优势就是“固定槽位、语义稳定”。
+
+### 2. `reversed` 小细节
+
+tuple 没有 `__reversed__` 实例方法，但 `reversed(my_tuple)` 仍可用（全局函数会走通用协议 / 回退到索引访问）。
+
+---
+
+## 十一、避坑（回到“记录视角”）
 
 ### 1. 禁忌：对“记录型 tuple”排序
 
 如果 tuple 承载字段语义，排序会直接破坏语义（例如把 `(纬度, 经度)` 排成 `(经度, 纬度)` 这种荒谬结果）。
 
-### 2. 经典坑：tuple 里放可变对象
+### 2. 需要字段名时，不要硬扛 tuple
 
-tuple 的不可变，主要是指 **槽位引用不可变**：你不能把某个位置“换成另一个对象”，但如果某个位置本身是可变对象（例如 list），它的内容仍可能被修改：
-
-```python
-t = (1, [2, 3])
-t[1].append(4)  # ✅ 可以：修改的是内部 list
-```
-
-这也会影响 “能否当 dict key”：只有当 tuple 内部全是可哈希对象时才可哈希。
+当你发现自己经常要记 “第 3 位是啥”，就说明“纯 tuple 记录”已经到上限了：考虑 `namedtuple` / `typing.NamedTuple` / `dataclass`。
 
 ---
 
-## 七、学习关联（往后怎么接）
+## 十二、学习关联（往后怎么接）
 
 - 需要“记录”但又想有字段名：看 `collections.namedtuple` / `typing.NamedTuple`。  
 - 需要更复杂的数据模型：看 `dataclasses.dataclass`（常与类型注解一起用）。  
