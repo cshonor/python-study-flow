@@ -1,0 +1,122 @@
+"""
+Demo for 07-tuples-as-records-and-unpacking.md
+
+Run:
+  python part-1-data-structures/chapter-02/tuples_as_records_and_unpaking_demo.py
+"""
+
+from __future__ import annotations
+
+
+def section(title: str) -> None:
+    print("\n" + "=" * 72)
+    print(title)
+    print("=" * 72)
+
+
+def safe_text(s: str) -> str:
+    """Render Unicode safely in non-UTF8 consoles (e.g. GBK)."""
+    return s.encode("unicode_escape").decode("ascii")
+
+
+def demo_tuple_as_record_and_unpacking() -> None:
+    section("1) tuple as a record + unpacking + '_' placeholder")
+    lax_coordinates = (33.9425, -118.408056)
+    lat, lon = lax_coordinates
+    print("LAX lat/lon:", lat, lon)
+
+    city, year, pop, chg, area = ("Tokyo", 2003, 32_450, 0.66, 8014)
+    print("city record:", city, year, pop, chg, area)
+
+    traveler_ids = [
+        ("USA", "31195855"),
+        ("BRA", "CE342567"),
+        ("ESP", "XDA205856"),
+    ]
+    for passport in sorted(traveler_ids):
+        print("%s/%s" % passport)
+
+    countries = [country for country, _ in traveler_ids]
+    print("countries:", countries)
+
+
+def demo_starred_unpacking() -> None:
+    section("2) starred unpacking: capture the rest")
+    a, b, *rest = range(5)
+    print("a, b, rest:", a, b, rest)
+    assert (a, b, rest) == (0, 1, [2, 3, 4])
+
+    a, b, *rest = range(2)
+    print("a, b, rest (empty):", a, b, rest)
+    assert rest == []
+
+    a, *body, c, d = range(5)
+    print("a, body, c, d:", a, body, c, d)
+    assert (a, body, c, d) == (0, [1, 2], 3, 4)
+
+    *head, b, c, d = range(5)
+    print("head, b, c, d:", head, b, c, d)
+    assert (head, b, c, d) == ([0, 1], 2, 3, 4)
+
+    first, *_, last = range(6)
+    print("first, last:", first, last)
+    assert (first, last) == (0, 5)
+
+
+def demo_nested_unpacking() -> None:
+    section("3) nested unpacking: metro_areas example")
+    metro_areas = [
+        ("Tokyo", "JP", 36.933, (35.689722, 139.691667)),
+        ("Delhi NCR", "IN", 21.935, (28.613889, 77.208889)),
+        ("Mexico City", "MX", 20.142, (19.433333, -99.133333)),
+        ("New York-Newark", "US", 20.104, (40.808611, -74.020386)),
+        ("São Paulo", "BR", 19.649, (-23.547778, -46.635833)),
+    ]
+
+    print(f"{'':15} | {'latitude':>9} | {'longitude':>9}")
+    for name, _, _, (lat, lon) in metro_areas:
+        if lon <= 0:
+            # city name contains non-ascii in sample; escape it for GBK consoles
+            print(f"{safe_text(name):15} | {lat:9.4f} | {lon:9.4f}")
+
+
+def demo_immutability_is_reference_level() -> None:
+    section("4) tuple immutability is about references")
+    a = (10, "alpha", [1, 2])
+    b = (10, "alpha", [1, 2])
+    print("a == b:", a == b)
+    b[-1].append(99)
+    print("a == b after inner list change:", a == b)
+    print("b:", b)
+
+
+def demo_hashable_check() -> None:
+    section("5) hashable tuples: fixed() helper")
+
+    def fixed(o: object) -> bool:
+        try:
+            hash(o)
+            return True
+        except TypeError:
+            return False
+
+    tf = (10, "alpha", (1, 2))
+    tm = (10, "alpha", [1, 2])
+
+    print("fixed(tf):", fixed(tf))
+    print("fixed(tm):", fixed(tm))
+    assert fixed(tf) is True
+    assert fixed(tm) is False
+
+
+def main() -> None:
+    demo_tuple_as_record_and_unpacking()
+    demo_starred_unpacking()
+    demo_nested_unpacking()
+    demo_immutability_is_reference_level()
+    demo_hashable_check()
+
+
+if __name__ == "__main__":
+    main()
+
