@@ -78,6 +78,7 @@ python part-1-data-structures/chapter-01/french_deck_shuffle_demo.py
 | 03 | `03-sequence-flat-container-mutable-immutable-abc.md` | （已合并到 02）ABC/虚拟子类跳转页 |
 | 04 | `04-python-object-model-a-equals-123.md` | （已合并到 02）对象模型跳转页 |
 | 05 | `05-mutability-open-api-and-hash.md` | （已合并到 02）可变性/hashable 跳转页 |
+| 06 | `06-listcomps-and-genexps.md` | 列表推导式 vs 生成器表达式：模板、可读性准则、面试题 |
 
 | 脚本 | 说明 |
 |------|------|
