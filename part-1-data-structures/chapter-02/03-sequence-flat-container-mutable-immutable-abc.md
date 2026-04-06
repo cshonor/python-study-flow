@@ -99,5 +99,6 @@ issubclass(list, abc.MutableSequence)    # True
 
 ## 六、延伸阅读
 
+- 以 `a = 123` 串起来的零基础总览：`04-python-object-model-a-equals-123.md`
 - 内存与 `PyObject*`：`02-container-vs-flat-sequences.md`
 - 第 2 章路线：`01-rich-sequences-chapter2-overview.md`

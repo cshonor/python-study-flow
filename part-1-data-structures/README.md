@@ -9,7 +9,7 @@
 | 目录 | 对应（本书章节编号按你本地划分） | 说明 |
 |------|----------------------------------|------|
 | `chapter-01/` | 第 1–6 章范围的学习材料 | 当前主要笔记与示例脚本均在此 |
-| `chapter-02/` | 第 2 章「丰富的序列」等 | 开篇、容器/扁平、`PyObject*`、可变/不可变与 ABC：`01`…`03` |
+| `chapter-02/` | 第 2 章「丰富的序列」等 | 开篇、容器/扁平、`PyObject*`、ABC、对象模型总览：`01`…`04` |
 | `chapter-03/` … `chapter-06/` | 预留 | 仅占位 `.gitkeep`，后续可按章填充 |
 
 每章目录内约定：**两位编号**的 `NN-主题.md` 为笔记，同名主题的 `*_demo.py` 为可运行示例（见下）。
@@ -76,6 +76,7 @@ python part-1-data-structures/chapter-01/french_deck_shuffle_demo.py
 | 01 | `01-rich-sequences-chapter2-overview.md` | 第 2 章路线与要点总览 |
 | 02 | `02-container-vs-flat-sequences.md` | 容器 vs 扁平、内存模型、`PyObject*`、选型 |
 | 03 | `03-sequence-flat-container-mutable-immutable-abc.md` | 书里两套分类、`PyFloatObject` 对照、`collections.abc`、交叉表 |
+| 04 | `04-python-object-model-a-equals-123.md` | 以 `a=123` 串联：对象头、`PyLongObject`、容器/扁平（零基础总览） |
 
 | 脚本 | 说明 |
 |------|------|

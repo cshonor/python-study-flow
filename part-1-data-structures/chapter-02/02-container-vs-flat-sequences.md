@@ -267,4 +267,5 @@ typedef struct {
 
 ## 十三、延伸阅读
 
+- 以 `a = 123` 串起来的对象模型总览（`PyLongObject`、对象头、序列对照）：`04-python-object-model-a-equals-123.md`
 - 可变 / 不可变与 `collections.abc`、`PyFloatObject` 与交叉总表：`03-sequence-flat-container-mutable-immutable-abc.md`
