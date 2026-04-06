@@ -1,7 +1,7 @@
-# Python 对象底层逻辑与序列类型：以 `a = 123` 串起来的总览（CPython）
+# Python 对象模型总览：以 `a = 123` 串起来（CPython）
 
-> 本篇把 **CPython、一切皆对象、`PyObject*`、对象头、容器/扁平序列** 用一条线讲完。术语与 `02`、`03` 对齐；凡涉及 **C 结构体**处均为 **CPython 实现视角**，不是 Python 语言规范条文。  
-> 更细的指针对照、多语言表、可变/不可变与 ABC 见：`02-container-vs-flat-sequences.md`、`03-sequence-flat-container-mutable-immutable-abc.md`。
+> **本篇定位**：把「名字绑定到对象」落到 CPython 的实现直觉：**对象头（`ob_refcnt`/`ob_type`）+ 类型载荷**，以及 `ob_type → PyTypeObject` 如何支撑动态分派。  
+> **本篇不负责**：详讲扁平/容器的序列选型（去 `02-container-vs-flat-sequences.md`），也不详讲可变/不可变与 hashable（去 `05-mutability-open-api-and-hash.md`），ABC 与虚拟子类（去 `03-sequence-flat-container-mutable-immutable-abc.md`）。
 
 ---
 
@@ -127,7 +127,7 @@ typedef struct _object {
 
 ---
 
-## 四、序列：容器序列 vs 扁平序列（接在对象模型后面）
+## 四、序列：只做“挂钩式”回顾（不展开）
 
 ### 1. 容器序列（Container Sequence）
 
@@ -153,7 +153,7 @@ typedef struct _object {
 - **同构**：如 `array.array('d', …)` 只能按 `double` 语义紧排；`bytes` 按字节值。
 - **注意**：**扁平 ≠ 没有对象头**。外层仍有 `PyUnicodeObject`、`array.array` 的对象头等；**「扁」的是载荷区**，不是「每个元素再包一层完整 Python 标量对象」那种模式。
 
-### 3. 对照表
+### 3. 对照表（够用版）
 
 | 对比维度 | 容器序列 | 扁平序列 |
 | :--- | :--- | :--- |

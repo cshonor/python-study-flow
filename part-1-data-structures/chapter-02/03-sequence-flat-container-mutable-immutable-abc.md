@@ -1,12 +1,12 @@
-# 序列的两套分类：《流畅的 Python》视角（扁平/容器 × 可变/不可变 + `collections.abc`）
+# 序列的两套分类：《流畅的 Python》视角（可变/不可变 × 扁平/容器 + `collections.abc`）
 
-> 与 `02-container-vs-flat-sequences.md` 配套：**那一篇**侧重内存、`PyObject*` 与多语言对照；**本篇**按书里思路，把「扁平 vs 容器」「可变 vs 不可变」和 **ABC 继承**、**交叉表**收拢成一块。  
-> **与书对齐的一页纸骨架**（对象头 + 两套分类 + ABC）：`01-rich-sequences-chapter2-overview.md` **§二**。  
-> **「可变/不可变」在协议上到底看什么**（`__setitem__`、开放修改接口、哈希）：`05-mutability-open-api-and-hash.md`。
+> **本篇定位**：把《流畅的 Python》里序列的两套分类（**可变/不可变**、**扁平/容器**）与 **`collections.abc` 的接口层次**串起来，并解释「虚拟子类」与 `register`。  
+> **前置**：对象头、`ob_type` 等实现直觉见 `04-python-object-model-a-equals-123.md`。  
+> **深入**：扁平 vs 容器的存储布局与选型见 `02-container-vs-flat-sequences.md`；可变/不可变与 hashable 规则见 `05-mutability-open-api-and-hash.md`；一页纸骨架见 `01-rich-sequences-chapter2-overview.md` §二。
 
 ---
 
-## 一、核心概念：扁平序列 vs 容器序列
+## 一、扁平序列 vs 容器序列（先给一句话）
 
 | 维度 | **扁平序列（Flat Sequence）** | **容器序列（Container Sequence）** |
 | :--- | :--- | :--- |
@@ -17,7 +17,7 @@
 
 ---
 
-## 二、以浮点数为例：`PyFloatObject` 与 `array('d')` 的对比
+## 二、为什么扁平更紧凑：以 `float` 为例（只保留直觉）
 
 Python 里一个「单独的 `float`」也是**堆上的对象**，带通用头；CPython 里可理解为类似：
 
@@ -40,7 +40,7 @@ typedef struct {
 
 ---
 
-## 三、另一套轴：可变序列 vs 不可变序列（设计权衡 + ABC + 虚拟子类）
+## 三、可变序列 vs 不可变序列（设计权衡 + ABC + 虚拟子类）
 
 ### 1. 分类
 
