@@ -82,6 +82,7 @@ python part-1-data-structures/chapter-01/french_deck_shuffle_demo.py
 | 07 | `07-tuples-as-records-and-unpacking.md` | 元组的双重角色：结构化记录与拆包（含选型与避坑） |
 | 08 | `08-structural-pattern-matching-sequence-patterns.md` | Python 3.10+ `match/case`：序列模式匹配、守卫与 `*rest` |
 | 09 | `09-slicing.md` | 切片：左闭右开、步距、`slice` 对象、切片赋值与 `...` |
+| 10 | `10-sequence-plus-mul-and-nested-list-trap.md` | `+`/`*` 运算与嵌套列表陷阱（浅拷贝引用共享） |
 
 | 脚本 | 说明 |
 |------|------|
@@ -91,6 +92,7 @@ python part-1-data-structures/chapter-01/french_deck_shuffle_demo.py
 | `tuples_as_records_and_unpaking_demo.py` | 元组作为记录、`*` 拆包、嵌套拆包、hashable 判断 |
 | `pattern_matching_sequence_demo.py` | Python 3.10+ `match/case`：序列模式、guard、`*rest` 顺序坑 |
 | `slicing_demo.py` | 切片：步距/反转、命名 `slice`、切片赋值与 `Ellipsis` |
+| `sequence_plus_mul_and_nested_list_trap_demo.py` | 序列 `+`/`*` 与 `[[]]*n` 引用共享陷阱 |
 
 ```bash
 python part-1-data-structures/chapter-02/container_vs_flat_memory_demo.py
@@ -99,6 +101,7 @@ python part-1-data-structures/chapter-02/listcomps_and_genexps_demo.py
 python part-1-data-structures/chapter-02/tuples_as_records_and_unpaking_demo.py
 python part-1-data-structures/chapter-02/pattern_matching_sequence_demo.py
 python part-1-data-structures/chapter-02/slicing_demo.py
+python part-1-data-structures/chapter-02/sequence_plus_mul_and_nested_list_trap_demo.py
 ```
 
 ---
