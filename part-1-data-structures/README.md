@@ -84,10 +84,12 @@ python part-1-data-structures/chapter-01/french_deck_shuffle_demo.py
 |------|------|
 | `container_vs_flat_memory_demo.py` | `list` 与 `array.array` 的 `sys.getsizeof` 粗略对比（含注释与局限） |
 | `sequence_virtual_subclass_demo.py` | `abc.Sequence.register` 与 `isinstance`（虚拟子类） |
+| `listcomps_and_genexps_demo.py` | 列表推导式 / genexp / map+filter / 作用域 / `:=` 演示 |
 
 ```bash
 python part-1-data-structures/chapter-02/container_vs_flat_memory_demo.py
 python part-1-data-structures/chapter-02/sequence_virtual_subclass_demo.py
+python part-1-data-structures/chapter-02/listcomps_and_genexps_demo.py
 ```
 
 ---
