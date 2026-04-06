@@ -127,4 +127,4 @@ issubclass(list, abc.MutableSequence)    # True
 ## 七、本仓库中的落点
 
 - 第 1 章相关笔记与 demo 主要在 `part-1-data-structures/chapter-01/`。
-- 第 2 章深度笔记见 **`chapter-02/`**：`02`（容器/扁平、`PyObject*`）、`03`（两套分类与 ABC、交叉表）、`04`（`a=123` 对象模型）、`container_vs_flat_memory_demo.py`（粗略 `getsizeof`）。
+- 第 2 章深度笔记见 **`chapter-02/`**：`02`（容器/扁平、`PyObject*`）、`03`（两套分类与 ABC、交叉表）、`04`（`a=123` 对象模型）、`05`（可变/不可变与开放接口、哈希）、`container_vs_flat_memory_demo.py`（粗略 `getsizeof`）。

@@ -1,7 +1,8 @@
 # 序列的两套分类：《流畅的 Python》视角（扁平/容器 × 可变/不可变 + `collections.abc`）
 
 > 与 `02-container-vs-flat-sequences.md` 配套：**那一篇**侧重内存、`PyObject*` 与多语言对照；**本篇**按书里思路，把「扁平 vs 容器」「可变 vs 不可变」和 **ABC 继承**、**交叉表**收拢成一块。  
-> **与书对齐的一页纸骨架**（对象头 + 两套分类 + ABC）：`01-rich-sequences-chapter2-overview.md` **§二**。
+> **与书对齐的一页纸骨架**（对象头 + 两套分类 + ABC）：`01-rich-sequences-chapter2-overview.md` **§二**。  
+> **「可变/不可变」在协议上到底看什么**（`__setitem__`、开放修改接口、哈希）：`05-mutability-open-api-and-hash.md`。
 
 ---
 
@@ -150,6 +151,7 @@ list.__bases__  # (<class 'object'>,)，一般不含 abc.MutableSequence
 ## 六、延伸阅读
 
 - 以 `a = 123` 串起来的零基础总览：`04-python-object-model-a-equals-123.md`
+- 可变/不可变的**开放接口**与哈希：`05-mutability-open-api-and-hash.md`
 - 内存与 `PyObject*`：`02-container-vs-flat-sequences.md`
 - 第 2 章路线：`01-rich-sequences-chapter2-overview.md`
 - 容器 ABC 与 `FrenchDeck`：`chapter-01/12-collections-abc-container-api.md`

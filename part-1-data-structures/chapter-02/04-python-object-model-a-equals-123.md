@@ -177,4 +177,5 @@ typedef struct _object {
 ## 六、延伸阅读
 
 - 指针对照、`ob_item`、`PyUnicodeObject` 注意点：`02-container-vs-flat-sequences.md`  
-- 可变/不可变、`collections.abc`、交叉总表：`03-sequence-flat-container-mutable-immutable-abc.md`
+- 可变/不可变、`collections.abc`、交叉总表：`03-sequence-flat-container-mutable-immutable-abc.md`  
+- 可变/不可变与**开放修改接口**、哈希（直白版）：`05-mutability-open-api-and-hash.md`
