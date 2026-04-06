@@ -39,7 +39,7 @@ typedef struct {
 
 ---
 
-## 三、另一套轴：可变序列 vs 不可变序列
+## 三、另一套轴：可变序列 vs 不可变序列（设计权衡 + ABC + 虚拟子类）
 
 ### 1. 分类
 
@@ -48,31 +48,80 @@ typedef struct {
 | **可变** | 可原地改元素、增删（视类型而定） | `list`、`bytearray`、`array.array`、`collections.deque` |
 | **不可变** | 创建后不能改元素、不能增删槽位 | `tuple`、`str`、`bytes` |
 
-### 2. `collections.abc` 中的接口层次（概念）
+### 2. 为什么有的是可变，有的是不可变？（安全 vs 性能 vs 语义）
 
-内置序列**并不**在 Python 里多重继承出一棵显式类图，但 **`collections.abc`** 用抽象基类描述了**统一协议**：
+本质是在不同场景下换一组**默认保证**：
+
+| 特性 | **不可变**（`tuple`、`str`、`bytes`） | **可变**（`list`、`bytearray`、`deque` 等） |
+| :--- | :--- | :--- |
+| **核心优势** | 可哈希（在元素可哈希的前提下）、易共享、无副作用顾虑 | 原地修改、少分配新对象、适合频繁更新 |
+| **语义** | 偏「值」：内容不变则行为稳定 | 偏「容器状态」：同一对象可被多处看到其变化 |
+| **典型用途** | 常量数据、需要作 `dict`/`set` 键的**不可变**组合、跨线程只读共享 | 动态列表、队列、缓冲 |
+
+- **不可变**：把 `tuple` 传给函数，调用方通常**不担心**被偷偷原地改掉（仍要注意**可变元素**，如 `tuple` 里嵌 `list`）。
+- **可变**：避免「每次小改都新建整段序列」的开销；`list` 等底层还有**预留容量**等策略（实现细节），与「可 growing」语义一致。
+
+### 3. 底层直觉（和内存模型对齐）
+
+- **不可变**：对象一旦建成，**语义上**内容不再变；实现上可配合**驻留/复用**（如小字符串、小整数），哈希结果稳定。
+- **可变**：允许**原地**更新，内部常带**额外容量**与长度管理；**同一对象**被多处引用时，一处修改会**被所有人看见**——因此默认**不可哈希**，也不宜当作「不会变的键」。
+
+### 4. `collections.abc` 中的接口层次（概念）
+
+内置序列**并不**都在 Python 层写成 `class list(MutableSequence)`，但 **`collections.abc`** 描述了**统一协议**：
 
 | ABC | 角色（笔记级） |
 | :--- | :--- |
 | **`Collection`** | 可迭代、有长度、支持 `in`：`__iter__`、`__len__`、`__contains__` |
 | **`Reversible`** | 支持 `__reversed__` |
-| **`Sequence`** | 在 `Collection` 等之上强调**按整数下标取值**等序列语义（如 `__getitem__`）；还提供 `index`、`count` 等混入式默认实现 |
-| **`MutableSequence`** | 在 `Sequence` 上增加**原地修改**：如 `append`、`pop`、`extend`、`insert` 等（具体方法以文档为准） |
+| **`Sequence`** | 序列语义（如 `__getitem__`）；混入 `index`、`count` 等默认实现 |
+| **`MutableSequence`** | 在 `Sequence` 之上增加**原地修改**：`append`、`pop`、`extend`、`insert` 等 |
 
-**MRO 细节**随版本可能微调，考试/面试记**「Sequence ⊃ 有序按索引；MutableSequence ⊃ 可原地改」**即可。
+**MRO 细节**随版本可能微调；记**「`MutableSequence` 的方法集 ⊃ `Sequence` 的方法集」**（只读操作 + 修改操作）。
 
-### 3. 虚拟子类（`register` / 内置注册）
+### 5. 「可变序列继承了不可变序列的方法」是什么意思？
 
-很多内置类型**并没有**在源码里写 `class list(MutableSequence)`，但通过 **ABC 的注册机制**成为**虚拟子类**，于是：
+这句话指的是**接口 / 方法集合上的包含关系**，**不是**说 `list` 在 Python 里 **`class list(tuple)`** 这种类继承。
+
+- **`Sequence`**（只读侧）：`__getitem__`、`__iter__`、`__contains__`、`index`、`count` 等。
+- **`MutableSequence`**：**包含上述只读能力**，并**额外**有 `append`、`pop`、`__setitem__`、`__delitem__` 等。
+
+因此：**可变序列能做的「读」操作，与不可变序列在协议上对齐；再多一批「写」操作。**
+
+```python
+t = (1, 2, 3)
+# t[0] = 0   # TypeError：不可变
+# t.append(4)  # AttributeError
+
+lst = [1, 2, 3]
+lst[0] = 0     # OK
+lst.append(4)  # OK
+lst[0]         # 只读访问与 tuple 一样「能用」
+```
+
+### 6. 为什么是「虚拟子类」而不是直接继承？
+
+- **真实继承**：你写的 `class B(A)`，`A` 在 `B.__bases__` 里。
+- **虚拟子类**：`list`、`tuple` 等**内置类型**早在 **`collections.abc`** 之前就用 C 实现好了，**不能**再改写成「继承某个 ABC」。于是 CPython 用 **`register`**（及内置等价注册）把它们登记为 `Sequence` / `MutableSequence` 的**虚拟子类**。
+
+**常见原因（笔记级）**
+
+1. **历史与实现**：内置类型与 ABC 不同步诞生，**松耦合**：用协议 + 可选注册，而不是强制所有序列继承同一棵 Python 类树。  
+2. **`isinstance` / `issubclass`**：注册后仍可得 `isinstance([], abc.MutableSequence) is True`，同时 **`list.__bases__` 仍是 `(object,)`**：
 
 ```python
 from collections import abc
 
-issubclass(tuple, abc.Sequence)           # True
-issubclass(list, abc.MutableSequence)    # True
+isinstance((1, 2, 3), abc.Sequence)      # True
+isinstance([1, 2, 3], abc.MutableSequence)  # True
+list.__bases__  # (<class 'object'>,)，一般不含 abc.MutableSequence
 ```
 
-与「鸭子类型」可并存：既可以用 **`isinstance(x, abc.Sequence)`** 做宽检查，也可以继续按实际支持的方法使用对象。更细的讨论见：`chapter-01/12-collections-abc-container-api.md`。
+3. **自定义类**：若只实现 `__len__`、`__getitem__` 等，**鸭子类型**上可当序列用；但若要让 **`isinstance(x, abc.Sequence)`** 为真，通常需要 **`abc.Sequence.register(YourClass)`** 或**显式继承** `abc.Sequence`（见下节脚本）。
+
+**不要混淆**：「能当序列用」≠「`isinstance(..., Sequence)` 一定为真」；后者依赖**注册/继承**或你使用的类型检查策略（如 `typing.Protocol` 的运行时方案等，另论）。
+
+可运行示例：`part-1-data-structures/chapter-02/sequence_virtual_subclass_demo.py`
 
 ---
 
@@ -103,3 +152,5 @@ issubclass(list, abc.MutableSequence)    # True
 - 以 `a = 123` 串起来的零基础总览：`04-python-object-model-a-equals-123.md`
 - 内存与 `PyObject*`：`02-container-vs-flat-sequences.md`
 - 第 2 章路线：`01-rich-sequences-chapter2-overview.md`
+- 容器 ABC 与 `FrenchDeck`：`chapter-01/12-collections-abc-container-api.md`
+- 虚拟子类演示脚本：`sequence_virtual_subclass_demo.py`

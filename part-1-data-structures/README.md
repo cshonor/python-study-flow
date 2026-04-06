@@ -81,9 +81,11 @@ python part-1-data-structures/chapter-01/french_deck_shuffle_demo.py
 | 脚本 | 说明 |
 |------|------|
 | `container_vs_flat_memory_demo.py` | `list` 与 `array.array` 的 `sys.getsizeof` 粗略对比（含注释与局限） |
+| `sequence_virtual_subclass_demo.py` | `abc.Sequence.register` 与 `isinstance`（虚拟子类） |
 
 ```bash
 python part-1-data-structures/chapter-02/container_vs_flat_memory_demo.py
+python part-1-data-structures/chapter-02/sequence_virtual_subclass_demo.py
 ```
 
 ---
