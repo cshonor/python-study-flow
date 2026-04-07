@@ -1,8 +1,10 @@
 # `Counter` 深化、`shelve` 与继承 `UserDict`（§3.6 续）
 
-> **本篇定位**：《流畅的 Python》**§3.6** 后半：**`Counter`** 的计数与多重集运算、**`shelve.Shelf`** 持久化映射、以及**自定义映射应子类化 `UserDict`** 的结论（与 **`StrKeyDict`** 示例呼应）。  
-> **前置**：§3.6 前半（`OrderedDict` / `ChainMap` / `Counter` 入门）见 `10-dict-variants-ordered-chain-counter.md`；**`StrKeyDict0` / `StrKeyDict`** 与 **`__missing__`** 见 `09-str-key-dict-and-dunder-missing.md`。  
-> **配套脚本**：`shelf_counter_userdict_demo.py`。
+这一篇把第 3 章里最容易“看过就忘”的 3 个点讲细一点：
+
+- **`Counter`**：除了计数，还能做“多重集运算”（`+ - & |`）\n- **`shelve`**：一个“像 dict 一样用”的持久化键值存储（但有严格边界）\n- **`UserDict`**：为什么很多时候“自定义映射”更推荐继承它，而不是直接继承 `dict`
+
+配套脚本：`shelf_counter_userdict_demo.py`。
 
 ---
 

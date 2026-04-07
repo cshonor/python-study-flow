@@ -1,8 +1,14 @@
-# 插入或更新可变值：词索引与 `get` / `setdefault` / `defaultdict`（§3.4.3）
+# 字典里放“可变值”（list 等）时，怎么优雅地“缺了就建、然后 append”？
 
-> **本篇定位**：《流畅的 Python》**3.4.3**：用 `dict` 存**可变值**（如 `list`）时，在「缺键要初始化」场景下对比 **`dict.get`**、**`setdefault`**、**`defaultdict`**；示例为**单词 → 出现位置列表**。  
-> **相关**：三种映射总表见 `06-dict-defaultdict-ordereddict-api.md`。  
-> **配套脚本**：`zen_word_index_demo.py`（内存中的《Python 之禅》节选，无需单独 `zen.txt`）。
+新手写“分组/索引”时最常见的需求是这个：
+
+- key（比如一个单词）第一次出现：你要给它建一个空列表 `[]`\n- 之后再出现：你要在同一个列表里 `append(...)`\n
+难点不在 `append`，而在“缺键时怎么初始化”。
+
+这篇用一个经典例子解释清楚：**单词 → 出现位置列表**（word index）。我们会对比 3 种写法：
+
+- `get` + 写回\n- `setdefault` 一行\n- `defaultdict(list)`\n
+它们都能做出正确结果，但“可读性、是否原地写入、是否额外分配对象”的差异很大。
 
 ---
 

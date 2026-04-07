@@ -2,16 +2,16 @@
 
 本目录对应《流畅的 Python》**第 2 章**：系统理解内置序列、推导式与生成器、元组与拆包、模式匹配、切片与序列运算等。
 
-**建议从这里开始读**：[`01-rich-sequences-chapter2-overview.md`](01-rich-sequences-chapter2-overview.md)（本章主题、书内骨架、学习优先级）。
+建议从这里开始读：[`01-rich-sequences-chapter2-overview.md`](01-rich-sequences-chapter2-overview.md)（先把“序列到底是什么、有哪些能力”讲清楚）。
 
 ---
 
-## 学习路线（与 `01` 一致）
+## 文件一览（建议顺序）
 
-| 优先级 | 建议阅读 | 说明 |
-|--------|----------|------|
-| 0 | `01-rich-sequences-chapter2-overview.md` | 全章地图与优先级 |
-| 1 | `02-container-vs-flat-sequences.md` | **合并主文档**：对象模型 → 容器/扁平 → 可变性 / hashable → ABC |
+| 顺序 | 文件 | 说明 |
+|------|------|------|
+| 01 | `01-rich-sequences-chapter2-overview.md` | 序列的整体概念、为什么“协议”比“继承”更重要 |
+| 02 | `02-container-vs-flat-sequences.md` | 对象模型 → 容器/扁平 → 可变性 / hashable → `collections.abc` |
 | 2 | `03-listcomps-and-genexps.md` | 列表推导式与生成器表达式 |
 | 3 | `04-tuples-as-records-and-unpacking.md` | 元组作记录 / 不可变列表、`*` 拆包、嵌套拆包 |
 | 4 | `05-structural-pattern-matching-sequence-patterns.md` | Python 3.10+ `match/case` 序列模式 |

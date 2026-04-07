@@ -1,8 +1,10 @@
 # 字典视图：`keys()` / `values()` / `items()`（§3.8）
 
-> **本篇定位**：《流畅的 Python》**§3.8**：Python 3 中 **`dict.keys()`**、**`dict.values()`**、**`dict.items()`** 返回的不是列表，而是**字典视图**——映射的**动态只读投影**。  
-> **相关**：三种映射的 API 表里对 `keys`/`values`/`items` 的勾选见 `06-dict-defaultdict-ordereddict-api.md`；**键视图**与 **`in`** 的交互在写 `__contains__` 时也会遇到，见 `09-str-key-dict-and-dunder-missing.md`。  
-> **配套脚本**：`dict_views_demo.py`。
+在 Python 3 里，`d.keys()`、`d.values()`、`d.items()` 返回的不是“列表”，而是一种**视图对象**。
+
+你可以把“视图”理解成：**对原字典的一扇窗**——它不复制数据，但能让你迭代/取长度，并且会随着原字典的变化而变化。
+
+配套脚本：`dict_views_demo.py`。
 
 ---
 

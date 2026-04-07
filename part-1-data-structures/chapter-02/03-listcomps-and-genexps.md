@@ -1,7 +1,8 @@
-# 列表推导式 vs 生成器表达式（Listcomps vs Genexps）
+# 列表推导式 vs 生成器表达式：写得更短，也写得更稳（§2.3）
 
-> **本篇定位**：把《流畅的 Python》第 2 章开篇的核心（list comprehension / generator expression）整理成可直接抄进笔记的“模板 + 规则 + 面试问答”。  
-> **相关**：序列整体框架与对象模型合并版见 `02-container-vs-flat-sequences.md`；学习路线见 `01-rich-sequences-chapter2-overview.md`。
+listcomp（列表推导式）和 genexp（生成器表达式）做的事情很像：把一个可迭代对象“变换/过滤/组合”成结果。
+
+它们最大的区别也最容易记：**listcomp 会把结果一次性存进内存；genexp 会按需产出**。后面你写得顺不顺、代码会不会在大数据上突然爆内存，很大程度就取决于你这里选得对不对。
 
 ---
 
@@ -9,6 +10,11 @@
 
 - **列表推导式（listcomp）**：用 `[]` **一次性**生成一个 `list`（eager / 立即构造）。
 - **生成器表达式（genexp）**：用 `()` 生成一个**惰性迭代器**（lazy / 按需产出），常用来喂给 `tuple(...)`、`sum(...)`、`any(...)`、`dict(...)` 等消费方。
+
+把它们放到一句更“工程化”的话里就是：
+
+- **listcomp**：我需要一个“可以反复用/可以索引/可以 `len`”的结果容器，所以我愿意一次性把它算出来并存起来。  
+- **genexp**：我只需要把数据“流过一遍”，边算边用，所以我不想为中间结果额外占用内存。
 
 ### 1. 一页速查（表格化）
 
@@ -406,3 +412,8 @@ beyond_ascii = list(filter(lambda c: c > 127, map(ord, symbols)))
 python part-1-data-structures/chapter-02/listcomps_and_genexps_demo.py
 ```
 
+---
+
+## 十三、小练习（写完再看参考输出）
+
+1. **物化判断**：下列两段代码有什么区别？分别适合什么输入规模？\n\n```python\nsum([x * x for x in data])\nsum(x * x for x in data)\n```\n\n2. **括号规则**：为什么这句能写、那句会报语法错误？（提示：函数调用是否还有其他参数）\n\n```python\ntuple(x * 2 for x in range(5))\n# array.array('I', x * 2 for x in range(5))  # 为什么不行？\n```\n\n3. **消费一次**：写一段最短代码证明“生成器只能消费一次”。\n\n4. **可读性**：把下面这条“超过两层 + 多个条件”的推导式改写成普通 `for` 循环版本，并说明你为什么觉得循环版更可读：\n\n```python\n[(a, b, c) for a in A for b in B for c in C if cond1(a) and cond2(b, c)]\n```\n\n参考与可运行对照见：`listcomps_and_genexps_demo.py`。\n+

@@ -1,7 +1,9 @@
-# 元组的双重角色：不可变序列 vs 结构化记录（Tuples as records）
+# 元组与拆包：把“索引操作”写成“字段读取”（§2.4–§2.5）
 
-> **本篇定位**：补齐《流畅的 Python》2.4 的关键观念：元组不仅是“不可变列表”，更常被用作**带位置语义的结构化记录**；并掌握元组拆包在真实代码中的用法与边界。  
-> **相关**：本章路线见 `01-rich-sequences-chapter2-overview.md`；序列分类、可变性与 hashable 见 `02-container-vs-flat-sequences.md`。
+元组（`tuple`）最常见的误解是：它只是“不可变的 list”。  
+在实际代码里，`tuple` 更常被当成“结构化记录（record）”来用：一组位置固定、每个位置都有含义的数据。
+
+拆包（unpacking）就是“按字段读记录”的语法：它让你少写 `t[0] / t[1] / t[2]` 这种脆弱的索引代码。
 
 ---
 
@@ -298,4 +300,15 @@ tuple 没有 `__reversed__` 实例方法，但 `reversed(my_tuple)` 仍可用（
 - 需要“记录”但又想有字段名：看 `collections.namedtuple` / `typing.NamedTuple`。  
 - 需要更复杂的数据模型：看 `dataclasses.dataclass`（常与类型注解一起用）。  
 - 深入理解 hashable 与可变性：回到 `02-container-vs-flat-sequences.md` 的 hashable 小节。
+
+---
+
+## 十三、小练习（建议你用拆包写，而不是用索引）
+
+1. **记录拆包**：给定 `record = ("Tokyo", 2003, 32450, 0.66, 8014)`，用拆包取出 `city` 和 `pop`（忽略其他字段）。  
+2. **`*rest`**：给定 `seq = range(10)`，写出拆包：取 `first`、`last`，中间全部丢弃。  
+3. **嵌套拆包**：给定 `r = ("X", (1, 2))`，拆包得到 `name=...`、`x=...`、`y=...`。  
+4. **可哈希性判断**：分别构造一个“可哈希 tuple”与一个“不可哈希 tuple”，解释原因（提示：看内部是否含 `list/dict/set`）。  
+
+可运行对照见：`tuples_as_records_and_unpaking_demo.py`。
 

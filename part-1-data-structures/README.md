@@ -73,13 +73,13 @@ python part-1-data-structures/chapter-01/french_deck_shuffle_demo.py
 
 ## `chapter-02/` 笔记与脚本
 
-本章目录内另有 **`chapter-02/README.md`**：以 `01-rich-sequences-chapter2-overview.md` 为入口的学习路线、全部笔记与脚本一览。
+本章目录内另有 **`chapter-02/README.md`**：以 `01-rich-sequences-chapter2-overview.md` 为入口的笔记与脚本一览。
 
 | 编号 | 文件 | 主题简述 |
 |------|------|----------|
-| 01 | `01-rich-sequences-chapter2-overview.md` | 第 2 章路线、**Fluent Python 本章骨架**（§二）、学习优先级 |
+| 01 | `01-rich-sequences-chapter2-overview.md` | 第 2 章开篇：序列能力、协议视角、常见坑与练习 |
 | 02 | `02-container-vs-flat-sequences.md` | **合并版主文档**：对象头→容器/扁平→可变性/hashable→ABC |
-| 03 | `03-listcomps-and-genexps.md` | 列表推导式 vs 生成器表达式：模板、可读性准则、面试题 |
+| 03 | `03-listcomps-and-genexps.md` | 列表推导式 vs 生成器表达式：模板、可读性与坑 |
 | 04 | `04-tuples-as-records-and-unpacking.md` | 元组的双重角色：结构化记录与拆包（含选型与避坑） |
 | 05 | `05-structural-pattern-matching-sequence-patterns.md` | Python 3.10+ `match/case`：序列模式匹配、守卫与 `*rest` |
 | 06 | `06-slicing.md` | 切片：左闭右开、步距、`slice` 对象、切片赋值与 `...` |
@@ -116,7 +116,7 @@ python part-1-data-structures/chapter-02/list_sort_vs_sorted_demo.py
 
 | 编号 | 文件 | 主题简述 |
 |------|------|----------|
-| 01 | `01-dicts-and-sets-chapter3-overview.md` | 第 3 章开篇：dict/set 定位、知识地图、哈希与可哈希、**面试速记** |
+| 01 | `01-dicts-and-sets-chapter3-overview.md` | 第 3 章开篇：dict/set、hashable、常见行为与坑 |
 | 02 | `02-dict-comprehension.md` | 3.2.1 字典推导式、集合推导式、避坑 |
 | 03 | `03-mapping-unpack-and-merge.md` | 3.2.2 `**`（PEP 448）、3.2.3 `|` / `|=`（PEP 584） |
 | 04 | `04-csv-dictreader-pattern-matching.md` | `csv.DictReader` 与映射模式 `match/case` |
@@ -173,7 +173,7 @@ python part-1-data-structures/chapter-03/dict_view_setops_demo.py
 
 | 编号 | 文件 | 主题简述 |
 |------|------|----------|
-| 01 | `01-unicode-text-and-bytes-chapter4-overview.md` | 第 4 章开篇：`str`/`bytes`、Unicode、学习路线、面试速记 |
+| 01 | `01-unicode-text-and-bytes-chapter4-overview.md` | 第 4 章开篇：`str`/`bytes`、Unicode、编解码边界 |
 | 02 | `02-codepoints-encodings-and-errors.md` | 字符/码点/编码/字节，编解码异常与 `errors=` |
 | 03 | `03-io-encoding-checklist.md` | I/O 编码排查清单：文件/子进程/控制台 |
 
@@ -191,6 +191,6 @@ python part-1-data-structures/chapter-04/io_encoding_troubleshoot_demo.py
 
 ---
 
-## 学习目标
+## 备注
 
-能熟练使用内置数据结构，并能为自定义类型实现合适的特殊方法，使对象在 **`len` / `[]` / `for` / `in` / 排序 / 洗牌** 等场景下行为清晰、符合 Python 习惯。能区分 **`str` 与 `bytes`**，并在 I/O 边界上**显式**处理编解码。
+本部分的所有笔记都以“能看懂、能跑起来、能避坑”为目标：每篇尽量把概念、直觉、常见错误、可运行示例放在一起，方便边读边验证。

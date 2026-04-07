@@ -1,8 +1,14 @@
 # 字典推导式（Dict Comprehension）
 
-> **本篇定位**：《流畅的 Python》**3.2.1**：用 `{k: v for ...}` 从可迭代对象**一次性**构造字典；与列表/集合推导式同一套语法家族。  
-> **相关**：列表推导式见 `../chapter-02/03-listcomps-and-genexps.md`；本章开篇见 `01-dicts-and-sets-chapter3-overview.md`。  
-> **配套脚本**：`dict_comprehension_demo.py`。
+字典推导式解决的是一个非常具体、也非常常见的问题：
+
+> **我有一堆数据（通常是可迭代对象），我想“一次性”生成一个新字典，过程中顺便做一点转换（改键/改值）和过滤（丢掉不要的项）。**
+
+如果你只会写 `for` 循环当然也能做，但字典推导式的好处是：
+
+- **更直观**：一眼看出“输入是什么、输出是什么”。  
+- **更少样板代码**：不用先写 `d = {}` 再一行行 `d[k] = v`。  
+- **更适合数据清洗**：过滤 `None`、格式化字符串、键值对调都很自然。
 
 ---
 
@@ -14,9 +20,23 @@ Python 2.7+ 起支持字典推导式，形式为：
 {key_expr: value_expr for item in iterable [if condition]}
 ```
 
-- **`key_expr` / `value_expr`**：对每个 `item` 求值，得到一对键值。  
-- **`for item in iterable`**：遍历数据源。  
-- **`if condition`**：可选；仅当条件为真时保留该项（等价于在循环里 `if` 过滤）。
+把它翻译成人话就是：
+
+- 先从 `iterable` 里一个个拿 `item`（就像 `for item in iterable`）。  
+- 对每个 `item` 算出一个键 `key_expr` 和一个值 `value_expr`。  
+- 如果写了 `if condition`，就只保留条件为真的那一项。  
+
+你可以把字典推导式当成“for 循环 + if + 赋值”的压缩写法，但更重要的是：它把“我要得到一个字典”这个意图写得很明确。
+
+### 1. 最小例子：列表 → 字典
+
+```python
+pairs = [("a", 1), ("b", 2)]
+d = {k: v for k, v in pairs}
+print(d)  # {'a': 1, 'b': 2}
+```
+
+上面这个例子也可以写成 `dict(pairs)`，但当你需要转换/过滤时，推导式就更好用（下面会看到）。
 
 ---
 
@@ -45,6 +65,11 @@ dial_codes = [
 country_dial = {country: code for code, country in dial_codes}
 ```
 
+这句代码做了两件事：
+
+1. 遍历 `dial_codes` 里的每个二元组 `(code, country)`。  
+2. 把顺序对调成 `{country: code}`，得到“国家名 → 区号”的字典。  
+
 等价于显式循环：
 
 ```python
@@ -52,6 +77,8 @@ country_dial = {}
 for code, country in dial_codes:
     country_dial[country] = code
 ```
+
+两种写法都对；推导式只是让你更快看出“输入结构”和“输出结构”。
 
 ### 3. 排序、过滤、再转换
 
@@ -69,6 +96,11 @@ for code, country in dial_codes:
 2. **`code: country.upper()`**：以区号为键、国家名为大写字符串为值（与 `country_dial` 中「国名→区号」再次对调并格式化）。  
 3. **`if code < 70`**：只保留区号小于 70 的项。
 
+这里有两个新手常错点：
+
+1. **要排序就排序 `items()`**：`sorted(country_dial)` 只会返回“键”的排序结果（国家名），你就拿不到 `code` 了。  
+2. **先排序、再推导**：推导式本身不负责排序，它只是按你给的可迭代对象顺序去遍历。
+
 ---
 
 ## 三、与 `dict()` 构造的对比
@@ -80,13 +112,55 @@ for code, country in dial_codes:
 
 性能上通常不必纠结二者；**清晰度优先**。
 
+### 1. 什么时候用 `dict()` 更合适？
+
+当你的数据已经是“键值对序列”时：
+
+```python
+pairs = [("a", 1), ("b", 2)]
+print(dict(pairs))
+```
+
+### 2. 什么时候推导式明显更合适？
+
+当你要过滤、转换时：
+
+```python
+raw = {"a": 1, "b": None, "c": 2}
+cleaned = {k: v for k, v in raw.items() if v is not None}
+print(cleaned)  # {'a': 1, 'c': 2}
+```
+
 ---
 
 ## 四、常见用途
 
-- 键值对调、从 `(k, v)` 列表生成 `dict`。  
-- 清洗：过滤 `None`、非法值等。  
-- 对已有 `dict` 做 `for k, v in d.items()` 的二次转换。
+### 1. 键值对调
+
+```python
+kv = {"a": 1, "b": 2}
+vk = {v: k for k, v in kv.items()}
+print(vk)  # {1: 'a', 2: 'b'}
+```
+
+注意：如果值会重复（例如多个键都映射到同一个值），对调后会发生覆盖（见下一节“重复键”）。
+
+### 2. 清洗与规范化
+
+```python
+names = ["  Alice ", "", "Bob  "]
+out = {name.strip().lower(): len(name.strip()) for name in names if name.strip()}
+print(out)  # {'alice': 5, 'bob': 3}
+```
+
+### 3. 对已有 dict 做二次转换
+
+最常见的是“值格式化”或“过滤不需要的键”：\n
+```python
+prices = {"apple": 3.2, "banana": 2.5, "durian": 99}
+cheap = {k: v for k, v in prices.items() if v < 10}
+print(cheap)
+```
 
 ---
 
@@ -96,8 +170,16 @@ for code, country in dial_codes:
    ```python
    {k: v for k, v in [(1, "a"), (1, "b")]}  # {1: 'b'}
    ```
+   为什么是后者覆盖？因为对字典来说，赋值 `d[key] = value` 本来就会覆盖旧值；推导式只是重复做了多次赋值。\n
 2. **键须可哈希**：`str` / `int` / 元素可哈希的 `tuple` 等；`list` / `dict` / `set` 不能作键。  
 3. **可读性**：条件与表达式过多时，改用多行推导式或普通循环，避免「一行炫技」。
+
+### 5.1 可读性红线：什么时候不要用推导式？
+
+当你发现自己在推导式里写了很多层 `for`、很多个 `if`、还有复杂的三目表达式时，新手几乎一定会看不懂。此时请直接退回普通 `for` 循环：\n
+
+- **写清楚比写短更重要**。\n
+- 推导式的正确定位是“简单转换/过滤”，不是“把一段复杂业务逻辑塞进一行”。\n
 
 ---
 
@@ -126,4 +208,4 @@ for code, country in dial_codes:
 
 见 `dict_comprehension_demo.py`（区号示例、进阶过滤、重复键、`set` 推导式、自测答案）。
 
-**下一篇**：`**` 拆包与 `|` / `|=` 合并见 `03-mapping-unpack-and-merge.md`。
+下一篇会讲“把多个字典合并/覆盖”的常用写法：`{**d1, **d2}` 与 `d1 | d2`，见 `03-mapping-unpack-and-merge.md`。

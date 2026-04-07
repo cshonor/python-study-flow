@@ -2,15 +2,15 @@
 
 本目录对应《流畅的 Python》**第 3 章**：字典与集合、哈希表直觉、缺失键处理、`collections` 变体等。
 
-**建议从这里开始读**：[`01-dicts-and-sets-chapter3-overview.md`](01-dicts-and-sets-chapter3-overview.md)（本章主题、知识地图、**面试速记**）。
+建议从这里开始读：[`01-dicts-and-sets-chapter3-overview.md`](01-dicts-and-sets-chapter3-overview.md)（把 `dict/set` 这些核心概念先讲清楚）。
 
 ---
 
-## 学习路线与文件一览
+## 文件一览（建议顺序）
 
-| 优先级 | 文件 | 说明 |
-|--------|------|------|
-| 0 | `01-dicts-and-sets-chapter3-overview.md` | 开篇、框架、概念准备、面试速记 |
+| 顺序 | 文件 | 说明 |
+|------|------|------|
+| 01 | `01-dicts-and-sets-chapter3-overview.md` | `dict`/`set` 为什么重要、hashable、常见行为与坑 |
 | 1 | `02-dict-comprehension.md` | 3.2.1 字典推导式、与 `dict()` 对照、集合推导式 |
 | 2 | `03-mapping-unpack-and-merge.md` | 3.2.2 `**` 拆包（PEP 448）、3.2.3 `|` / `|=`（PEP 584） |
 | 3 | `04-csv-dictreader-pattern-matching.md` | `csv.DictReader` 行数据与映射模式 `match/case`（3.10+） |

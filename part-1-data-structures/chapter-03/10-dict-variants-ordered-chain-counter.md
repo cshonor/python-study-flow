@@ -1,8 +1,10 @@
 # `dict` 的变体：`OrderedDict`、`ChainMap`、`Counter`（§3.6）
 
-> **本篇定位**：《流畅的 Python》**3.6**：标准库中三类常用**映射变体**——顺序操作、多映射视图、计数。  
-> **相关**：`OrderedDict` / `defaultdict` 与原生 `dict` 的 API 对照见 `06-dict-defaultdict-ordereddict-api.md`；`ChainMap` 与 `{**a,**b}` / `|` 见 `03-mapping-unpack-and-merge.md`。  
-> **配套脚本**：`dict_variants_demo.py`。
+`dict` 够用了，但标准库还提供了几种“带特殊能力”的映射类型。你可以把它们理解成：
+
+- **`OrderedDict`**：当你需要“显式控制顺序”（例如把某个 key 移到末尾）时用。\n- **`ChainMap`**：当你需要“多层查找（覆盖）”而不是“真合并”时用。\n- **`Counter`**：当你在做“计数/词频/多重集运算”时用（比自己写 `d.get(k, 0) + 1` 更直接）。
+
+配套脚本：`dict_variants_demo.py`。
 
 ---
 

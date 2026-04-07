@@ -1,8 +1,12 @@
-# 自动处理缺失的键：`defaultdict` 与 `__missing__`（§3.5）
+# 缺键要默认值：`defaultdict` 为什么好用？它和 `__missing__` 又是什么关系？
 
-> **本篇定位**：《流畅的 Python》**3.5**：在「缺键要默认值」场景下，用 **`collections.defaultdict`** 统一交给 **`default_factory`**；以及 **`dict.__missing__`** 钩子做自定义逻辑。  
-> **前置**：词索引与 `get` / `setdefault` 对比见 `07-dict-mutable-values-indexing.md`。  
-> **配套脚本**：`defaultdict_and_missing_demo.py`。
+你已经在上一节看到：为了实现“缺了就建一个空 list 然后 append”，我们可以写 `if`、`get`、`setdefault`……都行，但总感觉有点绕。
+
+`defaultdict` 的核心价值就是：**把“缺键时怎么办”变成类型的一部分**。你不需要每次都写一遍初始化逻辑，而是把规则交给 `default_factory`。
+
+这一篇会把两件事讲透：
+
+1. **`defaultdict` 的行为规则**：什么时候会调用 `default_factory`？什么时候不会？\n2. **`__missing__` 的本质**：为什么 `defaultdict` 能做到自动补默认值？（它其实就是在缺键时用到了 `__missing__` 钩子）
 
 ---
 

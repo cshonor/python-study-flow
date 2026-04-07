@@ -1,7 +1,8 @@
-# 序列模式匹配：`match/case`（Python 3.10+，Fluent Python 2.6）
+# 序列模式匹配：`match/case`（Python 3.10+，§2.6）
 
-> **本篇定位**：掌握 Python 3.10+ 的结构模式匹配（Structural Pattern Matching，PEP 634）中最常用的**序列模式**：按结构匹配、自动绑定变量、守卫条件、兜底分支。  
-> **相关**：拆包（含 `*rest` 与嵌套拆包）见 `04-tuples-as-records-and-unpacking.md`；推导式与生成器表达式见 `03-listcomps-and-genexps.md`。
+`match/case` 最有价值的地方，不是“少写几行 if/elif”，而是能把“数据的形状”写进分支里。
+
+当你处理的是序列（长度固定/可变、可能嵌套）时，序列模式非常好用：它能在匹配成功的同时把对应位置绑定成变量，让你的代码更像在“解构数据”，而不是在“手搓索引 + 判断”。
 
 ---
 
@@ -284,3 +285,25 @@ case ["define", [Symbol() as name, *parms], *body] if body:
 
 本篇以**序列模式**为主；若处理 **`csv.DictReader` 读出的行（`dict`）**，见 `../chapter-03/04-csv-dictreader-pattern-matching.md`。
 
+---
+
+## 九、配套 demo（建议边看边跑）
+
+脚本：`part-1-data-structures/chapter-02/pattern_matching_sequence_demo.py`
+
+```bash
+python part-1-data-structures/chapter-02/pattern_matching_sequence_demo.py
+```
+
+你会看到 4 组输出：
+
+- 机器人指令的多分支解析（最典型的“协议分支”用法）
+- 嵌套模式 + guard 的筛选
+- `*rest` 吞分支的顺序坑（bad vs good）
+- evaluator/DSL 风格的“匹配 + 校验”
+
+---
+
+## 十、小练习（写完再看 demo 输出）
+
+1. 写一个 `handle(message)`：支持 `["ADD", a, b]`、`["MUL", a, b]`、`["NEG", x]` 三种指令，并用 `case _` 兜底报错。\n2. 写一个带 guard 的分支：只接受 `["DIV", a, b]` 且 `b != 0`。\n3. 写一个会被 `*rest` 吞掉的错误版本，并改成正确的顺序版本。\n

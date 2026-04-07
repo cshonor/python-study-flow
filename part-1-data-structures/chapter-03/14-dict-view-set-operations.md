@@ -1,8 +1,12 @@
 # 字典视图的集合运算：`dict_keys` / `dict_items` vs `frozenset`（§3.12）
 
-> **本篇定位**：《流畅的 Python》**§3.12**：**`dict.keys()`**、**`dict.items()`** 返回的视图在何种意义上像**集合**，与 **`frozenset`**、**`dict.values()`** 的能力边界。  
-> **前置**：视图基础（**`len`**、迭代、**`reversed`**、与 **`set`** 的关系）见 **`12-dict-views.md`**；**`set` / `frozenset`** 通论见 **`13-sets-and-frozenset.md`**。  
-> **配套脚本**：`dict_view_setops_demo.py`。
+`d.keys()` 和 `d.items()` 这两种视图对象，有一些“很像集合”的能力：你可以对它们用 `&`、`|`、`-`、`^` 这些集合运算符。
+
+但它们又**不是** `set/frozenset`：有些具名方法没有、有些运算会受“动态视图”影响、`values()` 还完全不具备集合语义。
+
+这篇就是把这些边界一次性讲清楚，避免你在代码里写出“看起来能跑，但逻辑不稳”的集合操作。
+
+配套脚本：`dict_view_setops_demo.py`。
 
 ---
 

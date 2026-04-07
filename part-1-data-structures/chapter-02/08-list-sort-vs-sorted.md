@@ -1,8 +1,8 @@
-# `list.sort()` 与 `sorted()`：原地排序 vs 新列表
+# `list.sort()` 与 `sorted()`：原地排序 vs 新列表（§2.9）
 
-> **本篇定位**：《流畅的 Python》第 2 章中关于**两种排序入口**的对比：`list` 专用、原地、返回 `None`；以及适用于任意可迭代对象、返回新 `list` 的内置函数。  
-> **相关**：序列协议与对象模型见 `02-container-vs-flat-sequences.md`；第 1 章里按自定义 `key` 排序扑克见 `../chapter-01/10-french-deck-composition-setitem-shuffle.md`。  
-> **配套脚本**：`list_sort_vs_sorted_demo.py`。
+排序这件事，Python 给了你两个入口：`list.sort()` 和 `sorted()`。
+
+新手最容易卡住的不是“怎么排”，而是这两个入口的差异：**一个原地改 list，一个返回新 list**。把这个差异理解清楚，你写排序代码就会稳定很多，也更不容易在链式写法里踩坑。
 
 ---
 
@@ -128,3 +128,13 @@ Python 的排序（Timsort）是**稳定**的：键相等时，**保持原有相
 ## 七、可运行对照
 
 见 `list_sort_vs_sorted_demo.py`（第 1–5 段：基础与 `itemgetter` / 稳定两趟；第 6–8 段：`fruits` 全书示例、多字段商品、`shuffle` 返回 `None`）。
+
+---
+
+## 八、小练习（写完跑 demo 对照）
+
+1. **`sort` 的返回值**：写一段最短代码证明 `list.sort()` 返回 `None`，并解释这条设计约定的好处。  
+2. **单关键字**：给定 `names = ["Bob", "alice", "Cara"]`，按“不区分大小写”排序。  
+3. **多关键字**：给定 `products = [{"name":"A","price":10,"sales":100}, ...]`，实现：价格升序，同价销量降序，再按 name 升序。  
+4. **稳定排序**：不用元组键，改用“两趟排序”实现上一题（提示：先按次关键字排，再按主关键字排）。  
+

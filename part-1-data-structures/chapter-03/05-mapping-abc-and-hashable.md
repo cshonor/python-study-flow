@@ -1,8 +1,12 @@
-# 映射 ABC、可哈希性与模式中的 `**rest`
+# `Mapping`/`MutableMapping`、hashable、以及 `match` 里的 `**rest`（把“概念”讲成“能用”）
 
-> **本篇定位**：《流畅的 Python》**§3.4 / 3.4.1**：`collections.abc` 中的 **`Mapping` / `MutableMapping`**；**可哈希（hashable）** 的精确定义与常见类型；映射模式匹配中用 **`**变量名`** 收集未在模式中列出的键值对。  
-> **相关**：容器 ABC 总览见 `../chapter-01/12-collections-abc-container-api.md`；第 2 章可哈希与 `dict` 键见 `../chapter-02/02-container-vs-flat-sequences.md`。  
-> **配套脚本**：`mapping_abc_hashable_demo.py`。
+这一篇要解决 3 个新手最常卡住的问题：
+
+1. **为什么有时不该写 `type(x) is dict`，而要写 `isinstance(x, Mapping)`？**  
+2. **hashable 到底是什么意思？为什么 list 不能当 dict 的 key？**  
+3. `match/case` 的映射模式里，`**rest` 是干嘛的？为什么 `**_` 还会报错？
+
+读完你应该能做到：看到别人代码里写 `Mapping`、`MutableMapping`、`hashable`、`**rest`，你不是“背过”，而是能解释清楚“为什么要这么写”。
 
 ---
 
@@ -25,6 +29,11 @@ match food:
 
 适用：JSON/API 返回的**部分字段固定、其余字段动态**时的分支与收集。
 
+你可以把它当成“解构”：
+
+- 你先把你关心的键（例如 `category`）匹配掉。\n- 剩下你不想一个个列出来的键，统一塞到 `details` 里。\n
+这比你手动写 `details = dict(food); details.pop('category')` 更直接，也更不容易漏字段。
+
 ---
 
 ## 二、3.4 映射类型的标准 API（`collections.abc`）
@@ -33,6 +42,29 @@ match food:
 
 - 定义在 **`collections.abc`**（教学中常 `import collections.abc as abc`）。  
 - 作用：描述 **只读映射** 与 **可变映射** 的接口；配合 **`isinstance(x, abc.Mapping)`** 可接受 **`dict`、`UserDict`** 等实现，而不仅是 `type(x) is dict`。
+
+#### 2.1 为什么不用 `type(x) is dict`？
+
+因为 Python 里“像 dict 的东西”不只有 `dict`。例如：
+
+- `collections.UserDict`（书里后面会讲，自定义映射时更推荐继承它）\n- `collections.ChainMap`（多个映射的查找视图）\n- 你自己实现的映射类型（实现了 `__getitem__`/`__iter__`/`__len__` 等协议）\n
+如果你只写 `type(x) is dict`，这些都会被排除掉，代码会变得不通用。
+
+更稳的写法是：
+
+```python
+from collections.abc import Mapping
+
+def accepts_mapping(m: Mapping) -> None:
+    ...
+```
+
+### 2. `Mapping` 和 `MutableMapping` 大概差在哪？
+
+把它们想成“只读版”和“可写版”：
+
+- **`Mapping`**：你能 `m[key]` 取值、能迭代、能 `len`，但不保证你能改。\n- **`MutableMapping`**：在 `Mapping` 基础上，额外要求你能 `m[key] = value`、能删除键等。\n
+在类型注解/接口设计里，这个区分非常常见：如果函数只需要读取，就用 `Mapping`（更宽）；如果必须修改，就用 `MutableMapping`（更窄）。
 
 ### 2. 继承关系（简图）
 
@@ -59,6 +91,11 @@ match food:
 1. 生命周期内 **`hash(obj)` 稳定**（或该类型不可哈希，`hash` 抛 `TypeError`）。  
 2. 可与同类对象比较 **`==`**。  
 3. 若 **`a == b`**，则 **`hash(a) == hash(b)`**（否则破坏哈希表约定）。
+
+把它翻译成“好记版”就是：
+
+- 你把它当作 key 后，它的“定位信息（hash）”不能变。\n- 否则 dict/set 就会找不到它，或者找错位置。\n
+这也是为什么“可变对象通常不可哈希”：你一改内容，hash 就可能变。
 
 ### 2. 常见类型
 
@@ -88,6 +125,20 @@ match food:
 - 列表、集合、字典**不能**作 `dict` 键或 `set` 元素。  
 - 需要复合键时，用**元素均可哈希**的 `tuple` 或 `frozenset`。
 
+这里建议你记一个“最简单的自检办法”：
+
+```python
+def is_hashable(x: object) -> bool:
+    try:
+        hash(x)
+    except TypeError:
+        return False
+    else:
+        return True
+```
+
+当你不确定某个对象能不能当 key，就 `is_hashable(x)` 试一下；这比背类型表更稳。
+
 ### 3. 模式匹配与数据校验
 
 - `**rest` 适合「固定字段 + 扩展字段」；  
@@ -99,4 +150,16 @@ match food:
 
 见 `mapping_abc_hashable_demo.py`（`**rest` 示例、`isinstance` Mapping、`hash`/`TypeError`、简易可哈希数据类）。
 
-**下一篇**：`dict` / `defaultdict` / `OrderedDict` API 对照见 `06-dict-defaultdict-ordereddict-api.md`。
+运行：
+
+```bash
+python part-1-data-structures/chapter-03/mapping_abc_hashable_demo.py
+```
+
+下一篇会把 `dict/defaultdict/OrderedDict` 常用方法差异做成一张更易查的表，并补上“哪些点最容易写错”，见 `06-dict-defaultdict-ordereddict-api.md`。
+
+---
+
+## 六、小练习（用 `Mapping` 与 hashable 角度回答）
+
+1. 写一个函数 `f(m)`：只读取 `m` 的内容，不修改它。你会给参数标注 `Mapping` 还是 `MutableMapping`？为什么？\n2. 构造一个“外壳不可变但不可哈希”的对象（提示：`tuple` 里塞 `list`）。解释它为什么不能当 dict key。\n3. 用 `match/case` 的映射模式写一个分支：匹配 `{\"type\": \"user\", **rest}`，并把 `rest` 打印出来。\n

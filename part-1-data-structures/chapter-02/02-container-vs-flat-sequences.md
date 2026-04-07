@@ -1,7 +1,10 @@
-# Python 序列与对象模型（合并版）：对象头 → 容器/扁平 → 可变性/哈希 → ABC
+# Python 序列与对象模型（合并主文档）：从“底层直觉”到“工程选型”
 
-> **你要的一篇到底**：本文件把原 `02/03/04/05` 四篇合并成一个主文档，按“先对象模型、再序列实现、再接口/抽象、最后可变性与 key 规则”的顺序组织。  
-> **配套脚本**：`container_vs_flat_memory_demo.py`、`sequence_virtual_subclass_demo.py`。
+这一篇是第 2 章的“地基”：它不急着讲语法，而是把你后面会反复遇到的问题先讲清楚：
+
+- 为什么 `list` 能装任何对象，但更“臃肿”？\n- 为什么 `array('d')`/`bytes` 更紧凑？\n- 为什么有的东西能当 `dict` 的 key（hashable），有的不能？\n- 为什么你经常应该用 `collections.abc.Sequence` 这种接口去理解“序列”，而不是死盯具体类型？
+
+配套脚本：`container_vs_flat_memory_demo.py`、`sequence_virtual_subclass_demo.py`。
 
 ---
 
@@ -9,61 +12,91 @@
 
 - 一、对象模型：名字绑定到对象、对象头、`ob_type`
 - 二、容器序列 vs 扁平序列：载荷到底存什么
-- 三、可变 vs 不可变：开放不开放“改自己”的接口
-- 四、hashable 与 dict key：tuple 里藏 list 的坑
-- 五、`collections.abc`：`Sequence` / `MutableSequence` 与虚拟子类
-- 六、选型与小实验（`getsizeof`）
+- 三、可变 vs 不可变：到底“不可变”是什么意思
+- 四、hashable 与 dict/set：什么能当 key/元素，为什么
+- 五、`collections.abc`：Sequence/MutableSequence 的接口层次
+- 六、选型与小实验：怎么把“直觉”落到代码里
 
 ---
 
-## 一、对象模型总览（CPython 实现直觉）
+## 一、对象模型总览：Python 变量不是“盒子”
 
-### 1. `a = 123` 到底发生了什么？
+### 1）`a = 123` 到底发生了什么？
 
-- `a` 是**名字**（标识符），不是装值的小盒子。
-- `123` 求值产生一个 **`int` 对象**（CPython 中是 `PyLongObject`）。
-- 赋值的语义是：**名字 `a` 绑定到该对象**（名字存放在当前栈帧/命名空间结构里）。
+新手最常见误解是把变量当“装值的盒子”。在 Python（尤其 CPython）里更接近的心智模型是：
 
-### 2. 对象头：`ob_refcnt` 与 `ob_type`
+- `123` 会先创建一个 **`int` 对象**（CPython 内部类型是 `PyLongObject`）。
+- `a` 只是一个**名字**（标识符），它的作用是**指向**那个对象。
+- 赋值的语义：**名字 `a` 绑定到对象**。
 
-每个对象结构体开头都有统一的对象头（教学里叫 `PyObject_HEAD` / `PyObject_VAR_HEAD`），常记两样：
+这件事为什么和“序列”有关？
 
-- **`ob_refcnt`**：引用计数
-- **`ob_type`**：类型指针，类型为 **`PyTypeObject*`**
+- 因为序列里放的很多时候不是“值”，而是“对象引用”。理解这一点，你才不会被“浅拷贝/引用共享”坑到（第 7 节会重点讲）。
 
-`ob_type` 的作用就是：让解释器知道“这是什么类型”，从而走对应的加法、取长度、repr 等实现逻辑（动态分派）。
+### 2）对象头：`ob_refcnt` 与 `ob_type`（知道它们存在就够）
 
-> 一句话：**`ob_type` 是对象的类型身份证，指向它的类型对象（行为表）。**
+CPython 中每个对象结构体开头都有统一的对象头（常称 `PyObject_HEAD` / `PyObject_VAR_HEAD`）。你只要记住两个字段的角色：
+
+- **`ob_refcnt`**：引用计数（对象何时可回收的一部分依据）
+- **`ob_type`**：类型指针（`PyTypeObject*`），告诉解释器“这是啥类型”
+
+`ob_type` 的意义是：同样是 `+`，`int` 的加法、`list` 的拼接、`numpy.ndarray` 的向量加法，都能被动态分派到各自实现。
+
+> 一句话：**对象头保证“对象都能被解释器统一管理”，类型指针保证“同一个操作符能按类型走不同实现”。**
 
 ---
 
-## 二、容器序列 vs 扁平序列：载荷到底存什么？
+## 二、容器序列 vs 扁平序列：你到底在“存什么”
 
-### 1. 一句话
+这一节是全章的关键：它决定你能不能理解“为什么某些序列省内存/更快”。
 
-- **容器序列**（`list` / `tuple` / `deque`）：载荷是**对象引用槽位**（指向堆上的独立对象）→ **可异构**。
-- **扁平序列**（`array.array` / `bytes` / `bytearray` / `str`）：载荷是**同构的连续缓冲**（原始编码）→ **紧凑但受限**。
+### 1）一句话总结
 
-### 2. 对照表
+- **容器序列**（`list` / `tuple` / `deque`）：载荷是**对象引用槽位**（指向堆上的独立对象）→ **可异构、可嵌套**。  
+- **扁平序列**（`array.array` / `bytes` / `bytearray` / `str`）：载荷是**同构的连续缓冲**（原始数据）→ **紧凑但受限**。
 
-| 维度 | **容器序列** | **扁平序列** |
+### 2）对照表（建议背下来）
+
+| 维度 | 容器序列（container） | 扁平序列（flat） |
 | :--- | :--- | :--- |
-| **载荷层存什么** | 对象引用槽位 | 同构原始数据缓冲 |
-| **典型代表** | `list`、`tuple`、`collections.deque` | `array.array`、`str`、`bytes`、`bytearray` |
-| **是否异构** | ✅ | ❌（`array` 由类型码约束；`bytes` 为字节；`str` 为 Unicode 文本语义） |
+| 载荷层存什么 | 对象引用（指针槽位） | 同构原始数据（连续缓冲） |
+| 典型代表 | `list`、`tuple`、`collections.deque` | `array.array`、`bytes`、`bytearray`、（实现上 `str` 也更接近扁平） |
+| 是否能装任意对象 | ✅ | ❌ |
+| 更像“通用容器”还是“数据缓冲” | 通用容器 | 数据缓冲 |
 
-### 3. 两个直觉例子
+### 3）为什么 `array('d')` 常比 `tuple(float)` 更省？
 
-- `(9.46, 2.08, 4.29)`：每个元素通常是独立 `float` 对象（有对象头）。
-- `array('d', [9.46, 2.08, 4.29])`：缓冲里紧排 `double`，通常更省。
+以 `float` 为例：在容器序列里，元素通常是一个个独立对象（每个对象都有对象头）；在扁平序列里，载荷可以紧密存放原始 `double` 值。
+
+你不需要记 C 结构体细节，但要接受这个事实：
+
+- **容器序列的“每个元素”很可能是一个完整对象**（对象头 + 值）。  
+- **扁平序列的载荷更像 C 数组**（同构、紧排）。
+
+对应脚本：
+
+```bash
+python part-1-data-structures/chapter-02/container_vs_flat_memory_demo.py
+```
+
+### 4）补一刀：`bytes`/`bytearray` 为什么迭代出 `int`？
+
+因为它们是“字节序列”，字节的取值范围就是 0–255：
+
+```python
+b = b"ABC"
+list(b)  # [65, 66, 67]
+```
+
+这也是为什么 **文本**（`str`）和 **字节**（`bytes`）必须明确区分（第 4 章会系统展开）。
 
 ---
 
-## 三、可变 vs 不可变：是谁决定的？
+## 三、可变 vs 不可变：到底“不可变”是什么意思？
 
-> **一句话**：取决于这个类型是否开放“在同一对象身份下修改内容”的接口（协议层常体现为 `__setitem__`、`append`、`pop`…）。
+> **一句话**：取决于类型是否开放“在同一对象身份下修改内容”的接口。
 
-### 1. 行为对比
+### 1）行为对比（最小例子）
 
 ```python
 s = "hello"
@@ -74,60 +107,86 @@ lst[0] = 999   # OK
 lst.append(4)  # OK
 ```
 
-### 2. 重要提醒
+### 2）最容易误解的点：`tuple` 的“不变”是“槽位不变”
 
-`tuple` 自己不可变指的是**槽位绑定不变**；但若它装了可变对象（如 `list`），内层对象仍可变。
+```python
+t = (1, [2, 3])
+t[1].append(4)
+t  # (1, [2, 3, 4])
+```
+
+这不违反“tuple 不可变”，因为你没有把 `t[1]` 这个槽位改成别的对象；你改的是槽位里那个 `list` 对象本身。
+
+**工程意义**：
+
+- “不可变容器”不等于“绝对不会变”。如果你要用它做 dict key/放进 set，你必须保证它的内容在逻辑上不会变（第 4 节会讲 hashable）。
 
 ---
 
-## 四、hashable 与 dict key（含 tuple 小坑）
+## 四、hashable 与 dict/set：什么能当 key/元素，为什么？
 
-字典 key 的最稳记法是：**必须可哈希（hashable）**。
+字典的 key 与集合的元素必须满足一个约束：**可哈希（hashable）**。
 
-- ✅ 常见可当 key：`str`、`bytes`、数字、`frozenset`、以及**元素全可哈希**的 `tuple`
-- ❌ 常见不能当 key：`list`、`dict`、`set`、`bytearray`、`array.array`
+### 1）可哈希的直觉定义（够用版）
 
-### 小坑：`tuple` 不一定可哈希
+一个对象如果要做 `dict` 的 key，需要满足：
+
+1. **哈希值稳定**：对象生命周期内 `hash(x)` 不会变（这通常意味着“不可变语义”）。  
+2. **可比较相等**：支持 `==`。  
+3. **一致性约束**：如果 `a == b`，必须 `hash(a) == hash(b)`。
+
+### 2）常见类型一览（背这一张就够）
+
+- ✅ 常见可当 key：`None`、数字、`str`、`bytes`、`frozenset`、以及**元素全可哈希**的 `tuple`  
+- ❌ 常见不能当 key：`list`、`dict`、`set`、`bytearray`
+
+### 3）最常见坑：`tuple` 不一定可哈希
 
 ```python
 a = (1, 2, 3)       # ✅ OK
 b = (1, [2, 3], 4)  # ❌ TypeError：tuple 内含 list（不可哈希）
 ```
 
+**为什么**：因为 `list` 可变、哈希不稳定。`tuple` 只是“外壳不可变”，但如果里面有可变对象，就无法保证整体哈希稳定。
+
 ---
 
-## 五、`collections.abc`：接口层次与虚拟子类
+## 五、`collections.abc`：接口层次与虚拟子类（别只背名字）
 
-### 1. 接口层次（记住方法集合超集关系就够）
+这一节的目标是：你能读懂类型注解/库文档里写的 `Sequence`、`MutableSequence`、`Mapping` 等。
 
-- **`Sequence`**：偏“只读”序列语义（`__getitem__` 等），并混入 `index`、`count`
-- **`MutableSequence`**：在 `Sequence` 上加“可原地改”（`append`、`pop`、`__setitem__` 等）
+### 1）接口层次（只需记“方法集合的包含关系”）
+
+- **`Sequence`**：只读序列语义（`__getitem__`、`__len__`、`__contains__` 等），并混入 `index`、`count`。\n- **`MutableSequence`**：在 `Sequence` 上增加“可修改”相关方法（`append`、`pop`、`__setitem__` 等）。
 
 一句话：**`MutableSequence` 的方法集 ⊃ `Sequence` 的方法集**。
 
-### 2. 为什么是虚拟子类？
+### 2）为什么叫“虚拟子类”？
 
-内置 `list`/`tuple` 早就用 C 实现了，后来才有 ABC；因此它们不是通过 `__bases__` 继承 ABC，而是通过注册成为**虚拟子类**，从而让 `isinstance(x, abc.Sequence)` 这类检查成立。
+内置 `list`/`tuple` 很早就用 C 实现了，后来才出现这些 ABC；因此它们不是通过继承关系写在 `__bases__` 里，而是通过注册成为**虚拟子类**，从而让 `isinstance(x, abc.Sequence)` 这类检查成立。
 
-可运行演示：`part-1-data-structures/chapter-02/sequence_virtual_subclass_demo.py`
+对应脚本：
+
+```bash
+python part-1-data-structures/chapter-02/sequence_virtual_subclass_demo.py
+```
 
 ---
 
-## 六、选型与小实验
+## 六、把直觉落到选型：你应该怎么选容器？
 
-### 1. 选型表（极简）
+### 1）选型表（够用版）
 
-| 场景 | 推荐 |
-| :--- | :--- |
-| 业务异构数据 | `list` / `tuple` |
-| 同构数值批量 | `array.array`（或科学计算用 `numpy`） |
-| 字节 IO | `bytes` / `bytearray` |
-| 队列/滑动窗口 | `collections.deque` |
+| 场景 | 推荐 | 为什么 |
+| :--- | :--- | :--- |
+| 业务异构数据 | `list` / `tuple` | 通用、可嵌套 |
+| 同构数值批量 | `array.array`（或 `numpy`） | 紧凑、适合批量 |
+| 字节 I/O | `bytes` / `bytearray` | 明确区分文本与二进制 |
+| 队列/滑动窗口 | `collections.deque` | 头尾操作更适合 |
 
-### 2. `getsizeof` 粗略感受（注意局限）
+### 2）小练习（建议做完再读后续）
 
-`sys.getsizeof(list)` 通常不含元素对象本体；演示脚本只给数量级直觉：
+1. 为什么 `bytes` 的元素是 `int` 而不是 `str`？  
+2. 写出一个 `tuple` **可哈希**和一个 `tuple` **不可哈希**的例子，并解释原因。  
+3. 你会在什么场景用 `array('d')` 替代 `list[float]`？
 
-```bash
-python part-1-data-structures/chapter-02/container_vs_flat_memory_demo.py
-```

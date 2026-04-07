@@ -1,14 +1,37 @@
-# `csv.DictReader` 与映射模式：`match/case` 处理行数据
+# `csv.DictReader`：每一行都是 dict，怎么写出“看得懂”的分支处理？
 
-> **本篇定位**：《流畅的 Python》第 3 章相关：**`csv.DictReader` 每行是 `dict`（表头→单元格）**，用 Python 3.10+ 的 **`match/case` 映射模式**分支处理，比深层 `if-elif` 更直观。  
-> **相关**：**序列**模式见 `../chapter-02/05-structural-pattern-matching-sequence-patterns.md`；本章映射基础见 `01-dicts-and-sets-chapter3-overview.md`。  
-> **配套脚本**：`csv_dictreader_pattern_matching_demo.py`（需 **Python 3.10+**；低版本分支见脚本中 `process_rows_if`）。
+很多新手第一次用 `csv.DictReader` 会有两个困惑：
+
+1. **为什么每一行不是 list，而是 dict？**  
+2. **为什么我一堆 `if/elif` 越写越乱？**
+
+这篇笔记只做一件事：用一个小 CSV 例子告诉你——当“每一行都是 dict”时，怎么写出清晰的分支代码。
+
+你会看到两种写法：
+
+- Python 3.10+：用 `match/case` 的**映射模式**写分支（更像“声明式规则”）\n- 任何 Python 3.x：用 `if/elif`（等价逻辑，便于兼容）
 
 ---
 
 ## 一、场景
 
 `csv.DictReader` 迭代得到的一行是**映射**：键为列名，值为**字符串**（未经 `int()` 转换前）。若行内存在「类型」字段（如 `type`），可按类型与字段组合分支处理。
+
+### 1.1 最小例子：为什么它是 dict？
+
+假设 CSV 头是：
+
+```text
+type,id,note
+```
+
+那 `DictReader` 读到一行 `user,42,alice` 时，给你的就是：
+
+```python
+{"type": "user", "id": "42", "note": "alice"}
+```
+
+这样你就可以用列名直接取值，而不用记“第 0 列/第 1 列”。
 
 ---
 
@@ -22,6 +45,8 @@
 | 兜底 | `case _:` | 其余情况（放在**最后**） |
 
 **顺序**：**从上到下**首次命中即执行；**更具体的模式在上**，`case _` 必须在末支。
+
+新手要特别注意：映射模式的匹配是“**至少包含**这些键，并且这些键的值满足要求”。它不会要求你的 dict “只有这些键”。
 
 ---
 
@@ -41,6 +66,10 @@ with open("data.csv", encoding="utf-8") as f:
                 ...
 ```
 
+把它理解成“按规则挑选分支”就好：
+
+- `case {"type": "user", "id": user_id}`：只要这行里有 `type` 和 `id`，且 `type == "user"`，就进入这个分支，同时把 `id` 的值绑定到 `user_id`。
+
 ---
 
 ## 四、守卫（guard）：范围与类型
@@ -54,6 +83,10 @@ match row:
 ```
 
 （你看到的「在 `case` 里写 `int(id) if ...`」一类写法**不是**合法模式语法，应改为 **guard**。）
+
+这里有一个非常关键的“为什么”：
+
+- CSV 读出来的值几乎都是字符串。\n- 你要做数值判断（比如 `id > 100`）时，必须在 guard 里显式 `int(...)`。\n- 这不是 `match/case` 的限制，而是 CSV 本身的数据类型就是文本。
 
 ---
 
@@ -72,10 +105,26 @@ for row in reader:
         ...
 ```
 
+这段 `if/elif` 的写法和 `match/case` 在逻辑上完全等价。区别是：
+
+- `match/case` 更像“写规则”：你更容易看出每个分支到底需要哪些字段。\n- `if/elif` 更像“写过程”：写久了容易堆条件，看起来更乱。
+
 ---
 
 ## 六、可运行对照
 
 见 `csv_dictreader_pattern_matching_demo.py`：用内存中的 CSV 字符串（`io.StringIO`）演示 **`match` 与 `if` 两版**，无需自备文件。
 
-**下一篇**：映射 ABC、可哈希与映射模式中 `**rest` 见 `05-mapping-abc-and-hashable.md`。
+运行：
+
+```bash
+python part-1-data-structures/chapter-03/csv_dictreader_pattern_matching_demo.py
+```
+
+下一篇会把“映射的抽象接口（Mapping）”“可哈希”“映射模式里的 `**rest`”讲清楚，见 `05-mapping-abc-and-hashable.md`。
+
+---
+
+## 七、小练习（把 if/elif 改写成 match/case）
+
+1. 给 `type == "user"` 增加一个分支：当 `note` 为空字符串时，输出 `"anonymous"`。\n2. 新增一种行：`type == "admin"`，要求必须同时有 `id` 与 `note`，否则走兜底。\n3. 尝试写一个“太宽泛的 case”放到前面（例如只判断 `{"type": "user"}`），观察它会不会让后面的更具体分支到不了。\n
