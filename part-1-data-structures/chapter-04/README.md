@@ -11,6 +11,7 @@
 | 优先级 | 文件 | 说明 |
 |--------|------|------|
 | 0 | `01-unicode-text-and-bytes-chapter4-overview.md` | 开篇、框架、`str`/`bytes` 纲领、学习顺序 |
+| 1 | `02-codepoints-encodings-and-errors.md` | 字符/码点/编码/字节、`encode`/`decode`、`errors=` |
 
 ---
 
@@ -18,11 +19,13 @@
 
 ```bash
 python part-1-data-structures/chapter-04/unicode_bytes_quickstart_demo.py
+python part-1-data-structures/chapter-04/codepoints_encoding_demo.py
 ```
 
 | 脚本 | 说明 |
 |------|------|
 | `unicode_bytes_quickstart_demo.py` | 与 `01` 配套：`encode`/`decode`、字面量、`errors=` |
+| `codepoints_encoding_demo.py` | 与 `02` 配套：码点与 UTF-8 字节、错误与 `errors=`、控制台边界 |
 
 ---
 
