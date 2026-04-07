@@ -1,0 +1,31 @@
+# 第 4 章「Unicode 文本与字节序列」— 本目录说明
+
+本目录对应《流畅的 Python》**第 4 章**：`str` 与 `bytes`、编解码、Unicode 规范化、排序与双模式 API 等。
+
+**建议从这里开始读**：[`01-unicode-text-and-bytes-chapter4-overview.md`](01-unicode-text-and-bytes-chapter4-overview.md)（本章主题、知识地图、**面试速记**）。
+
+---
+
+## 学习路线与文件一览
+
+| 优先级 | 文件 | 说明 |
+|--------|------|------|
+| 0 | `01-unicode-text-and-bytes-chapter4-overview.md` | 开篇、框架、`str`/`bytes` 纲领、学习顺序 |
+
+---
+
+## 配套脚本（在仓库根目录执行）
+
+```bash
+python part-1-data-structures/chapter-04/unicode_bytes_quickstart_demo.py
+```
+
+| 脚本 | 说明 |
+|------|------|
+| `unicode_bytes_quickstart_demo.py` | 与 `01` 配套：`encode`/`decode`、字面量、`errors=` |
+
+---
+
+## 与前几章
+
+第 2 章序列与对象模型见 `../chapter-02/`；第 3 章字典与集合见 `../chapter-03/`。本章的 **`str`** 与 **`bytes`** 是后续读写文件、网络与 `async` 的公共基础。

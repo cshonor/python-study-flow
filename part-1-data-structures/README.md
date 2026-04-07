@@ -11,7 +11,8 @@
 | `chapter-01/` | 第 1–6 章范围的学习材料 | 当前主要笔记与示例脚本均在此 |
 | `chapter-02/` | 第 2 章「丰富的序列」等 | 开篇、容器/扁平、`PyObject*`、ABC、对象模型、可变/不可变协议：`01`…`08` |
 | `chapter-03/` | 第 3 章「字典和集合」 | `01`–`14`（含 §3.6 / §3.8 / §3.10–§3.12）；见该目录 `README` |
-| `chapter-04/` … `chapter-06/` | 预留 | 可按章填充 |
+| `chapter-04/` | 第 4 章「Unicode 文本与字节序列」 | `01` 开篇；见该目录 `README` |
+| `chapter-05/` … `chapter-06/` | 预留 | 可按章填充 |
 
 每章目录内约定：**两位编号**的 `NN-主题.md` 为笔记，同名主题的 `*_demo.py` 为可运行示例（见下）。
 
@@ -166,6 +167,24 @@ python part-1-data-structures/chapter-03/dict_view_setops_demo.py
 
 ---
 
+## `chapter-04/` 笔记与脚本
+
+本章目录内另有 **`chapter-04/README.md`**：以 `01-unicode-text-and-bytes-chapter4-overview.md` 为入口。
+
+| 编号 | 文件 | 主题简述 |
+|------|------|----------|
+| 01 | `01-unicode-text-and-bytes-chapter4-overview.md` | 第 4 章开篇：`str`/`bytes`、Unicode、学习路线、面试速记 |
+
+| 脚本 | 说明 |
+|------|------|
+| `unicode_bytes_quickstart_demo.py` | 与 `01` 配套：`encode`/`decode`、`errors=` |
+
+```bash
+python part-1-data-structures/chapter-04/unicode_bytes_quickstart_demo.py
+```
+
+---
+
 ## 学习目标
 
-能熟练使用内置数据结构，并能为自定义类型实现合适的特殊方法，使对象在 **`len` / `[]` / `for` / `in` / 排序 / 洗牌** 等场景下行为清晰、符合 Python 习惯。
+能熟练使用内置数据结构，并能为自定义类型实现合适的特殊方法，使对象在 **`len` / `[]` / `for` / `in` / 排序 / 洗牌** 等场景下行为清晰、符合 Python 习惯。能区分 **`str` 与 `bytes`**，并在 I/O 边界上**显式**处理编解码。
