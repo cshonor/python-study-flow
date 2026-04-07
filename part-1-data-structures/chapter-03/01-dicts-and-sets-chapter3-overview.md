@@ -34,7 +34,7 @@
 | **集合** | 构造、`set` 运算、`frozenset` | 去重与关系判断 |
 | **哈希表直觉** | 哈希、冲突、键可哈希、插入顺序 | 理解行为与边界情况 |
 
-**说明**：后续小节笔记将按上表在 `chapter-03/` 内逐篇展开；当前仓库仅 **本篇开篇 + 入门 demo**。
+**说明**：后续小节笔记将按上表在 `chapter-03/` 内逐篇展开；**集合**专篇见 **`13-sets-and-frozenset.md`**（§3.10–§3.11）。
 
 ---
 
@@ -97,5 +97,5 @@
 
 ## 八、后续可补齐
 
-- 已补：**`02`–`12`** 见 `chapter-03/README.md`（含 **§3.6** `10`–`11`、**§3.8** `12`，脚本含 `dict_variants_demo.py`、`shelf_counter_userdict_demo.py`、`dict_views_demo.py`）。  
+- 已补：**`02`–`13`** 见 `chapter-03/README.md`（含 **§3.6** `10`–`11`、**§3.8** `12`、**§3.10–§3.11** `13`，脚本含 `dict_variants_demo.py`、`shelf_counter_userdict_demo.py`、`dict_views_demo.py`、`set_theory_demo.py`）。  
 - 其余分主题（哈希表实现细节等）将按书内顺序追加；本篇与 `README.md` 保持同步更新。

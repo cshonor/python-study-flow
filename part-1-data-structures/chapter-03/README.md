@@ -22,6 +22,7 @@
 | 9 | `10-dict-variants-ordered-chain-counter.md` | §3.6 `OrderedDict`、`ChainMap`、`Counter` |
 | 10 | `11-counter-shelve-and-userdict-subclassing.md` | §3.6 续：`Counter` 深化、`shelve`、`UserDict` |
 | 11 | `12-dict-views.md` | §3.8 `keys`/`values`/`items` 字典视图 |
+| 12 | `13-sets-and-frozenset.md` | §3.10–§3.11 `set`/`frozenset`、运算与实现直觉 |
 
 ---
 
@@ -40,6 +41,7 @@ python part-1-data-structures/chapter-03/str_key_dict_demo.py
 python part-1-data-structures/chapter-03/dict_variants_demo.py
 python part-1-data-structures/chapter-03/shelf_counter_userdict_demo.py
 python part-1-data-structures/chapter-03/dict_views_demo.py
+python part-1-data-structures/chapter-03/set_theory_demo.py
 ```
 
 | 脚本 | 说明 |
@@ -56,6 +58,7 @@ python part-1-data-structures/chapter-03/dict_views_demo.py
 | `dict_variants_demo.py` | 与 `10` 配套：`OrderedDict`、`ChainMap`、`Counter` |
 | `shelf_counter_userdict_demo.py` | 与 `11` 配套：`Counter` 运算、`shelve`、`UserDict` |
 | `dict_views_demo.py` | 与 `12` 配套：§3.8 字典视图 |
+| `set_theory_demo.py` | 与 `13` 配套：`set`/`frozenset`、运算 |
 
 ---
 

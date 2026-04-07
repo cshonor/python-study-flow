@@ -60,3 +60,9 @@
 ## 七、可运行对照
 
 见 **`dict_views_demo.py`**：`len` / 迭代 / **`reversed`**、修改 dict 后视图变化、**`keys`/`items`** 的 **`&`**、**`dict_values()` 无参构造报错**。
+
+---
+
+## 八、延伸：与原生 `set` 的关系
+
+- **`dict_keys` 的 `&` / `|`** 与 **`set`** 的数学语义相近，但**类型与边界**仍不同；**`set` / `frozenset`** 体系见 **`13-sets-and-frozenset.md`**。

@@ -111,6 +111,8 @@ for code, country in dial_codes:
 
 注意：**`{}` 在只有「单表达式」时是集合推导式**；若写成 `{a: b for ...}` 则是字典推导式。
 
+**延伸**：**`set` / `frozenset`** 全貌（构造陷阱、运算、实现直觉）见 **`13-sets-and-frozenset.md`**。
+
 ---
 
 ## 七、自测练习（参考答案见 `dict_comprehension_demo.py` 第 5 段）
