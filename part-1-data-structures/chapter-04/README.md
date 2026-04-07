@@ -15,6 +15,7 @@
 | 03 | `03-io-encoding-checklist.md` | I/O 编码排查清单：文件/子进程/控制台 |
 | 04 | `04-bytes-and-bytearray.md` | `bytes`/`bytearray` 详解：索引切片、可变性、`fromhex`、避坑 |
 | 05 | `05-codecs-and-common-encodings.md` | 常见编码与 codec：多编码 bytes 对照表、兼容性与乱码直觉 |
+| 06 | `06-fixing-encoding-decoding-problems.md` | 编解码问题处理：三类异常、BOM、检测与落地模板 |
 
 ---
 
@@ -26,6 +27,7 @@ python part-1-data-structures/chapter-04/codepoints_encoding_demo.py
 python part-1-data-structures/chapter-04/io_encoding_troubleshoot_demo.py
 python part-1-data-structures/chapter-04/bytes_bytearray_demo.py
 python part-1-data-structures/chapter-04/codecs_encodings_table_demo.py
+python part-1-data-structures/chapter-04/encoding_decoding_fixes_demo.py
 ```
 
 | 脚本 | 说明 |
@@ -35,6 +37,7 @@ python part-1-data-structures/chapter-04/codecs_encodings_table_demo.py
 | `io_encoding_troubleshoot_demo.py` | 与 `03` 配套：文件/子进程/控制台排查套路 |
 | `bytes_bytearray_demo.py` | 与 `04` 配套：索引/切片差异、不可变 vs 可变、`fromhex` |
 | `codecs_encodings_table_demo.py` | 与 `05` 配套：同一字符在不同编码下的 hex bytes 对照表 |
+| `encoding_decoding_fixes_demo.py` | 与 `06` 配套：Encode/Decode 错误、BOM、非 UTF-8 源码的最小复现 |
 
 ---
 
