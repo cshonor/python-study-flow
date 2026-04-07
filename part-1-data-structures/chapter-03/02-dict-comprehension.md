@@ -123,3 +123,5 @@ for code, country in dial_codes:
 ## 八、可运行对照
 
 见 `dict_comprehension_demo.py`（区号示例、进阶过滤、重复键、`set` 推导式、自测答案）。
+
+**下一篇**：`**` 拆包与 `|` / `|=` 合并见 `03-mapping-unpack-and-merge.md`。

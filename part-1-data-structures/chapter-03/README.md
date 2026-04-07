@@ -12,6 +12,7 @@
 |--------|------|------|
 | 0 | `01-dicts-and-sets-chapter3-overview.md` | 开篇、框架、概念准备、面试速记 |
 | 1 | `02-dict-comprehension.md` | 3.2.1 字典推导式、与 `dict()` 对照、集合推导式 |
+| 2 | `03-mapping-unpack-and-merge.md` | 3.2.2 `**` 拆包（PEP 448）、3.2.3 `|` / `|=`（PEP 584） |
 
 ---
 
@@ -20,12 +21,14 @@
 ```bash
 python part-1-data-structures/chapter-03/dict_and_set_quickstart_demo.py
 python part-1-data-structures/chapter-03/dict_comprehension_demo.py
+python part-1-data-structures/chapter-03/dict_unpack_merge_demo.py
 ```
 
 | 脚本 | 说明 |
 |------|------|
 | `dict_and_set_quickstart_demo.py` | `get`/`setdefault`、`Counter` 词频、`set` 运算、`frozenset` 作键 |
 | `dict_comprehension_demo.py` | 与 `02` 配套：区号示例、过滤、重复键、`set` 推导式、自测答案 |
+| `dict_unpack_merge_demo.py` | 与 `03` 配套：PEP 448、`**` 合并、`|` / `|=`、`update`、`ChainMap` |
 
 ---
 

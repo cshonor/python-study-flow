@@ -97,5 +97,5 @@
 
 ## 八、后续可补齐
 
-- 已补：**`02-dict-comprehension.md`**（3.2.1 字典推导式）+ `dict_comprehension_demo.py`。  
-- 其余分主题（`defaultdict`、`ChainMap`、哈希表细节等）与专项 demo 将按书内顺序追加；本篇与 `README.md` 保持同步更新。
+- 已补：**`02-dict-comprehension.md`**（3.2.1）+ `dict_comprehension_demo.py`；**`03-mapping-unpack-and-merge.md`**（3.2.2–3.2.3，PEP 448 / 584）+ `dict_unpack_merge_demo.py`。  
+- 其余分主题（`defaultdict`、哈希表细节等）将按书内顺序追加；本篇与 `README.md` 保持同步更新。
