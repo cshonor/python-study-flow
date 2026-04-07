@@ -1,0 +1,140 @@
+# I/O 编码排查清单：文件 / 网络 / 子进程 / 控制台（第 4 章实战）
+
+> **本篇定位**：把“编码问题怎么排查”固化成一份可复用清单：先判断 `str`/`bytes`，再定位边界，再用最小证据（hex/ascii）验证。  
+> **前置**：概念与 `encode`/`decode` 基础见 `02-codepoints-encodings-and-errors.md`。  
+> **配套脚本**：`io_encoding_troubleshoot_demo.py`。
+
+---
+
+## 一、先问 3 个问题（90% 的问题在这里结束）
+
+1. **你手里的是 `str` 还是 `bytes`？**  
+   - `str`：文本（码点序列）  
+   - `bytes`：字节（0–255）
+2. **边界在哪里？**（哪一步把 bytes 变成 str，或反过来）  
+   - 文件读写、HTTP、数据库驱动、子进程、标准输出
+3. **你使用/假设的编码是什么？是否与真实来源一致？**  
+   - 不要靠“猜默认”，靠**显式参数**或协议/元数据
+
+---
+
+## 二、最常见的坑与一眼定位
+
+### 1) `TypeError: can't concat str to bytes`（或类似）
+
+- **原因**：混用了 `str` 与 `bytes`，通常是边界没处理好
+- **排查**：对关键变量 `print(type(x), repr(x)[:...])`
+- **修复**：明确一端 `encode()` 或 `decode()`（并写清编码）
+
+### 2) 不报错但“乱码”（mojibake）
+
+- **原因**：用错编码 `decode()` 了，但“碰巧能解出来”
+- **排查**：
+  - 固定展示证据：**原始 bytes 的 hex**，以及 `ascii()` 形式的输出
+  - 对同一段 bytes，用不同编码 `decode()` 对比
+- **修复**：纠正真实编码来源；兜底策略只是止血，不是根治
+
+### 3) `UnicodeDecodeError`（bytes → str）
+
+- **原因**：bytes 不是你以为的编码，或数据损坏/截断
+- **排查**：
+  - 打印 `hex` 头部：`raw[:64].hex(' ')`
+  - 明确 bytes 来源：文件声明/HTTP header/数据库连接配置
+- **修复**：用正确的编码 `decode()`；必要时使用 `errors=`（见 §五）
+
+### 4) `UnicodeEncodeError`（str → bytes，或 `print()` 时发生）
+
+- **原因**：目标编码无法表示该字符；在 Windows 上常见于控制台输出阶段
+- **排查**：看 `sys.stdout.encoding` 与 `sys.stdout.errors`
+- **修复**：
+  - 代码里：尽量不要依赖控制台默认编码；日志/调试可用 `ascii(s)` 或 `backslashreplace`
+  - 环境上：使用 UTF-8 终端/启用 UTF-8 输出（视你环境而定）
+
+---
+
+## 三、文件 I/O：推荐模板（强烈建议复制粘贴）
+
+### 文本读写（推荐）
+
+```python
+from pathlib import Path
+
+text = Path("in.txt").read_text(encoding="utf-8", errors="strict")
+Path("out.txt").write_text(text, encoding="utf-8", errors="strict")
+```
+
+### 二进制读写（推荐）
+
+```python
+from pathlib import Path
+
+raw = Path("in.bin").read_bytes()
+Path("out.bin").write_bytes(raw)
+```
+
+**要点**：
+
+- 文本模式就显式 `encoding=...`；二进制模式就只处理 bytes  
+- 不要在文本模式下手动 `.decode()`（除非你在做教学/实验）
+
+---
+
+## 四、子进程与标准输出：边界要显式
+
+### 子进程拿到文本输出（推荐）
+
+```python
+import subprocess, sys
+
+cp = subprocess.run(
+    [sys.executable, "-c", "print('北京')"],
+    text=True,
+    encoding="utf-8",
+    capture_output=True,
+    check=True,
+)
+print(repr(cp.stdout))
+```
+
+### 控制台输出导致的“最后一公里”问题
+
+Windows 上 `sys.stdout.encoding` 可能不是 UTF-8。为了让教学 demo **不因控制台编码崩溃**，可以：
+
+- 用 `ascii(s)` 打印（只输出 ASCII 转义，稳定）  
+- 或写入 UTF-8 文件再用支持 UTF-8 的工具打开
+
+---
+
+## 五、`errors=`：兜底策略（谨慎使用）
+
+常见策略：
+
+- **`'strict'`**：默认，异常直接抛出（推荐优先使用）  
+- **`'replace'`**：用替换字符代替（可能造成信息丢失）  
+- **`'ignore'`**：直接丢弃（信息丢失更严重）
+
+建议：把 `errors=` 当作**降级策略**，并在日志里记录“降级发生过”。
+
+---
+
+## 六、最小证据工具箱（排查时非常好用）
+
+### 1) 打印 bytes 的 hex 头
+
+```python
+def hexdump(b: bytes, n: int = 64) -> str:
+    return b[:n].hex(" ")
+```
+
+### 2) 安全展示 `str`（避免控制台编码导致的异常）
+
+```python
+print(ascii(s))
+```
+
+---
+
+## 七、可运行对照
+
+见 `io_encoding_troubleshoot_demo.py`：文件读写（正确/错误编码）、子进程文本输出、控制台边界与 `ascii()`、以及 hex 证据展示。
+

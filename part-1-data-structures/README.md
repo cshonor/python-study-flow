@@ -175,15 +175,18 @@ python part-1-data-structures/chapter-03/dict_view_setops_demo.py
 |------|------|----------|
 | 01 | `01-unicode-text-and-bytes-chapter4-overview.md` | 第 4 章开篇：`str`/`bytes`、Unicode、学习路线、面试速记 |
 | 02 | `02-codepoints-encodings-and-errors.md` | 字符/码点/编码/字节，编解码异常与 `errors=` |
+| 03 | `03-io-encoding-checklist.md` | I/O 编码排查清单：文件/子进程/控制台 |
 
 | 脚本 | 说明 |
 |------|------|
 | `unicode_bytes_quickstart_demo.py` | 与 `01` 配套：`encode`/`decode`、`errors=` |
 | `codepoints_encoding_demo.py` | 与 `02` 配套：码点、UTF-8 字节与解码差异、`errors=` |
+| `io_encoding_troubleshoot_demo.py` | 与 `03` 配套：I/O 编码排查 demo |
 
 ```bash
 python part-1-data-structures/chapter-04/unicode_bytes_quickstart_demo.py
 python part-1-data-structures/chapter-04/codepoints_encoding_demo.py
+python part-1-data-structures/chapter-04/io_encoding_troubleshoot_demo.py
 ```
 
 ---
