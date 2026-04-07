@@ -10,7 +10,7 @@
 |------|----------------------------------|------|
 | `chapter-01/` | 第 1–6 章范围的学习材料 | 当前主要笔记与示例脚本均在此 |
 | `chapter-02/` | 第 2 章「丰富的序列」等 | 开篇、容器/扁平、`PyObject*`、ABC、对象模型、可变/不可变协议：`01`…`08` |
-| `chapter-03/` | 第 3 章「字典和集合」 | `01`–`05`（含 ABC、可哈希、`csv`+`match`）；见该目录 `README` |
+| `chapter-03/` | 第 3 章「字典和集合」 | `01`–`06`（含三种映射 API）；见该目录 `README` |
 | `chapter-04/` … `chapter-06/` | 预留 | 可按章填充 |
 
 每章目录内约定：**两位编号**的 `NN-主题.md` 为笔记，同名主题的 `*_demo.py` 为可运行示例（见下）。
@@ -120,6 +120,7 @@ python part-1-data-structures/chapter-02/list_sort_vs_sorted_demo.py
 | 03 | `03-mapping-unpack-and-merge.md` | 3.2.2 `**`（PEP 448）、3.2.3 `|` / `|=`（PEP 584） |
 | 04 | `04-csv-dictreader-pattern-matching.md` | `csv.DictReader` 与映射模式 `match/case` |
 | 05 | `05-mapping-abc-and-hashable.md` | `Mapping`/`MutableMapping`、可哈希、`**rest` 映射模式 |
+| 06 | `06-dict-defaultdict-ordereddict-api.md` | §3.4.2 `dict` / `defaultdict` / `OrderedDict` 方法对照 |
 
 | 脚本 | 说明 |
 |------|------|
@@ -128,6 +129,7 @@ python part-1-data-structures/chapter-02/list_sort_vs_sorted_demo.py
 | `dict_unpack_merge_demo.py` | `**` 调用/字面量、`{**d1, **d2}`、`|` / `|=`、`ChainMap` |
 | `csv_dictreader_pattern_matching_demo.py` | `DictReader` + `match` / `if`（3.10+） |
 | `mapping_abc_hashable_demo.py` | `**rest`、`isinstance(Mapping)`、`hash`、`frozen` dataclass |
+| `mapping_types_three_way_demo.py` | 三种映射、`fromkeys` 陷阱、`OrderedDict.move_to_end` |
 
 ```bash
 python part-1-data-structures/chapter-03/dict_and_set_quickstart_demo.py
@@ -135,6 +137,7 @@ python part-1-data-structures/chapter-03/dict_comprehension_demo.py
 python part-1-data-structures/chapter-03/dict_unpack_merge_demo.py
 python part-1-data-structures/chapter-03/csv_dictreader_pattern_matching_demo.py
 python part-1-data-structures/chapter-03/mapping_abc_hashable_demo.py
+python part-1-data-structures/chapter-03/mapping_types_three_way_demo.py
 ```
 
 ---

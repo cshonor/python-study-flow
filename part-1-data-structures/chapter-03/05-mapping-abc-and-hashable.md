@@ -98,3 +98,5 @@ match food:
 ## 五、可运行对照
 
 见 `mapping_abc_hashable_demo.py`（`**rest` 示例、`isinstance` Mapping、`hash`/`TypeError`、简易可哈希数据类）。
+
+**下一篇**：`dict` / `defaultdict` / `OrderedDict` API 对照见 `06-dict-defaultdict-ordereddict-api.md`。
