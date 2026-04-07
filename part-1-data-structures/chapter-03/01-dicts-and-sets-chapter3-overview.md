@@ -97,5 +97,5 @@
 
 ## 八、后续可补齐
 
-- 已补：**`02`–`08`** 见 `chapter-03/README.md`（含 **§3.5** `08-defaultdict-and-missing.md` + `defaultdict_and_missing_demo.py`）。  
+- 已补：**`02`–`09`** 见 `chapter-03/README.md`（含 **§3.5.2** `09-str-key-dict-and-dunder-missing.md` + `str_key_dict_demo.py`）。  
 - 其余分主题（哈希表实现细节等）将按书内顺序追加；本篇与 `README.md` 保持同步更新。

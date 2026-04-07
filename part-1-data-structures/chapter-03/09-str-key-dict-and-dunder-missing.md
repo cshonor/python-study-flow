@@ -1,0 +1,107 @@
+# `__missing__` 与键规范化：`StrKeyDict0` / `StrKeyDict`（§3.5.2）
+
+> **本篇定位**：《流畅的 Python》**3.5.2**：通过 **`__missing__`** 在 **`d[k]`**（`__getitem__`）缺键时插入自定义逻辑；示例为**字符串键存储**、**数值键查询**时自动转成字符串键。  
+> **前置**：`defaultdict` 与 `__missing__` 关系见 `08-defaultdict-and-missing.md`。  
+> **配套脚本**：`str_key_dict_demo.py`。
+
+---
+
+## 一、`__missing__` 何时被调用
+
+- 仅当通过 **`__getitem__`**（**`d[k]`**）访问，且映射中**没有该键**时，`dict` 会尝试调用子类定义的 **`__missing__(self, key)`**。  
+- **`d.get(k)`**、**`k in d`**、**`setdefault`** 等**不**走「缺键 → `__missing__`」这条路径（除非实现里显式调用了 `self[k]`）。  
+- 原生 **`dict`** 未定义 **`__missing__`**；缺键直接 **`KeyError`**。
+
+---
+
+## 二、示例 3-7：交互期望（`StrKeyDict0`）
+
+```text
+>>> d = StrKeyDict0([("2", "two"), ("4", "four")])
+>>> d["2"]
+'two'
+>>> d[4]
+'four'
+>>> d[1]
+KeyError: '1'
+
+>>> d.get("2")
+'two'
+>>> d.get(4)      # 原生实现：不转换，通常为 None
+>>> d.get(1, "N/A")
+'N/A'
+
+>>> 2 in d        # 原生：不按数值查
+>>> 1 in d
+False
+```
+
+（具体 `get` / `in` 行为取决于是否像 §五那样做**兼容扩展**。）
+
+---
+
+## 三、示例 3-8：`StrKeyDict0`（继承 `dict`）
+
+```python
+class StrKeyDict0(dict):
+    def __missing__(self, key):
+        if isinstance(key, str):
+            raise KeyError(key)
+        return self[str(key)]
+```
+
+- **`key` 已是 `str`** 仍找不到：必须 **`raise KeyError(key)`**，否则可能与 **`self[str(key)]`** 形成**无限递归**或错误语义。  
+- **`key` 非字符串**：转成 **`str(key)`** 再 **`self[str(key)]`**，会再次走 `__getitem__`；若 `'4'` 在映射里则返回对应值；若仍没有，则再次进入 **`__missing__`**，此时 `str` 键会走上一分支并 **`KeyError`**。
+
+---
+
+## 四、为何 `get` / `in` 不自动享受 `__missing__`
+
+- **`get`** 在 C 实现里**不**调用 **`__getitem__`** 的缺键分支，因此**不会**调用 **`__missing__`**。  
+- **`__contains__`** 只查**真实存在的键**，不会把 `4` 当成 `'4'` 去试。
+
+若希望 **`get(4)`**、**`4 in d`** 与 **`d[4]`** 一致，需**额外**重写 **`get`**、**`__contains__`**（或统一走 **`self[k]`** 的 **`get`** 实现）。
+
+---
+
+## 五、`StrKeyDict`：基于 `UserDict` 的兼容写法
+
+工程上更常 **`collections.UserDict`** 子类化（内部 **`self.data`** 为真 `dict`，扩展点清晰）。在 **`__missing__`** 与 **`StrKeyDict0`** 相同的前提下，可这样补齐 **`get` / `__contains__`**：
+
+```python
+from collections import UserDict
+
+
+class StrKeyDict(UserDict):
+    def __missing__(self, key):
+        if isinstance(key, str):
+            raise KeyError(key)
+        return self[str(key)]
+
+    def __contains__(self, key):
+        return str(key) in self.data
+
+    def get(self, key, default=None):
+        try:
+            return self[key]
+        except KeyError:
+            return default
+```
+
+- **`get`**：用 **`try: return self[key]`** 走 **`__getitem__`**，从而**复用** **`__missing__`**。  
+- **`__contains__`**：用 **`str(key) in self.data`** 与存储层一致。
+
+不必再写冗长的 **`__getitem__`** 分支；若子类仍需特殊行为，再按需覆盖。
+
+---
+
+## 六、与 `defaultdict` 的关系
+
+- **`defaultdict`** 在缺键时用 **`__missing__`** 调用 **`default_factory`**。  
+- **`StrKeyDict0`** 用 **`__missing__`** 做**键规范化**，二者都是「缺键钩子」，**语义不同**。
+
+---
+
+## 七、可运行对照
+
+见 `str_key_dict_demo.py`（`StrKeyDict0` 断言、`StrKeyDict` 的 `get`/`in` 与 `d[k]` 一致）。

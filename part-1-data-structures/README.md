@@ -10,7 +10,7 @@
 |------|----------------------------------|------|
 | `chapter-01/` | 第 1–6 章范围的学习材料 | 当前主要笔记与示例脚本均在此 |
 | `chapter-02/` | 第 2 章「丰富的序列」等 | 开篇、容器/扁平、`PyObject*`、ABC、对象模型、可变/不可变协议：`01`…`08` |
-| `chapter-03/` | 第 3 章「字典和集合」 | `01`–`08`（含 §3.5 `defaultdict`）；见该目录 `README` |
+| `chapter-03/` | 第 3 章「字典和集合」 | `01`–`09`（含 `StrKeyDict` / `__missing__`）；见该目录 `README` |
 | `chapter-04/` … `chapter-06/` | 预留 | 可按章填充 |
 
 每章目录内约定：**两位编号**的 `NN-主题.md` 为笔记，同名主题的 `*_demo.py` 为可运行示例（见下）。
@@ -123,6 +123,7 @@ python part-1-data-structures/chapter-02/list_sort_vs_sorted_demo.py
 | 06 | `06-dict-defaultdict-ordereddict-api.md` | §3.4.2 `dict` / `defaultdict` / `OrderedDict` 方法对照 |
 | 07 | `07-dict-mutable-values-indexing.md` | §3.4.3 可变值与词索引：`get`/`setdefault`/`defaultdict` |
 | 08 | `08-defaultdict-and-missing.md` | §3.5 `defaultdict`、`__missing__` |
+| 09 | `09-str-key-dict-and-dunder-missing.md` | §3.5.2 `StrKeyDict0`、`UserDict`、`__missing__` |
 
 | 脚本 | 说明 |
 |------|------|
@@ -134,6 +135,7 @@ python part-1-data-structures/chapter-02/list_sort_vs_sorted_demo.py
 | `mapping_types_three_way_demo.py` | 三种映射、`fromkeys` 陷阱、`OrderedDict.move_to_end` |
 | `zen_word_index_demo.py` | §3.4.3 词索引、默认实参求值、`defaultdict` 工厂 |
 | `defaultdict_and_missing_demo.py` | §3.5、`get` 不插入、嵌套、`__missing__` |
+| `str_key_dict_demo.py` | `StrKeyDict0`、`StrKeyDict`（`get`/`in` 与 `d[k]` 一致） |
 
 ```bash
 python part-1-data-structures/chapter-03/dict_and_set_quickstart_demo.py
@@ -144,6 +146,7 @@ python part-1-data-structures/chapter-03/mapping_abc_hashable_demo.py
 python part-1-data-structures/chapter-03/mapping_types_three_way_demo.py
 python part-1-data-structures/chapter-03/zen_word_index_demo.py
 python part-1-data-structures/chapter-03/defaultdict_and_missing_demo.py
+python part-1-data-structures/chapter-03/str_key_dict_demo.py
 ```
 
 ---
