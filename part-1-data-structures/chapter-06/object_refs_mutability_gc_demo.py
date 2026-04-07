@@ -293,6 +293,109 @@ def demo_twilightbus_defensive_copy() -> None:
     print("basketball_team (unchanged):", [safe(x) for x in basketball_team])
 
 
+def demo_del_is_unbinding_not_deleting() -> None:
+    section("19) del removes a name, not an object (alias keeps it alive)")
+
+    # Built-in `list` objects are not weak-referenceable.
+    # So we wrap the list in a tiny user-defined object to make weakref evidence possible.
+    class Box:
+        def __init__(self, payload: list[int]) -> None:
+            self.payload = payload
+
+        def __repr__(self) -> str:
+            return f"Box(payload={self.payload!r})"
+
+    a = Box([1, 2])
+    b = a  # alias
+    w = weakref.ref(a)
+    print("weakref before del a:", w())
+    del a
+    print("after del a -> b:", b)
+    print("weakref still alive (because b exists):", w())
+
+    b = Box([3])  # last strong ref to old Box is gone
+    gc.collect()
+    print("after rebinding b and gc.collect() -> weakref:", w())
+
+
+def demo_cycle_and_gc_collect() -> None:
+    section("20) Cycle + gc.collect(): unreachable cycles are reclaimed")
+
+    class Node:
+        def __init__(self, name: str) -> None:
+            self.name = name
+            self.other: Node | None = None
+
+        def __repr__(self) -> str:
+            return f"Node({safe(self.name)})"
+
+    n1 = Node("n1")
+    n2 = Node("n2")
+    n1.other = n2
+    n2.other = n1  # cycle
+
+    w1 = weakref.ref(n1)
+    w2 = weakref.ref(n2)
+    del n1, n2
+
+    collected = gc.collect()
+    print("gc.collect() -> collected:", collected)
+    print("weakrefs after collect:", w1(), w2())
+
+
+def demo_weakref_finalize_callback() -> None:
+    section("21) weakref.finalize: callback runs when last strong ref is gone")
+
+    calls: list[str] = []
+
+    def bye(label: str) -> None:
+        calls.append(label)
+        print("finalize callback:", safe(label))
+
+    s1 = {1, 2, 3}
+    s2 = s1
+    ender = weakref.finalize(s1, bye, "set collected")
+    print("ender.alive (start):", ender.alive)
+    del s1
+    print("ender.alive after del s1:", ender.alive)
+    s2 = "spam"  # drop last strong ref to the set
+    gc.collect()
+    print("ender.alive after dropping s2 + collect:", ender.alive)
+    print("calls:", calls)
+
+
+def demo_immutable_type_tricks() -> None:
+    section("22) Immutable tricks: tuple/frozenset reuse, string interning, small ints")
+
+    # Tuple reuse (may return same object)
+    t1 = (1, 2, 3)
+    t2 = tuple(t1)
+    t3 = t1[:]
+    print("tuple(t1) is t1:", t2 is t1)
+    print("t1[:] is t1:", t3 is t1)
+
+    # frozenset reuse
+    fs1 = frozenset({1, 2, 3})
+    fs2 = fs1.copy()
+    print("fs1.copy() is fs1:", fs2 is fs1)
+
+    # string interning (implementation detail)
+    s1 = "ABC"
+    s2 = "ABC"
+    s3 = "".join(["A", "B", "C"])
+    print("s1 is s2 (literal):", s1 is s2)
+    print("s1 == s3:", s1 == s3, "| s1 is s3 (runtime build):", s1 is s3)
+    si1 = sys.intern(s3)
+    si2 = sys.intern("ABC")
+    print("sys.intern(s3) is sys.intern('ABC'):", si1 is si2)
+
+    # small ints caching (implementation detail)
+    a = 10
+    b = 10
+    c = int("10")
+    print("10: a is b:", a is b, "| a is int('10'):", a is c)
+
+
 def demo_shallow_vs_deep_copy() -> None:
     section("10) Shallow copy vs deep copy")
     original = [1, [2, 3], 4]
@@ -420,6 +523,10 @@ def main() -> None:
     demo_call_by_sharing_iadd()
     demo_hauntedbus_mutable_default_and_defaults_evidence()
     demo_twilightbus_defensive_copy()
+    demo_del_is_unbinding_not_deleting()
+    demo_cycle_and_gc_collect()
+    demo_weakref_finalize_callback()
+    demo_immutable_type_tricks()
 
 
 if __name__ == "__main__":

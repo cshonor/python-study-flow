@@ -22,6 +22,8 @@
 | `03-identity-equality-and-aliasing.md` | 6.3 深入：同一性 vs 相等性（`is`/`==`）、别名风险、`None` 判断、元组相对不可变与 hash |
 | `04-shallow-copy-by-default.md` | 6.4 深入：浅拷贝只拷外壳；三种浅拷贝写法；嵌套可变对象陷阱；copy vs deepcopy |
 | `05-call-by-sharing-and-mutable-defaults.md` | 6.5 深入：共享传参（call by sharing）、`+=` 差异、可变默认值（HauntedBus）、防御性拷贝（TwilightBus）、`__defaults__` 取证 |
+| `06-del-and-garbage-collection.md` | 6.6 深入：`del` 的解绑语义、引用计数与循环 GC、弱引用与 `weakref.finalize`、排查入口 |
+| `07-immutable-type-tricks.md` | 6.7 深入：不可变对象复用/驻留（tuple/frozenset/str/int）、`sys.intern`、`is` 的边界 |
 | `object_refs_mutability_gc_demo.py` | 与 `01` 配套的可运行脚本：把每个坑都跑出“证据输出”（含 Windows 控制台安全打印） |
 
 ---
