@@ -19,6 +19,7 @@
 | 6 | `07-dict-mutable-values-indexing.md` | §3.4.3 可变值更新：词索引、`get`/`setdefault`/`defaultdict` |
 | 7 | `08-defaultdict-and-missing.md` | §3.5 `defaultdict`、`__missing__` |
 | 8 | `09-str-key-dict-and-dunder-missing.md` | §3.5.2 `StrKeyDict0`、`UserDict`、`__missing__` |
+| 9 | `10-dict-variants-ordered-chain-counter.md` | §3.6 `OrderedDict`、`ChainMap`、`Counter` |
 
 ---
 
@@ -34,6 +35,7 @@ python part-1-data-structures/chapter-03/mapping_types_three_way_demo.py
 python part-1-data-structures/chapter-03/zen_word_index_demo.py
 python part-1-data-structures/chapter-03/defaultdict_and_missing_demo.py
 python part-1-data-structures/chapter-03/str_key_dict_demo.py
+python part-1-data-structures/chapter-03/dict_variants_demo.py
 ```
 
 | 脚本 | 说明 |
@@ -47,6 +49,7 @@ python part-1-data-structures/chapter-03/str_key_dict_demo.py
 | `zen_word_index_demo.py` | 与 `07` 配套：《禅》节选词索引、默认实参求值、`defaultdict` 工厂 |
 | `defaultdict_and_missing_demo.py` | 与 `08` 配套：§3.5、`get` 不插入、`__missing__` 子类 |
 | `str_key_dict_demo.py` | 与 `09` 配套：`StrKeyDict0`、`StrKeyDict`（`get`/`in`） |
+| `dict_variants_demo.py` | 与 `10` 配套：`OrderedDict`、`ChainMap`、`Counter` |
 
 ---
 
