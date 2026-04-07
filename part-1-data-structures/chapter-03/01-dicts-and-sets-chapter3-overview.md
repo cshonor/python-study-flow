@@ -97,5 +97,5 @@
 
 ## 八、后续可补齐
 
-- 已补：**`02-dict-comprehension.md`**（3.2.1）+ `dict_comprehension_demo.py`；**`03-mapping-unpack-and-merge.md`**（3.2.2–3.2.3，PEP 448 / 584）+ `dict_unpack_merge_demo.py`；**`04-csv-dictreader-pattern-matching.md`**（`csv` + `match/case`）+ `csv_dictreader_pattern_matching_demo.py`。  
-- 其余分主题（`defaultdict`、哈希表细节等）将按书内顺序追加；本篇与 `README.md` 保持同步更新。
+- 已补：**`02-dict-comprehension.md`**（3.2.1）+ `dict_comprehension_demo.py`；**`03-mapping-unpack-and-merge.md`**（3.2.2–3.2.3，PEP 448 / 584）+ `dict_unpack_merge_demo.py`；**`04-csv-dictreader-pattern-matching.md`**（`csv` + `match/case`）+ `csv_dictreader_pattern_matching_demo.py`；**`05-mapping-abc-and-hashable.md`**（§3.4 / 3.4.1，`Mapping`、可哈希、`**rest`）+ `mapping_abc_hashable_demo.py`。  
+- 其余分主题（`defaultdict`、哈希表实现细节等）将按书内顺序追加；本篇与 `README.md` 保持同步更新。

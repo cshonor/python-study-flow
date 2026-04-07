@@ -14,6 +14,7 @@
 | 1 | `02-dict-comprehension.md` | 3.2.1 字典推导式、与 `dict()` 对照、集合推导式 |
 | 2 | `03-mapping-unpack-and-merge.md` | 3.2.2 `**` 拆包（PEP 448）、3.2.3 `|` / `|=`（PEP 584） |
 | 3 | `04-csv-dictreader-pattern-matching.md` | `csv.DictReader` 行数据与映射模式 `match/case`（3.10+） |
+| 4 | `05-mapping-abc-and-hashable.md` | §3.4 `Mapping`/`MutableMapping`；§3.4.1 可哈希；`**rest` 模式 |
 
 ---
 
@@ -24,6 +25,7 @@ python part-1-data-structures/chapter-03/dict_and_set_quickstart_demo.py
 python part-1-data-structures/chapter-03/dict_comprehension_demo.py
 python part-1-data-structures/chapter-03/dict_unpack_merge_demo.py
 python part-1-data-structures/chapter-03/csv_dictreader_pattern_matching_demo.py
+python part-1-data-structures/chapter-03/mapping_abc_hashable_demo.py
 ```
 
 | 脚本 | 说明 |
@@ -32,6 +34,7 @@ python part-1-data-structures/chapter-03/csv_dictreader_pattern_matching_demo.py
 | `dict_comprehension_demo.py` | 与 `02` 配套：区号示例、过滤、重复键、`set` 推导式、自测答案 |
 | `dict_unpack_merge_demo.py` | 与 `03` 配套：PEP 448、`**` 合并、`|` / `|=`、`update`、`ChainMap` |
 | `csv_dictreader_pattern_matching_demo.py` | 与 `04` 配套：`DictReader` + `match` / `if` 对照 |
+| `mapping_abc_hashable_demo.py` | 与 `05` 配套：`**rest`、`isinstance`、`hash`、`frozen` dataclass |
 
 ---
 

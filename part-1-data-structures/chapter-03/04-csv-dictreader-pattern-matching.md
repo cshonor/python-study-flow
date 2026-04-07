@@ -77,3 +77,5 @@ for row in reader:
 ## 六、可运行对照
 
 见 `csv_dictreader_pattern_matching_demo.py`：用内存中的 CSV 字符串（`io.StringIO`）演示 **`match` 与 `if` 两版**，无需自备文件。
+
+**下一篇**：映射 ABC、可哈希与映射模式中 `**rest` 见 `05-mapping-abc-and-hashable.md`。

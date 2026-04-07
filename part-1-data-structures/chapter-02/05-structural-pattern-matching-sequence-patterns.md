@@ -252,6 +252,8 @@ match payload:
         ...
 ```
 
+`**rest` 须放在映射模式**最后**；`**_` 为非法语法。更细的约定与可哈希背景见 `../chapter-03/05-mapping-abc-and-hashable.md`。
+
 ### 10. 兜底与错误处理（解释器/AST 常用）
 
 ```python
