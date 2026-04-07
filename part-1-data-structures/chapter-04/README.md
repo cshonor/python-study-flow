@@ -13,6 +13,7 @@
 | 01 | `01-unicode-text-and-bytes-chapter4-overview.md` | `str`/`bytes` 的整体框架与关键原则 |
 | 02 | `02-codepoints-encodings-and-errors.md` | 字符/码点/编码/字节、`encode`/`decode`、`errors=` |
 | 03 | `03-io-encoding-checklist.md` | I/O 编码排查清单：文件/子进程/控制台 |
+| 04 | `04-bytes-and-bytearray.md` | `bytes`/`bytearray` 详解：索引切片、可变性、`fromhex`、避坑 |
 
 ---
 
@@ -22,6 +23,7 @@
 python part-1-data-structures/chapter-04/unicode_bytes_quickstart_demo.py
 python part-1-data-structures/chapter-04/codepoints_encoding_demo.py
 python part-1-data-structures/chapter-04/io_encoding_troubleshoot_demo.py
+python part-1-data-structures/chapter-04/bytes_bytearray_demo.py
 ```
 
 | 脚本 | 说明 |
@@ -29,6 +31,7 @@ python part-1-data-structures/chapter-04/io_encoding_troubleshoot_demo.py
 | `unicode_bytes_quickstart_demo.py` | 与 `01` 配套：`encode`/`decode`、字面量、`errors=` |
 | `codepoints_encoding_demo.py` | 与 `02` 配套：码点与 UTF-8 字节、错误与 `errors=`、控制台边界 |
 | `io_encoding_troubleshoot_demo.py` | 与 `03` 配套：文件/子进程/控制台排查套路 |
+| `bytes_bytearray_demo.py` | 与 `04` 配套：索引/切片差异、不可变 vs 可变、`fromhex` |
 
 ---
 
