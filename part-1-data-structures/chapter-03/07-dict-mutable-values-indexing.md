@@ -147,3 +147,5 @@ d.setdefault(k, []).append(v)
 ## 九、可运行对照
 
 见 `zen_word_index_demo.py`（三种建索引、`get`/`setdefault` 默认实参求值、`defaultdict` 工厂调用次数）。
+
+**下一篇**：§3.5 **`defaultdict` 与 `__missing__`** 见 `08-defaultdict-and-missing.md`。

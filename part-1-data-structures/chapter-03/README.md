@@ -17,6 +17,7 @@
 | 4 | `05-mapping-abc-and-hashable.md` | §3.4 `Mapping`/`MutableMapping`；§3.4.1 可哈希；`**rest` 模式 |
 | 5 | `06-dict-defaultdict-ordereddict-api.md` | §3.4.2 `dict` / `defaultdict` / `OrderedDict` API 对照 |
 | 6 | `07-dict-mutable-values-indexing.md` | §3.4.3 可变值更新：词索引、`get`/`setdefault`/`defaultdict` |
+| 7 | `08-defaultdict-and-missing.md` | §3.5 `defaultdict`、`__missing__` |
 
 ---
 
@@ -30,6 +31,7 @@ python part-1-data-structures/chapter-03/csv_dictreader_pattern_matching_demo.py
 python part-1-data-structures/chapter-03/mapping_abc_hashable_demo.py
 python part-1-data-structures/chapter-03/mapping_types_three_way_demo.py
 python part-1-data-structures/chapter-03/zen_word_index_demo.py
+python part-1-data-structures/chapter-03/defaultdict_and_missing_demo.py
 ```
 
 | 脚本 | 说明 |
@@ -41,6 +43,7 @@ python part-1-data-structures/chapter-03/zen_word_index_demo.py
 | `mapping_abc_hashable_demo.py` | 与 `05` 配套：`**rest`、`isinstance`、`hash`、`frozen` dataclass |
 | `mapping_types_three_way_demo.py` | 与 `06` 配套：三种映射差异、`fromkeys` 陷阱、`User` 可哈希 |
 | `zen_word_index_demo.py` | 与 `07` 配套：《禅》节选词索引、默认实参求值、`defaultdict` 工厂 |
+| `defaultdict_and_missing_demo.py` | 与 `08` 配套：§3.5、`get` 不插入、`__missing__` 子类 |
 
 ---
 
