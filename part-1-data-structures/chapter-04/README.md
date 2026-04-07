@@ -2,17 +2,17 @@
 
 本目录对应《流畅的 Python》**第 4 章**：`str` 与 `bytes`、编解码、Unicode 规范化、排序与双模式 API 等。
 
-**建议从这里开始读**：[`01-unicode-text-and-bytes-chapter4-overview.md`](01-unicode-text-and-bytes-chapter4-overview.md)（本章主题、知识地图、**面试速记**）。
+建议从这里开始读：[`01-unicode-text-and-bytes-chapter4-overview.md`](01-unicode-text-and-bytes-chapter4-overview.md)（先把 `str`/`bytes` 的边界讲清楚）。
 
 ---
 
-## 学习路线与文件一览
+## 文件一览（建议顺序）
 
-| 优先级 | 文件 | 说明 |
-|--------|------|------|
-| 0 | `01-unicode-text-and-bytes-chapter4-overview.md` | 开篇、框架、`str`/`bytes` 纲领、学习顺序 |
-| 1 | `02-codepoints-encodings-and-errors.md` | 字符/码点/编码/字节、`encode`/`decode`、`errors=` |
-| 2 | `03-io-encoding-checklist.md` | I/O 编码排查清单：文件/子进程/控制台 |
+| 顺序 | 文件 | 说明 |
+|------|------|------|
+| 01 | `01-unicode-text-and-bytes-chapter4-overview.md` | `str`/`bytes` 的整体框架与关键原则 |
+| 02 | `02-codepoints-encodings-and-errors.md` | 字符/码点/编码/字节、`encode`/`decode`、`errors=` |
+| 03 | `03-io-encoding-checklist.md` | I/O 编码排查清单：文件/子进程/控制台 |
 
 ---
 

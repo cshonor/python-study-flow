@@ -1,8 +1,11 @@
 # 字符、码点、编码与错误处理（第 4 章入门）
 
-> **本篇定位**：《流畅的 Python》第 4 章的第一组核心概念：把 **字符（character）**、**码点（code point）**、**编码（encoding）**、**字节（bytes）** 的关系讲透，并掌握 `encode`/`decode` 的常见异常与 `errors=` 策略。  
-> **前置**：本章导读见 `01-unicode-text-and-bytes-chapter4-overview.md`。  
-> **配套脚本**：`codepoints_encoding_demo.py`（输出使用 `ascii()`，适配 Windows 控制台编码差异）。
+这一篇只做一件事：把 **字符 / 码点 / 编码 / 字节** 这 4 个词的关系讲清楚，然后让你能稳稳处理两类常见异常：
+
+- `UnicodeDecodeError`（bytes → str 失败）
+- `UnicodeEncodeError`（str → bytes 失败，或输出/写文件时失败）
+
+配套脚本：`codepoints_encoding_demo.py`（输出用 `ascii()`，避免 Windows 控制台编码差异干扰理解）。
 
 ---
 
