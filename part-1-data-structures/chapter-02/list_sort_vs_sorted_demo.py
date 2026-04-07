@@ -85,8 +85,36 @@ def demo_stable_sort_two_pass() -> None:
     print("after stable two-pass:", step2)
 
 
+def demo_fruits_fluent_python() -> None:
+    section("6) Fluent Python fruits: sorted vs in-place sort, stability")
+    fruits = ["grape", "raspberry", "apple", "banana"]
+    print("original:", fruits)
+    print("sorted(fruits):", sorted(fruits))
+    print("fruits after sorted (unchanged):", fruits)
+    print("sorted(reverse=True):", sorted(fruits, reverse=True))
+    print("sorted(key=len):", sorted(fruits, key=len))
+    print("sorted(key=len, reverse=True):", sorted(fruits, key=len, reverse=True))
+    print("sorted(key=lambda x: (len(x), x)):", sorted(fruits, key=lambda x: (len(x), x)))
+    fruits_copy = list(fruits)
+    ret = fruits_copy.sort()
+    print("return of .sort():", ret)
+    print("fruits_copy after .sort():", fruits_copy)
+
+
+def demo_products_multi_key() -> None:
+    section("8) multi-field key: price asc, sales desc, name asc")
+    products = [
+        {"name": "A", "price": 10, "sales": 100},
+        {"name": "B", "price": 10, "sales": 200},
+        {"name": "C", "price": 9, "sales": 300},
+    ]
+    ordered = sorted(products, key=lambda p: (p["price"], -p["sales"], p["name"]))
+    print("products:", products)
+    print("by (price, -sales, name):", ordered)
+
+
 def demo_shuffle_returns_none() -> None:
-    section("6) random.shuffle is also in-place, returns None")
+    section("8) random.shuffle is also in-place, returns None")
     deck = list(range(5))
     r = random.shuffle(deck)
     print("shuffle return:", r)
@@ -100,6 +128,8 @@ def main() -> None:
     demo_reverse_and_key()
     demo_itemgetter_attrgetter()
     demo_stable_sort_two_pass()
+    demo_fruits_fluent_python()
+    demo_products_multi_key()
     demo_shuffle_returns_none()
 
 
