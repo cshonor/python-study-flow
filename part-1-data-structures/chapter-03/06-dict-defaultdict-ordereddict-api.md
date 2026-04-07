@@ -109,3 +109,5 @@
 ## 八、可运行对照
 
 见 `mapping_types_three_way_demo.py`（计数、`get` vs `[]`、`fromkeys`、`move_to_end` / `popitem`、`|` 合并、简易 LRU、可哈希 `User`）。
+
+**下一篇**：词索引与可变值更新（`get` / `setdefault` / `defaultdict`）见 `07-dict-mutable-values-indexing.md`。
