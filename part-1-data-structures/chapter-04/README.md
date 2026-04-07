@@ -17,6 +17,9 @@
 | 05 | `05-codecs-and-common-encodings.md` | 常见编码与 codec：多编码 bytes 对照表、兼容性与乱码直觉 |
 | 06 | `06-fixing-encoding-decoding-problems.md` | 编解码问题处理：三类异常、BOM、检测与落地模板 |
 | 07 | `07-unicode-normalization.md` | Unicode 规范化：NFC/NFD/NFKC/NFKD、casefold、比较工具函数 |
+| 08 | `08-unicode-text-sorting.md` | Unicode 文本排序：默认码点顺序、locale 局限、pyuca（UCA） |
+| 09 | `09-unicode-database-unicodedata.md` | Unicode 数据库：`unicodedata` 字符识别与数值语义解析 |
+| 10 | `10-dual-mode-apis-str-bytes.md` | 双模式 API：`re` 与 `os` 的 str/bytes 行为差异与最佳实践 |
 
 ---
 
@@ -30,6 +33,10 @@ python part-1-data-structures/chapter-04/bytes_bytearray_demo.py
 python part-1-data-structures/chapter-04/codecs_encodings_table_demo.py
 python part-1-data-structures/chapter-04/encoding_decoding_fixes_demo.py
 python part-1-data-structures/chapter-04/unicode_normalization_demo.py
+python part-1-data-structures/chapter-04/unicode_sorting_demo.py
+python part-1-data-structures/chapter-04/unicode_numeric_demo.py
+python part-1-data-structures/chapter-04/unicode_char_finder.py CAT EYES --limit 20
+python part-1-data-structures/chapter-04/dual_mode_api_demo.py
 ```
 
 | 脚本 | 说明 |
@@ -41,6 +48,10 @@ python part-1-data-structures/chapter-04/unicode_normalization_demo.py
 | `codecs_encodings_table_demo.py` | 与 `05` 配套：同一字符在不同编码下的 hex bytes 对照表 |
 | `encoding_decoding_fixes_demo.py` | 与 `06` 配套：Encode/Decode 错误、BOM、非 UTF-8 源码的最小复现 |
 | `unicode_normalization_demo.py` | 与 `07` 配套：组合字符、NFC/NFD/NFKC、casefold 与比较工具函数 |
+| `unicode_sorting_demo.py` | 与 `08` 配套：默认排序 vs locale vs pyuca（若已安装） |
+| `unicode_numeric_demo.py` | 与 `09` 配套：digit/numeric 与 isdecimal/isdigit/isnumeric 对照 |
+| `unicode_char_finder.py` | 与 `09` 配套：按 Unicode 名称关键字搜索字符（类似 cf.py） |
+| `dual_mode_api_demo.py` | 与 `10` 配套：`re`（Unicode vs ASCII-ish）+ `os`（str vs bytes 路径） |
 
 ---
 
