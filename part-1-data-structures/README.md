@@ -10,7 +10,8 @@
 |------|----------------------------------|------|
 | `chapter-01/` | 第 1–6 章范围的学习材料 | 当前主要笔记与示例脚本均在此 |
 | `chapter-02/` | 第 2 章「丰富的序列」等 | 开篇、容器/扁平、`PyObject*`、ABC、对象模型、可变/不可变协议：`01`…`08` |
-| `chapter-03/` … `chapter-06/` | 预留 | 仅占位 `.gitkeep`，后续可按章填充 |
+| `chapter-03/` | 第 3 章「字典和集合」 | 开篇与框架：`01-dicts-and-sets-chapter3-overview.md`；`dict_and_set_quickstart_demo.py` |
+| `chapter-04/` … `chapter-06/` | 预留 | 可按章填充 |
 
 每章目录内约定：**两位编号**的 `NN-主题.md` 为笔记，同名主题的 `*_demo.py` 为可运行示例（见下）。
 
@@ -104,6 +105,24 @@ python part-1-data-structures/chapter-02/pattern_matching_sequence_demo.py
 python part-1-data-structures/chapter-02/slicing_demo.py
 python part-1-data-structures/chapter-02/sequence_plus_mul_and_nested_list_trap_demo.py
 python part-1-data-structures/chapter-02/list_sort_vs_sorted_demo.py
+```
+
+---
+
+## `chapter-03/` 笔记与脚本
+
+本章目录内另有 **`chapter-03/README.md`**：以 `01-dicts-and-sets-chapter3-overview.md` 为入口。
+
+| 编号 | 文件 | 主题简述 |
+|------|------|----------|
+| 01 | `01-dicts-and-sets-chapter3-overview.md` | 第 3 章开篇：dict/set 定位、知识地图、哈希与可哈希、**面试速记** |
+
+| 脚本 | 说明 |
+|------|------|
+| `dict_and_set_quickstart_demo.py` | `get`/`setdefault`、`Counter`、集合运算、`frozenset` 作键 |
+
+```bash
+python part-1-data-structures/chapter-03/dict_and_set_quickstart_demo.py
 ```
 
 ---
