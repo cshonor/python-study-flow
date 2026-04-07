@@ -19,6 +19,19 @@ class StrKeyDict0(dict):
         return self[str(key)]
 
 
+class StrKeyDict0Complete(StrKeyDict0):
+    """dict subclass + __missing__ + get/__contains__ (book completion)."""
+
+    def get(self, key: object, default: object = None) -> object:
+        try:
+            return self[key]
+        except KeyError:
+            return default
+
+    def __contains__(self, key: object) -> bool:
+        return key in self.keys() or str(key) in self.keys()
+
+
 class StrKeyDict(UserDict):
     """UserDict + __missing__ + get/__contains__ aligned with d[k]."""
 
@@ -56,8 +69,25 @@ def demo_str_key_dict0() -> None:
     print("4 in d without __contains__ override:", 4 in d)
 
 
+def demo_str_key_dict0_complete() -> None:
+    section("2) StrKeyDict0Complete: get / in aligned with d[k]")
+    d = StrKeyDict0Complete([("2", "two"), ("4", "four")])
+    assert d["2"] == "two"
+    assert d[4] == "four"
+    try:
+        _ = d[1]
+    except KeyError as e:
+        assert e.args[0] == "1"
+    assert d.get("2") == "two"
+    assert d.get(4) == "four"
+    assert d.get(1, "N/A") == "N/A"
+    assert 2 in d and "2" in d and 4 in d
+    assert 1 not in d
+    print("get(4):", d.get(4), "| 4 in d:", 4 in d)
+
+
 def demo_str_key_dict_userdict() -> None:
-    section("2) StrKeyDict (UserDict): get and in match d[k]")
+    section("3) StrKeyDict (UserDict): same semantics via self.data")
     u = StrKeyDict([("2", "two"), ("4", "four")])
     assert u["2"] == "two" and u[4] == "four"
     assert u.get(4) == "four"
@@ -68,6 +98,7 @@ def demo_str_key_dict_userdict() -> None:
 
 def main() -> None:
     demo_str_key_dict0()
+    demo_str_key_dict0_complete()
     demo_str_key_dict_userdict()
 
 
