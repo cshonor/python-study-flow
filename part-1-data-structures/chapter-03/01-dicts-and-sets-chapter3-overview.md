@@ -97,4 +97,5 @@
 
 ## 八、后续可补齐
 
-- 分主题笔记（`02-…` 起）与 `collections` 专项 demo；本篇与 `README.md` 保持同步更新。
+- 已补：**`02-dict-comprehension.md`**（3.2.1 字典推导式）+ `dict_comprehension_demo.py`。  
+- 其余分主题（`defaultdict`、`ChainMap`、哈希表细节等）与专项 demo 将按书内顺序追加；本篇与 `README.md` 保持同步更新。
