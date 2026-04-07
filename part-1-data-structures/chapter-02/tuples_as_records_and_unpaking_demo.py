@@ -109,12 +109,39 @@ def demo_hashable_check() -> None:
     assert fixed(tm) is False
 
 
+def demo_iadd_list_vs_tuple() -> None:
+    section("6) += : list in-place (same id) vs tuple new object (id changes)")
+    a = [1, 2, 3]
+    id_a_before = id(a)
+    a += [4, 5]
+    print("list id unchanged?", id(a) == id_a_before, "->", a)
+
+    t = (1, 2)
+    id_t_before = id(t)
+    t += (30, 40)
+    print("tuple id changed?", id(t) != id_t_before, "->", t)
+
+
+def demo_tuple_slot_iadd_puzzle() -> None:
+    section("7) puzzle: t[2] += [...] when t[2] is a list (TypeError but list mutates)")
+    t: tuple[int, int, list[int]] = (1, 2, [30, 40])
+    print("before:", t)
+    try:
+        t[2] += [50, 60]
+    except TypeError as e:
+        print("TypeError (expected):", e)
+    print("after :", t)
+    assert t == (1, 2, [30, 40, 50, 60])
+
+
 def main() -> None:
     demo_tuple_as_record_and_unpacking()
     demo_starred_unpacking()
     demo_nested_unpacking()
     demo_immutability_is_reference_level()
     demo_hashable_check()
+    demo_iadd_list_vs_tuple()
+    demo_tuple_slot_iadd_puzzle()
 
 
 if __name__ == "__main__":
