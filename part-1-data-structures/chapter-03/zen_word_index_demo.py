@@ -2,6 +2,7 @@
 Demo for 07-dict-mutable-values-indexing.md (Fluent Python §3.4.3).
 
 Uses an in-memory excerpt of "The Zen of Python" — no external zen.txt required.
+Line numbers in locations use enumerate(..., 1) like Fluent Python example 3-5.
 
 Run:
   python part-1-data-structures/chapter-03/zen_word_index_demo.py
@@ -25,7 +26,7 @@ Complex is better than complicated.
 
 def build_index_get(text: str) -> dict[str, list[tuple[int, int]]]:
     index: dict[str, list[tuple[int, int]]] = {}
-    for line_no, line in enumerate(text.splitlines()):
+    for line_no, line in enumerate(text.splitlines(), 1):
         for m in WORD_RE.finditer(line):
             word = m.group()
             col = m.start() + 1
@@ -38,7 +39,7 @@ def build_index_get(text: str) -> dict[str, list[tuple[int, int]]]:
 
 def build_index_setdefault(text: str) -> dict[str, list[tuple[int, int]]]:
     index: dict[str, list[tuple[int, int]]] = {}
-    for line_no, line in enumerate(text.splitlines()):
+    for line_no, line in enumerate(text.splitlines(), 1):
         for m in WORD_RE.finditer(line):
             word = m.group()
             col = m.start() + 1
@@ -48,7 +49,7 @@ def build_index_setdefault(text: str) -> dict[str, list[tuple[int, int]]]:
 
 def build_index_defaultdict(text: str) -> defaultdict[str, list[tuple[int, int]]]:
     index: defaultdict[str, list[tuple[int, int]]] = defaultdict(list)
-    for line_no, line in enumerate(text.splitlines()):
+    for line_no, line in enumerate(text.splitlines(), 1):
         for m in WORD_RE.finditer(line):
             word = m.group()
             col = m.start() + 1
