@@ -53,10 +53,48 @@ def demo_correct_board_init() -> None:
     assert board[0] is not board[1] and board[1] is not board[2]
 
 
+def demo_weird_board_outer_mul() -> None:
+    section("4) wrong: (['_']*3) repeated by outer *3 - same row object")
+    weird = [["_"] * 3] * 3
+    print("weird rows same object?", weird[0] is weird[1] is weird[2])
+    assert weird[0] is weird[1] is weird[2]
+    weird[1][2] = "O"
+    print("after weird[1][2] = 'O':", weird)
+    assert weird == [
+        ["_", "_", "O"],
+        ["_", "_", "O"],
+        ["_", "_", "O"],
+    ]
+
+
+def demo_append_same_row_loop() -> None:
+    section("5) wrong: append the same row in a loop")
+    row = ["_"] * 3
+    bad: list[list[str]] = []
+    for _ in range(3):
+        bad.append(row)
+    print("bad[0] is bad[1]?", bad[0] is bad[1])
+    assert bad[0] is bad[1] is bad[2]
+    bad[0][0] = "!"
+    print("after bad[0][0] = '!':", bad)
+
+
+def demo_row_copy_ok() -> None:
+    section("6) ok: row.copy() each iteration")
+    row = ["_"] * 3
+    ok = [row.copy() for _ in range(3)]
+    ok[1][2] = "X"
+    print(ok)
+    assert ok[0][2] == "_" and ok[1][2] == "X"
+
+
 def main() -> None:
     demo_plus_and_mul_create_new_outer_objects()
     demo_nested_list_trap()
     demo_correct_board_init()
+    demo_weird_board_outer_mul()
+    demo_append_same_row_loop()
+    demo_row_copy_ok()
 
 
 if __name__ == "__main__":
