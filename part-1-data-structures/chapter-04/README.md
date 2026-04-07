@@ -14,6 +14,7 @@
 | 02 | `02-codepoints-encodings-and-errors.md` | 字符/码点/编码/字节、`encode`/`decode`、`errors=` |
 | 03 | `03-io-encoding-checklist.md` | I/O 编码排查清单：文件/子进程/控制台 |
 | 04 | `04-bytes-and-bytearray.md` | `bytes`/`bytearray` 详解：索引切片、可变性、`fromhex`、避坑 |
+| 05 | `05-codecs-and-common-encodings.md` | 常见编码与 codec：多编码 bytes 对照表、兼容性与乱码直觉 |
 
 ---
 
@@ -24,6 +25,7 @@ python part-1-data-structures/chapter-04/unicode_bytes_quickstart_demo.py
 python part-1-data-structures/chapter-04/codepoints_encoding_demo.py
 python part-1-data-structures/chapter-04/io_encoding_troubleshoot_demo.py
 python part-1-data-structures/chapter-04/bytes_bytearray_demo.py
+python part-1-data-structures/chapter-04/codecs_encodings_table_demo.py
 ```
 
 | 脚本 | 说明 |
@@ -32,6 +34,7 @@ python part-1-data-structures/chapter-04/bytes_bytearray_demo.py
 | `codepoints_encoding_demo.py` | 与 `02` 配套：码点与 UTF-8 字节、错误与 `errors=`、控制台边界 |
 | `io_encoding_troubleshoot_demo.py` | 与 `03` 配套：文件/子进程/控制台排查套路 |
 | `bytes_bytearray_demo.py` | 与 `04` 配套：索引/切片差异、不可变 vs 可变、`fromhex` |
+| `codecs_encodings_table_demo.py` | 与 `05` 配套：同一字符在不同编码下的 hex bytes 对照表 |
 
 ---
 
