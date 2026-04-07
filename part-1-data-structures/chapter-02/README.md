@@ -17,6 +17,7 @@
 | 4 | `05-structural-pattern-matching-sequence-patterns.md` | Python 3.10+ `match/case` 序列模式 |
 | 5 | `06-slicing.md` | 切片、`slice` 对象、切片赋值 |
 | 6 | `07-sequence-plus-mul-and-nested-list-trap.md` | 序列 `+` / `*` 与嵌套列表陷阱 |
+| 7 | `08-list-sort-vs-sorted.md` | `list.sort()` 与 `sorted()`、`key`、稳定排序 |
 
 上层索引另见：`../README.md` 中「`chapter-02/` 笔记与脚本」表。
 
@@ -33,6 +34,7 @@
 | `05-structural-pattern-matching-sequence-patterns.md` | `match/case` |
 | `06-slicing.md` | 切片 |
 | `07-sequence-plus-mul-and-nested-list-trap.md` | `+` / `*` 与浅拷贝陷阱 |
+| `08-list-sort-vs-sorted.md` | 原地 `sort` vs `sorted`、`key` 进阶 |
 
 > 历史上曾用 `03`–`05` 文件名做「已并入 `02`」的跳转短页；若你本地仍有旧文件，以 `02` 为准即可。
 
@@ -48,6 +50,7 @@ python part-1-data-structures/chapter-02/tuples_as_records_and_unpaking_demo.py
 python part-1-data-structures/chapter-02/pattern_matching_sequence_demo.py
 python part-1-data-structures/chapter-02/slicing_demo.py
 python part-1-data-structures/chapter-02/sequence_plus_mul_and_nested_list_trap_demo.py
+python part-1-data-structures/chapter-02/list_sort_vs_sorted_demo.py
 ```
 
 | 脚本 | 说明 |
@@ -59,6 +62,7 @@ python part-1-data-structures/chapter-02/sequence_plus_mul_and_nested_list_trap_
 | `pattern_matching_sequence_demo.py` | 与 `05` 配套（需 Python 3.10+） |
 | `slicing_demo.py` | 与 `06` 配套 |
 | `sequence_plus_mul_and_nested_list_trap_demo.py` | 与 `07` 配套 |
+| `list_sort_vs_sorted_demo.py` | 与 `08` 配套 |
 
 ---
 

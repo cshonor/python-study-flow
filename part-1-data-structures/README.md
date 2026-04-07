@@ -9,7 +9,7 @@
 | 目录 | 对应（本书章节编号按你本地划分） | 说明 |
 |------|----------------------------------|------|
 | `chapter-01/` | 第 1–6 章范围的学习材料 | 当前主要笔记与示例脚本均在此 |
-| `chapter-02/` | 第 2 章「丰富的序列」等 | 开篇、容器/扁平、`PyObject*`、ABC、对象模型、可变/不可变协议：`01`…`05` |
+| `chapter-02/` | 第 2 章「丰富的序列」等 | 开篇、容器/扁平、`PyObject*`、ABC、对象模型、可变/不可变协议：`01`…`08` |
 | `chapter-03/` … `chapter-06/` | 预留 | 仅占位 `.gitkeep`，后续可按章填充 |
 
 每章目录内约定：**两位编号**的 `NN-主题.md` 为笔记，同名主题的 `*_demo.py` 为可运行示例（见下）。
@@ -82,6 +82,7 @@ python part-1-data-structures/chapter-01/french_deck_shuffle_demo.py
 | 05 | `05-structural-pattern-matching-sequence-patterns.md` | Python 3.10+ `match/case`：序列模式匹配、守卫与 `*rest` |
 | 06 | `06-slicing.md` | 切片：左闭右开、步距、`slice` 对象、切片赋值与 `...` |
 | 07 | `07-sequence-plus-mul-and-nested-list-trap.md` | `+`/`*` 运算与嵌套列表陷阱（浅拷贝引用共享） |
+| 08 | `08-list-sort-vs-sorted.md` | `list.sort()` 与 `sorted()`、`key`、稳定排序 |
 
 | 脚本 | 说明 |
 |------|------|
@@ -92,6 +93,7 @@ python part-1-data-structures/chapter-01/french_deck_shuffle_demo.py
 | `pattern_matching_sequence_demo.py` | Python 3.10+ `match/case`：序列模式、guard、`*rest` 顺序坑 |
 | `slicing_demo.py` | 切片：步距/反转、命名 `slice`、切片赋值与 `Ellipsis` |
 | `sequence_plus_mul_and_nested_list_trap_demo.py` | 序列 `+`/`*` 与 `[[]]*n` 引用共享陷阱 |
+| `list_sort_vs_sorted_demo.py` | `list.sort` / `sorted` / `key` / `itemgetter` / 稳定排序 |
 
 ```bash
 python part-1-data-structures/chapter-02/container_vs_flat_memory_demo.py
@@ -101,6 +103,7 @@ python part-1-data-structures/chapter-02/tuples_as_records_and_unpaking_demo.py
 python part-1-data-structures/chapter-02/pattern_matching_sequence_demo.py
 python part-1-data-structures/chapter-02/slicing_demo.py
 python part-1-data-structures/chapter-02/sequence_plus_mul_and_nested_list_trap_demo.py
+python part-1-data-structures/chapter-02/list_sort_vs_sorted_demo.py
 ```
 
 ---

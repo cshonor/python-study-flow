@@ -94,6 +94,9 @@ issubclass(list, abc.MutableSequence)    # True
    - `a, b, *rest = seq` 等写法
    - 用 `*` 处理**可变长度**，让接口更 Pythonic
 
+4. **排序 API：`list.sort()` vs `sorted()`**
+   - 原地 vs 新列表、`None` 返回值约定、`reverse` / `key`、`itemgetter` / 稳定排序 — 见 `08-list-sort-vs-sorted.md`
+
 ---
 
 ## 四、为什么这一章很重要？（结合进阶与量化场景）
@@ -127,4 +130,4 @@ issubclass(list, abc.MutableSequence)    # True
 ## 七、本仓库中的落点
 
 - 第 1 章相关笔记与 demo 主要在 `part-1-data-structures/chapter-01/`。
-- 第 2 章：**先看本目录 [`README.md`](README.md)**（笔记列表、学习顺序、脚本命令），再按上表优先级读 `02`、`03`、`04`… 等；合并主文档为 `02-container-vs-flat-sequences.md`；`container_vs_flat_memory_demo.py` 可做粗略 `getsizeof` 对照。
+- 第 2 章：**先看本目录 [`README.md`](README.md)**（笔记列表、学习顺序、脚本命令），再按上表优先级读 `02`、`03`、`04`… 等；合并主文档为 `02-container-vs-flat-sequences.md`；`container_vs_flat_memory_demo.py` 可做粗略 `getsizeof` 对照；`list.sort()` / `sorted()` 对照见 `08-list-sort-vs-sorted.md`。
