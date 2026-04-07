@@ -276,3 +276,9 @@ case ["define", [Symbol() as name, *parms], *body] if body:
     ...
 ```
 
+---
+
+## 八、延伸阅读：`csv.DictReader` 与映射模式
+
+本篇以**序列模式**为主；若处理 **`csv.DictReader` 读出的行（`dict`）**，见 `../chapter-03/04-csv-dictreader-pattern-matching.md`。
+
