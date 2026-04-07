@@ -1,5 +1,5 @@
 """
-Demo for 09-slicing.md
+Demo for 06-slicing.md
 
 Run:
   python part-1-data-structures/chapter-02/slicing_demo.py

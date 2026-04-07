@@ -1,7 +1,7 @@
 """
 演示：collections.abc.Sequence 与 register() 虚拟子类。
 
-与 03-sequence-flat-container-mutable-immutable-abc.md §6 配套。
+与 `02-container-vs-flat-sequences.md`（ABC / 虚拟子类）配套。
 
 运行：python part-1-data-structures/chapter-02/sequence_virtual_subclass_demo.py
 """

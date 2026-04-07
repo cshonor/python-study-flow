@@ -71,18 +71,17 @@ python part-1-data-structures/chapter-01/french_deck_shuffle_demo.py
 
 ## `chapter-02/` 笔记与脚本
 
+本章目录内另有 **`chapter-02/README.md`**：以 `01-rich-sequences-chapter2-overview.md` 为入口的学习路线、全部笔记与脚本一览。
+
 | 编号 | 文件 | 主题简述 |
 |------|------|----------|
 | 01 | `01-rich-sequences-chapter2-overview.md` | 第 2 章路线、**Fluent Python 本章骨架**（§二）、学习优先级 |
 | 02 | `02-container-vs-flat-sequences.md` | **合并版主文档**：对象头→容器/扁平→可变性/hashable→ABC |
-| 03 | `03-sequence-flat-container-mutable-immutable-abc.md` | （已合并到 02）ABC/虚拟子类跳转页 |
-| 04 | `04-python-object-model-a-equals-123.md` | （已合并到 02）对象模型跳转页 |
-| 05 | `05-mutability-open-api-and-hash.md` | （已合并到 02）可变性/hashable 跳转页 |
-| 06 | `06-listcomps-and-genexps.md` | 列表推导式 vs 生成器表达式：模板、可读性准则、面试题 |
-| 07 | `07-tuples-as-records-and-unpacking.md` | 元组的双重角色：结构化记录与拆包（含选型与避坑） |
-| 08 | `08-structural-pattern-matching-sequence-patterns.md` | Python 3.10+ `match/case`：序列模式匹配、守卫与 `*rest` |
-| 09 | `09-slicing.md` | 切片：左闭右开、步距、`slice` 对象、切片赋值与 `...` |
-| 10 | `10-sequence-plus-mul-and-nested-list-trap.md` | `+`/`*` 运算与嵌套列表陷阱（浅拷贝引用共享） |
+| 03 | `03-listcomps-and-genexps.md` | 列表推导式 vs 生成器表达式：模板、可读性准则、面试题 |
+| 04 | `04-tuples-as-records-and-unpacking.md` | 元组的双重角色：结构化记录与拆包（含选型与避坑） |
+| 05 | `05-structural-pattern-matching-sequence-patterns.md` | Python 3.10+ `match/case`：序列模式匹配、守卫与 `*rest` |
+| 06 | `06-slicing.md` | 切片：左闭右开、步距、`slice` 对象、切片赋值与 `...` |
+| 07 | `07-sequence-plus-mul-and-nested-list-trap.md` | `+`/`*` 运算与嵌套列表陷阱（浅拷贝引用共享） |
 
 | 脚本 | 说明 |
 |------|------|

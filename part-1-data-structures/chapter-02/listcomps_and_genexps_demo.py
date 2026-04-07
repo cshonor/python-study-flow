@@ -1,5 +1,5 @@
 """
-Demo for 06-listcomps-and-genexps.md
+Demo for 03-listcomps-and-genexps.md
 
 Run:
   python part-1-data-structures/chapter-02/listcomps_and_genexps_demo.py

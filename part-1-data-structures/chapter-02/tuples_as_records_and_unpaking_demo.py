@@ -1,5 +1,5 @@
 """
-Demo for 07-tuples-as-records-and-unpacking.md
+Demo for 04-tuples-as-records-and-unpacking.md
 
 Run:
   python part-1-data-structures/chapter-02/tuples_as_records_and_unpaking_demo.py

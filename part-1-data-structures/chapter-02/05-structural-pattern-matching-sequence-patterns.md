@@ -1,7 +1,7 @@
 # 序列模式匹配：`match/case`（Python 3.10+，Fluent Python 2.6）
 
 > **本篇定位**：掌握 Python 3.10+ 的结构模式匹配（Structural Pattern Matching，PEP 634）中最常用的**序列模式**：按结构匹配、自动绑定变量、守卫条件、兜底分支。  
-> **相关**：拆包（含 `*rest` 与嵌套拆包）见 `07-tuples-as-records-and-unpacking.md`；推导式与生成器表达式见 `06-listcomps-and-genexps.md`。
+> **相关**：拆包（含 `*rest` 与嵌套拆包）见 `04-tuples-as-records-and-unpacking.md`；推导式与生成器表达式见 `03-listcomps-and-genexps.md`。
 
 ---
 
@@ -108,7 +108,7 @@ for record in metro_areas:
 
 - **先匹配、再守卫**：只有模式匹配成功，才会计算 `if lon <= 0`。
 - `[]` 与 `()` 在序列模式里语义等价：这里用 `[]` 只是为了强调“这是序列模式”，不是在创建 list。
-- 这段代码的“数据提取能力”与嵌套拆包类似，但 `match` 更适合“多分支协议解析”；单分支筛选时，普通拆包循环仍然很干净（见 `07`）。
+- 这段代码的“数据提取能力”与嵌套拆包类似，但 `match` 更适合“多分支协议解析”；单分支筛选时，普通拆包循环仍然很干净（见 `04`）。
 
 ### 3. `*rest`：可变长度匹配（像“协议扩展字段”）
 

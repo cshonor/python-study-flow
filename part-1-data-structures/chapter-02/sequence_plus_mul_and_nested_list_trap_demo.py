@@ -1,5 +1,5 @@
 """
-Demo for 10-sequence-plus-mul-and-nested-list-trap.md
+Demo for 07-sequence-plus-mul-and-nested-list-trap.md
 
 Run:
   python part-1-data-structures/chapter-02/sequence_plus_mul_and_nested_list_trap_demo.py
