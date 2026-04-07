@@ -7,6 +7,7 @@ Run:
 
 from __future__ import annotations
 
+import sys
 from collections import OrderedDict, defaultdict
 
 
@@ -80,12 +81,40 @@ def demo_hashable_user() -> None:
     print("registry[u2]:", registry[u2])
 
 
+def demo_merge_or() -> None:
+    section("6) dict | and |= (PEP 584, 3.9+)")
+    if sys.version_info < (3, 9):
+        print("skip: need Python 3.9+")
+        return
+    d1 = {"a": 1, "b": 3}
+    d2 = {"a": 2, "c": 6}
+    print("d1 | d2:", d1 | d2)
+    left = {"a": 1, "b": 3}
+    left |= d2
+    print("after left |= d2:", left)
+
+
+def demo_lru_ordered() -> None:
+    section("7) OrderedDict: access moves to end, evict oldest (capacity 2)")
+    cap = 2
+    od: OrderedDict[str, int] = OrderedDict()
+    for key in ("a", "b", "c"):
+        if key in od:
+            od.move_to_end(key)
+        od[key] = 1
+        while len(od) > cap:
+            od.popitem(last=False)
+    print("final keys (FIFO evict):", list(od.keys()))
+
+
 def main() -> None:
     demo_defaultdict_count()
     demo_get_vs_getitem()
     demo_fromkeys_trap()
     demo_ordered_move_to_end()
     demo_hashable_user()
+    demo_merge_or()
+    demo_lru_ordered()
 
 
 if __name__ == "__main__":
