@@ -145,3 +145,9 @@ class StrKeyDict(UserDict):
 ## 八、可运行对照
 
 见 `str_key_dict_demo.py`（仅 **`__missing__`** 的 `StrKeyDict0`、补全后的 **`StrKeyDict0Complete`**、`StrKeyDict`）。
+
+---
+
+## 九、延伸：为何优先 `UserDict`（§3.6 小结）
+
+- **`dict` 子类化**与 **`UserDict` 子类化**的选型、**`MutableMapping.update`** 与 **`shelve`** 等见 **`11-counter-shelve-and-userdict-subclassing.md`**（与本书 **§3.6** 后半同一脉络）。

@@ -110,4 +110,4 @@
 
 见 `mapping_types_three_way_demo.py`（计数、`get` vs `[]`、`fromkeys`、`move_to_end` / `popitem`、`|` 合并、简易 LRU、可哈希 `User`）。
 
-**下一篇**：词索引与可变值更新见 `07-dict-mutable-values-indexing.md`。**§3.6** `OrderedDict` / `ChainMap` / `Counter` 专题见 `10-dict-variants-ordered-chain-counter.md`。
+**下一篇**：词索引与可变值更新见 `07-dict-mutable-values-indexing.md`。**§3.6** `OrderedDict` / `ChainMap` / `Counter` 专题见 `10-dict-variants-ordered-chain-counter.md`；**`Counter` 深化、`shelve`、`UserDict` 子类化**见 `11-counter-shelve-and-userdict-subclassing.md`。

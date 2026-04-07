@@ -10,7 +10,7 @@
 |------|----------------------------------|------|
 | `chapter-01/` | 第 1–6 章范围的学习材料 | 当前主要笔记与示例脚本均在此 |
 | `chapter-02/` | 第 2 章「丰富的序列」等 | 开篇、容器/扁平、`PyObject*`、ABC、对象模型、可变/不可变协议：`01`…`08` |
-| `chapter-03/` | 第 3 章「字典和集合」 | `01`–`10`（含 §3.6 变体）；见该目录 `README` |
+| `chapter-03/` | 第 3 章「字典和集合」 | `01`–`11`（含 §3.6 变体与续篇）；见该目录 `README` |
 | `chapter-04/` … `chapter-06/` | 预留 | 可按章填充 |
 
 每章目录内约定：**两位编号**的 `NN-主题.md` 为笔记，同名主题的 `*_demo.py` 为可运行示例（见下）。
@@ -125,6 +125,7 @@ python part-1-data-structures/chapter-02/list_sort_vs_sorted_demo.py
 | 08 | `08-defaultdict-and-missing.md` | §3.5 `defaultdict`、`__missing__` |
 | 09 | `09-str-key-dict-and-dunder-missing.md` | §3.5.2 `StrKeyDict0`、`UserDict`、`__missing__` |
 | 10 | `10-dict-variants-ordered-chain-counter.md` | §3.6 `OrderedDict`、`ChainMap`、`Counter` |
+| 11 | `11-counter-shelve-and-userdict-subclassing.md` | §3.6 续：`Counter`、`shelve`、`UserDict` |
 
 | 脚本 | 说明 |
 |------|------|
@@ -138,6 +139,7 @@ python part-1-data-structures/chapter-02/list_sort_vs_sorted_demo.py
 | `defaultdict_and_missing_demo.py` | §3.5、`get` 不插入、嵌套、`__missing__` |
 | `str_key_dict_demo.py` | `StrKeyDict0`、`StrKeyDict`（`get`/`in` 与 `d[k]` 一致） |
 | `dict_variants_demo.py` | §3.6 三种映射变体 |
+| `shelf_counter_userdict_demo.py` | §3.6 续：`Counter` / `shelve` / `UserDict` |
 
 ```bash
 python part-1-data-structures/chapter-03/dict_and_set_quickstart_demo.py
@@ -150,6 +152,7 @@ python part-1-data-structures/chapter-03/zen_word_index_demo.py
 python part-1-data-structures/chapter-03/defaultdict_and_missing_demo.py
 python part-1-data-structures/chapter-03/str_key_dict_demo.py
 python part-1-data-structures/chapter-03/dict_variants_demo.py
+python part-1-data-structures/chapter-03/shelf_counter_userdict_demo.py
 ```
 
 ---
