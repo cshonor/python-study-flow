@@ -10,7 +10,7 @@
 |------|----------------------------------|------|
 | `chapter-01/` | 第 1–6 章范围的学习材料 | 当前主要笔记与示例脚本均在此 |
 | `chapter-02/` | 第 2 章「丰富的序列」等 | 开篇、容器/扁平、`PyObject*`、ABC、对象模型、可变/不可变协议：`01`…`08` |
-| `chapter-03/` | 第 3 章「字典和集合」 | `01`–`13`（含 §3.6 / §3.8 / §3.10–§3.11）；见该目录 `README` |
+| `chapter-03/` | 第 3 章「字典和集合」 | `01`–`14`（含 §3.6 / §3.8 / §3.10–§3.12）；见该目录 `README` |
 | `chapter-04/` … `chapter-06/` | 预留 | 可按章填充 |
 
 每章目录内约定：**两位编号**的 `NN-主题.md` 为笔记，同名主题的 `*_demo.py` 为可运行示例（见下）。
@@ -128,6 +128,7 @@ python part-1-data-structures/chapter-02/list_sort_vs_sorted_demo.py
 | 11 | `11-counter-shelve-and-userdict-subclassing.md` | §3.6 续：`Counter`、`shelve`、`UserDict` |
 | 12 | `12-dict-views.md` | §3.8 `keys`/`values`/`items` 视图 |
 | 13 | `13-sets-and-frozenset.md` | §3.10–§3.11 `set` / `frozenset` |
+| 14 | `14-dict-view-set-operations.md` | §3.12 字典视图与 `frozenset` 对照 |
 
 | 脚本 | 说明 |
 |------|------|
@@ -144,6 +145,7 @@ python part-1-data-structures/chapter-02/list_sort_vs_sorted_demo.py
 | `shelf_counter_userdict_demo.py` | §3.6 续：`Counter` / `shelve` / `UserDict` |
 | `dict_views_demo.py` | §3.8 字典视图 |
 | `set_theory_demo.py` | §3.10–§3.11 集合 |
+| `dict_view_setops_demo.py` | §3.12 视图集合运算 |
 
 ```bash
 python part-1-data-structures/chapter-03/dict_and_set_quickstart_demo.py
@@ -159,6 +161,7 @@ python part-1-data-structures/chapter-03/dict_variants_demo.py
 python part-1-data-structures/chapter-03/shelf_counter_userdict_demo.py
 python part-1-data-structures/chapter-03/dict_views_demo.py
 python part-1-data-structures/chapter-03/set_theory_demo.py
+python part-1-data-structures/chapter-03/dict_view_setops_demo.py
 ```
 
 ---

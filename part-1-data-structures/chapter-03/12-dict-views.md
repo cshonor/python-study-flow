@@ -65,4 +65,5 @@
 
 ## 八、延伸：与原生 `set` 的关系
 
-- **`dict_keys` 的 `&` / `|`** 与 **`set`** 的数学语义相近，但**类型与边界**仍不同；**`set` / `frozenset`** 体系见 **`13-sets-and-frozenset.md`**。
+- **`dict_keys` 的 `&` / `|`** 与 **`set`** 的数学语义相近，但**类型与边界**仍不同；**`set` / `frozenset`** 体系见 **`13-sets-and-frozenset.md`**。  
+- **§3.12**（视图与 **`frozenset`** 的能力对比、**`values()`** 为何不参与集合运算）见 **`14-dict-view-set-operations.md`**。
