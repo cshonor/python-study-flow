@@ -21,6 +21,7 @@
 | 8 | `09-str-key-dict-and-dunder-missing.md` | §3.5.2 `StrKeyDict0`、`UserDict`、`__missing__` |
 | 9 | `10-dict-variants-ordered-chain-counter.md` | §3.6 `OrderedDict`、`ChainMap`、`Counter` |
 | 10 | `11-counter-shelve-and-userdict-subclassing.md` | §3.6 续：`Counter` 深化、`shelve`、`UserDict` |
+| 11 | `12-dict-views.md` | §3.8 `keys`/`values`/`items` 字典视图 |
 
 ---
 
@@ -38,6 +39,7 @@ python part-1-data-structures/chapter-03/defaultdict_and_missing_demo.py
 python part-1-data-structures/chapter-03/str_key_dict_demo.py
 python part-1-data-structures/chapter-03/dict_variants_demo.py
 python part-1-data-structures/chapter-03/shelf_counter_userdict_demo.py
+python part-1-data-structures/chapter-03/dict_views_demo.py
 ```
 
 | 脚本 | 说明 |
@@ -53,6 +55,7 @@ python part-1-data-structures/chapter-03/shelf_counter_userdict_demo.py
 | `str_key_dict_demo.py` | 与 `09` 配套：`StrKeyDict0`、`StrKeyDict`（`get`/`in`） |
 | `dict_variants_demo.py` | 与 `10` 配套：`OrderedDict`、`ChainMap`、`Counter` |
 | `shelf_counter_userdict_demo.py` | 与 `11` 配套：`Counter` 运算、`shelve`、`UserDict` |
+| `dict_views_demo.py` | 与 `12` 配套：§3.8 字典视图 |
 
 ---
 

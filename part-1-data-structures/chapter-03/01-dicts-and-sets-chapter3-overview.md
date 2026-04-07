@@ -97,5 +97,5 @@
 
 ## 八、后续可补齐
 
-- 已补：**`02`–`11`** 见 `chapter-03/README.md`（含 **§3.6** `10` + `11`，脚本 `dict_variants_demo.py`、`shelf_counter_userdict_demo.py`）。  
+- 已补：**`02`–`12`** 见 `chapter-03/README.md`（含 **§3.6** `10`–`11`、**§3.8** `12`，脚本含 `dict_variants_demo.py`、`shelf_counter_userdict_demo.py`、`dict_views_demo.py`）。  
 - 其余分主题（哈希表实现细节等）将按书内顺序追加；本篇与 `README.md` 保持同步更新。
