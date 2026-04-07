@@ -1,0 +1,202 @@
+# 6.5 函数的参数是引用时：共享传参（call by sharing）、可变默认值、以及防御性拷贝
+
+如果说 6.2 纠正了“变量是盒子”，6.3/6.4 让你能解释别名与拷贝，那么 6.5 就把这些能力带到最常见的战场：
+
+> **函数调用**。
+
+你会在这里搞清楚三件事：
+
+1. Python 参数传递的唯一模式：**共享传参（call by sharing）**
+2. 为什么“可变默认值”会产生幽灵数据（HauntedBus）
+3. 怎么写“防御性”的代码，避免污染调用方（TwilightBus）
+
+配套脚本：`object_refs_mutability_gc_demo.py`（本节新增：`f(a,b)` 的 `+=` 对照、HauntedBus/TwilightBus、`__defaults__` 取证）。
+
+---
+
+## 一、核心原理：共享传参（Call by Sharing）
+
+### 1.1 先把一句话说清楚
+
+Python 的函数参数传递可以用一句话描述：
+
+> **形参在函数体内是“实参对象”的另一个名字（引用的副本），也就是别名。**
+
+注意这句话的两个关键词：
+
+- “另一个名字”：说明它和 6.2 的“标签模型”完全一致
+- “对象”：说明形参绑定的是对象，而不是“值的拷贝”
+
+### 1.2 两类操作要分开看：原地修改 vs 重新绑定
+
+函数里对参数做事，常见只有两类：
+
+- **原地修改（mutate in place）**：对同一个可变对象改内容，例如 `list.append`、`dict.__setitem__`、`list += ...`（常见为 in-place）
+- **重新绑定（rebind）**：让形参名指向新对象，例如 `a = a + b`（常见为创建新对象后绑定）
+
+共享传参的关键后果是：
+
+- 原地修改可能影响调用方（因为共享同一对象）
+- 重新绑定不会影响调用方（只是函数内部这个名字换了指向）
+
+---
+
+## 二、最小实验：同一段代码，列表会“改到外面”，数字/元组不会
+
+看这个函数（书里的经典写法）：
+
+```python
+def f(a, b):
+    a += b
+    return a
+```
+
+你要把 `a += b` 当成一个“可能原地修改、也可能创建新对象”的操作，它取决于 `a` 的类型是否可变、以及该类型对 `__iadd__`（in-place add）的实现。
+
+### 2.1 不可变对象（数字）：`+=` 等价于创建新对象再绑定
+
+```python
+x = 1
+y = 2
+print(f(x, y))  # 3
+print(x, y)     # x 仍是 1
+```
+
+解释：
+
+- `int` 不可变，无法原地修改
+- `a += b` 必然创建新 `int` 并绑定给函数内部的 `a`
+- 调用方的 `x` 没有被重新绑定，所以不变
+
+### 2.2 可变对象（列表）：`+=` 常常是原地扩展（in-place）
+
+```python
+a = [1, 2]
+b = [3, 4]
+print(f(a, b))  # [1, 2, 3, 4]
+print(a, b)     # a 变了
+```
+
+解释：
+
+- `list` 可变，`a += b` 通常走 `list.__iadd__`（类似 `extend`）
+- 这会修改同一个列表对象本体
+- 调用方和函数内共享这份列表，所以调用方看到变化
+
+### 2.3 不可变对象（元组）：`+=` 只能创建新元组并绑定
+
+```python
+t = (10, 20)
+u = (30, 40)
+print(f(t, u))  # (10, 20, 30, 40)
+print(t, u)     # t 不变
+```
+
+解释同 int：tuple 不可变，只能创建新对象并重新绑定函数内部的 `a`。
+
+> 结论：**共享传参不是“可变对象才是引用传递”**。一切都是共享对象引用；差别只在于你是否做了原地修改。
+
+---
+
+## 三、致命坑：可变默认值（HauntedBus 幽灵乘客）
+
+### 3.1 为什么它会发生
+
+最核心的事实是：
+
+> **函数（或方法）的默认参数在“定义时”求值一次，并被保存到函数对象里；之后每次调用复用同一份默认对象。**
+
+这意味着：默认值如果是 list/dict/set 这种可变对象，就会被“跨调用共享”。
+
+### 3.2 HauntedBus：错误写法（请当作反面教材）
+
+```python
+class HauntedBus:
+    def __init__(self, passengers=[]):
+        self.passengers = passengers
+
+    def pick(self, name):
+        self.passengers.append(name)
+
+    def drop(self, name):
+        self.passengers.remove(name)
+```
+
+现象：
+
+- `bus2 = HauntedBus()`、`bus3 = HauntedBus()` 会共享同一个默认列表
+- 任何一个实例 `pick/drop` 都会影响另一个实例
+
+### 3.3 如何直接“取证”：看 `__defaults__`
+
+默认参数到底存在哪？
+
+- 存在函数对象的 `__defaults__` 里
+
+因此你可以用它直接验证共享：
+
+```python
+print(HauntedBus.__init__.__defaults__)
+```
+
+你甚至可以证明：
+
+```python
+HauntedBus.__init__.__defaults__[0] is bus2.passengers
+```
+
+---
+
+## 四、正确写法：用 `None` 作为默认值 + 防御性拷贝（TwilightBus）
+
+修复目标有两个：
+
+1. **默认值不共享**：默认参数用不可变对象 `None`
+2. **不污染调用方传入的可变对象**：对传入序列做一次拷贝
+
+```python
+class TwilightBus:
+    def __init__(self, passengers=None):
+        if passengers is None:
+            self.passengers = []
+        else:
+            self.passengers = list(passengers)
+```
+
+这段代码看起来啰嗦，但它非常“值”：
+
+- `passengers is None` 时，每次调用创建新的空列表，不会共享
+- `list(passengers)` 会创建一份新列表，之后在 bus 内部怎么改都不会影响原序列
+
+这就是典型的**防御性编程**：宁愿多做一点复制，换取“函数/对象的副作用可控”。
+
+---
+
+## 五、实践建议：什么时候该拷贝、什么时候该共享
+
+### 5.1 如果你的函数/方法会修改参数
+
+- **强烈建议**：先拷贝再改（尤其是公共 API）
+- 或者在文档里明确写清楚“会原地修改传入对象”（例如 `list.sort()` 就是这种风格）
+
+### 5.2 如果你希望“性能优先，允许共享”
+
+那也行，但你必须把共享写进契约：
+
+- 函数名/注释/文档明确说明
+- 调用方知道它在传“可变对象引用”，并承担共享的后果
+
+---
+
+## 六、运行验证（强烈建议）
+
+```bash
+python part-1-data-structures/chapter-06/object_refs_mutability_gc_demo.py
+```
+
+重点看输出：
+
+- “Call by sharing: `+=` behaves differently for int/list/tuple”
+- “Mutable default argument pitfall: HauntedBus”
+- “Defensive copy: TwilightBus does not mutate the caller”
+

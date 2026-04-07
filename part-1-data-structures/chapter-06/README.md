@@ -18,6 +18,10 @@
 | 文件 | 说明 |
 |---|---|
 | `01-object-references-mutability-and-gc-overview.md` | 第 6 章开篇导读：变量/对象/引用、可变性、拷贝、参数传递、GC、弱引用（配大量可运行例子） |
+| `02-variable-not-a-box.md` | 6.2 深入：变量是标签不是盒子；赋值先右后左；别名与术语纠正（含 Gizmo 证据） |
+| `03-identity-equality-and-aliasing.md` | 6.3 深入：同一性 vs 相等性（`is`/`==`）、别名风险、`None` 判断、元组相对不可变与 hash |
+| `04-shallow-copy-by-default.md` | 6.4 深入：浅拷贝只拷外壳；三种浅拷贝写法；嵌套可变对象陷阱；copy vs deepcopy |
+| `05-call-by-sharing-and-mutable-defaults.md` | 6.5 深入：共享传参（call by sharing）、`+=` 差异、可变默认值（HauntedBus）、防御性拷贝（TwilightBus）、`__defaults__` 取证 |
 | `object_refs_mutability_gc_demo.py` | 与 `01` 配套的可运行脚本：把每个坑都跑出“证据输出”（含 Windows 控制台安全打印） |
 
 ---
