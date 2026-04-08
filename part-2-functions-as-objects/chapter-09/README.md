@@ -56,3 +56,28 @@
 
 ## 小提醒
 装饰器有个非常容易忽略的点：**装饰发生在导入时**（函数定义被执行时就会完成装饰）。理解这一点，后面读“注册式装饰器”、调试“为什么一导入就有副作用”会轻松很多。
+
+---
+
+## 文件一览（建议顺序）
+
+| 文件 | 说明 |
+|---|---|
+| `01-decorators-and-closures-overview.md` | 开篇路线：LEGB、闭包与 `nonlocal`、装饰器为何重要、以及“装饰发生在导入时” |
+| `02-decorators-basics.md` | 装饰器基础：`@` 的等价形式、函数替换、装饰发生在导入时（最小例子） |
+| `03-registration-decorator-import-time.md` | 注册式装饰器：`registry` 收集函数引用，脚本运行 vs import 的执行时机对照 |
+| `registration.py` | 配套：`@register` + 全局 `registry`，展示导入时执行装饰过程 |
+| `scope_closure_nonlocal_demo.py` | 配套：LEGB、自由变量、闭包、`nonlocal` 对比（ASCII 输出，适配 Windows 控制台） |
+| `decorator_and_cache_demo.py` | 配套：最小装饰器 + `functools.wraps`；`lru_cache`/`cache` 对比演示（避免复杂依赖） |
+
+---
+
+## 运行
+
+在仓库根目录执行：
+
+```bash
+python part-2-functions-as-objects/chapter-09/registration.py
+python part-2-functions-as-objects/chapter-09/scope_closure_nonlocal_demo.py
+python part-2-functions-as-objects/chapter-09/decorator_and_cache_demo.py
+```
