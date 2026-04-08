@@ -22,6 +22,8 @@
 | `show_count_demo.py` | 配套：`show_count` 最终版 + 断言用例 |
 | `04-types-defined-by-operations.md` | 8.4 类型由受支持的操作定义：鸭子类型 vs 名义类型、`double`/`Sequence` 与静态检查的错位 |
 | `duck_nominal_typing_demo.py` | 配套：`Bird`/`Duck`/`quack`，无注解 vs 注解下 mypy 与运行时的对照 |
+| `05-types-in-annotations.md` | 8.5 注解中可用的类型：`Any`/`object`、简单类型、`Optional`/`Union`、泛型容器、元组、`Mapping`/`Sequence`、语法演进 |
+| `types_in_annotations_demo.py` | 配套：`parse_token`、`tokenize`、`NamedTuple`、`Mapping` 入参等可运行片段 |
 
 ---
 
@@ -34,6 +36,7 @@ python part-2-functions-as-objects/chapter-08/type_hints_mypy_demo.py
 python part-2-functions-as-objects/chapter-08/gradual_typing_demo.py
 python part-2-functions-as-objects/chapter-08/show_count_demo.py
 python part-2-functions-as-objects/chapter-08/duck_nominal_typing_demo.py
+python part-2-functions-as-objects/chapter-08/types_in_annotations_demo.py
 ```
 
 如果你装了 mypy，还可以做静态检查：
@@ -41,5 +44,6 @@ python part-2-functions-as-objects/chapter-08/duck_nominal_typing_demo.py
 ```bash
 mypy part-2-functions-as-objects/chapter-08/type_hints_mypy_demo.py
 mypy part-2-functions-as-objects/chapter-08/duck_nominal_typing_demo.py
+mypy part-2-functions-as-objects/chapter-08/types_in_annotations_demo.py
 ```
 
