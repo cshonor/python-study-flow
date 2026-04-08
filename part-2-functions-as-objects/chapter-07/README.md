@@ -23,6 +23,8 @@
 | `user_defined_callable_demo.py` | 配套：7.6 BingoCage（`pick` / `__call__` / 抽空报错） |
 | `07-advanced-argument-features.md` | 7.7 参数特性：`*args`/`**kwargs`、仅限关键字、`/` 仅限位置、`tag` 示例 |
 | `tag_and_positional_only_demo.py` | 配套：7.7 `tag` 多种调用 + `/` 的 TypeError 证据 |
+| `08-functional-tools-operator-and-functools.md` | 7.8 `operator` 与 `functools`：`mul/add/itemgetter/attrgetter/methodcaller`、`partial` 冻结参数 |
+| `functional_tools_demo.py` | 配套：7.8 operator + partial 的可运行对照（含 partial 自省） |
 
 ---
 
@@ -37,4 +39,5 @@ python part-2-functions-as-objects/chapter-07/lambda_expressions_demo.py
 python part-2-functions-as-objects/chapter-07/callable_objects_demo.py
 python part-2-functions-as-objects/chapter-07/user_defined_callable_demo.py
 python part-2-functions-as-objects/chapter-07/tag_and_positional_only_demo.py
+python part-2-functions-as-objects/chapter-07/functional_tools_demo.py
 ```
