@@ -1,0 +1,100 @@
+# 9.9 `functools` 标准库装饰器：缓存（`cache`/`lru_cache`）与单分派（`singledispatch`）
+
+这一节把“装饰器落地到标准库”最常见的三件事讲清楚：
+
+- **`cache` / `lru_cache`**：备忘录（memoization）= 用空间换时间
+- **装饰器叠放顺序**：从下到上装饰（等价于嵌套调用）
+- **`singledispatch`**：按**第一个参数类型**分派逻辑（替代 `if/elif`）
+
+配套脚本：`functools_decorators_demo.py`。
+
+---
+
+## 一、`functools.cache`：极简缓存（3.9+）
+
+`cache` 的使用几乎没有成本：
+
+```python
+from functools import cache
+
+@cache
+def f(x: int) -> int:
+    ...
+```
+
+核心点：
+
+- **参数必须可哈希**（缓存键用 dict；`list`/`dict` 不可哈希）
+- 适合**纯函数**（同输入同输出、无副作用），否则缓存会让行为诡异
+- 它等价于 `lru_cache(maxsize=None)`：无限缓存（长运行服务要谨慎内存）
+
+---
+
+## 二、`functools.lru_cache`：可配置 LRU 缓存
+
+`lru_cache` 是生产里更常用的版本：
+
+```python
+from functools import lru_cache
+
+@lru_cache(maxsize=1024, typed=True)
+def f(x: int) -> int:
+    ...
+```
+
+参数要点：
+
+- `maxsize`：缓存条目上限；满了会按 LRU 淘汰（最近最少使用）
+- `typed`：是否区分参数类型（`f(1)` 与 `f(1.0)` 是否分开缓存）
+
+---
+
+## 三、装饰器叠放顺序（非常容易背反）
+
+```python
+@alpha
+@beta
+def fn(...):
+    ...
+```
+
+等价于：
+
+```python
+fn = alpha(beta(fn))
+```
+
+因此：
+
+- **最靠近 `def` 的装饰器先应用**
+- **最上面的装饰器最后应用（包在最外层）**
+
+实践建议（与本章计时装饰器结合）：
+
+- 想“缓存命中后不再重复计时”，通常把 **缓存放外层**：`@cache` 在 `@clock` 上方。
+
+---
+
+## 四、`functools.singledispatch`：单分派泛化函数
+
+单分派解决的是“一个函数要支持很多类型”的组织问题：
+
+- 你写一个**兜底实现**（处理 `object`）
+- 再为具体类型逐个注册实现
+- 新类型的支持可以在**别的模块**里注册，不用修改主函数
+
+典型例子：`htmlize(obj)` 把不同对象渲染为 HTML 片段。
+
+要点：
+
+- 分派依据是**第一个参数的运行时类型**
+- 会寻找“最匹配的实现”（按 MRO/ABC 关系）
+- `bool` 是 `int` 的子类：如果你同时注册 `bool` 和 `numbers.Integral`，`bool` 会更具体，会优先命中 `bool`
+
+---
+
+## 五、术语：memoization（备忘）不是 memorization
+
+- **memoization**：缓存函数结果的优化技术（空间换时间）
+- **memorization**：记忆（完全不是一个东西）
+

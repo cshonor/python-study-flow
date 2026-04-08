@@ -74,6 +74,14 @@
 | `decorator_and_cache_demo.py` | 配套：最小装饰器 + `functools.wraps`；`lru_cache` 演示缓存减少重复计算 |
 | `06-closures-averager-and-cells.md` | 9.6 闭包深度理解：累计平均值，`co_freevars`/`__closure__`/cell，`nonlocal` 坑与修复 |
 | `averager_closure_demo.py` | 配套：类实现 vs 闭包实现；打印 `co_freevars` 与 `cell_contents`；演示 `nonlocal` |
+| `07-nonlocal-and-name-resolution.md` | 9.7 `nonlocal` 与名字解析：`+=` 为何触发局部判定；`global` vs `nonlocal`；查找规则 |
+| `nonlocal_name_resolution_demo.py` | 配套：复现/修复 `averager`；`global` 示例；带状态装饰器（调用次数统计） |
+| `08-timing-decorator-clock.md` | 9.8 计时装饰器：基础版缺陷与三项修复（`**kwargs`、`wraps`、完整参数打印） |
+| `clock_decorator_demo.py` | 配套：`clock0` vs `clock`；`snooze`/递归 `factorial`；验证 `__name__` 与 kwargs 支持 |
+| `09-functools-standard-decorators.md` | 9.9 标准库装饰器：`cache`/`lru_cache`、叠放顺序、`singledispatch` 要点 |
+| `functools_decorators_demo.py` | 配套：Fibonacci（plain vs cache vs lru）；`singledispatch` 的 `htmlize` 示例 |
+| `10-parameterized-and-class-decorators.md` | 9.10 参数化装饰器与类式装饰器：工厂函数三层结构、class `__call__` 方案 |
+| `parameterized_decorators_demo.py` | 配套：参数化注册装饰器、带 `fmt` 的 clock、类式 clock（含 `wraps`） |
 
 ---
 
@@ -88,4 +96,8 @@ python part-2-functions-as-objects/chapter-09/scope_dis_demo.py
 python part-2-functions-as-objects/chapter-09/scope_closure_nonlocal_demo.py
 python part-2-functions-as-objects/chapter-09/decorator_and_cache_demo.py
 python part-2-functions-as-objects/chapter-09/averager_closure_demo.py
+python part-2-functions-as-objects/chapter-09/nonlocal_name_resolution_demo.py
+python part-2-functions-as-objects/chapter-09/clock_decorator_demo.py
+python part-2-functions-as-objects/chapter-09/functools_decorators_demo.py
+python part-2-functions-as-objects/chapter-09/parameterized_decorators_demo.py
 ```
