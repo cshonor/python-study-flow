@@ -78,6 +78,7 @@
 
 ```bash
 python part-2-functions-as-objects/chapter-09/registration.py
+python part-2-functions-as-objects/chapter-09/decorators_basics_demo.py
 python part-2-functions-as-objects/chapter-09/scope_closure_nonlocal_demo.py
 python part-2-functions-as-objects/chapter-09/decorator_and_cache_demo.py
 ```
