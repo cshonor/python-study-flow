@@ -1,0 +1,108 @@
+# 10.2 策略模式：从“类层级”到“一等函数”重构
+
+策略模式的 GoF 定义（本章会不断回到这一句）：
+
+> **定义一系列算法，把它们一一封装起来，并且使它们可以相互替换。本模式使得算法可以独立于使用它的客户而变化。**
+
+在 Python 中，策略模式最常见的重构方向是：
+
+- 如果每个策略类**只有一个方法**，而且**没有实例状态**  
+  → 它本质上就是“一个函数”，可以直接用函数替代类。
+
+本节用“电商订单折扣”作为案例，把这条重构路线跑完整。
+
+配套：`strategy_promotions_demo.py`（含类式/函数式/best_promo/装饰器自动注册）。  
+
+---
+
+## 一、经典类实现：上下文 + 抽象策略 + 具体策略
+
+经典结构里有三种角色：
+
+- **Context**：`Order`，负责在 `due()` 里调用策略
+- **Strategy**：`Promotion` 抽象基类，规定 `discount(order)` 接口
+- **Concrete Strategy**：`FidelityPromo` / `BulkItemPromo` / `LargeOrderPromo`
+
+这套结构能工作，但在 Python 里常会显得“样板代码很多”，因为：
+
+- 抽象基类只为了一个方法
+- 具体策略类只包含一段纯逻辑
+- 这些策略类几乎没有“对象状态”
+
+---
+
+## 二、函数式重构：用函数替代无状态策略类
+
+当策略没有实例状态时，最自然的写法是：
+
+- `promotion` 直接存一个函数（或任何可调用对象）
+- `Order.due()` 里直接调用：`discount = self.promotion(self)`
+
+收益：
+
+- 删除抽象基类与继承层级
+- 策略实现更短、更直观
+- 策略“即插即用”，无需实例化
+
+---
+
+## 三、best_promo：如何自动收集所有策略？
+
+当策略数量多了，你往往会写一个“选最优折扣”的策略：
+
+```python
+def best_promo(order):
+    return max(promo(order) for promo in promos)
+```
+
+关键问题变成：`promos` 怎么维护？
+
+### 方案 1：手工列表（最直观，但容易漏）
+
+```python
+promos = [fidelity_promo, bulk_item_promo, large_order_promo]
+```
+
+### 方案 2：内省当前模块 `globals()`（自动，但耦合命名）
+
+```python
+promos = [p for name, p in globals().items() if name.endswith("_promo")]
+```
+
+### 方案 3：独立 `promotions` 模块 + `inspect.getmembers`
+
+把策略都放进单独模块，用内省扫描函数：
+
+```python
+import inspect
+import promotions
+
+promos = [f for _, f in inspect.getmembers(promotions, inspect.isfunction)]
+```
+
+这种方式最利于解耦：新增策略只需在 `promotions` 里加函数。
+
+---
+
+## 四、进阶：用“装饰器自动注册”彻底消灭维护成本
+
+如果你想把“策略登记”变成一种声明式写法（类似框架路由注册），可以用一个注册装饰器：
+
+```python
+promos: list[callable] = []
+
+def promotion(promo):
+    promos.append(promo)
+    return promo
+
+@promotion
+def fidelity_promo(order): ...
+```
+
+效果：
+
+- 新增策略只要加 `@promotion`，列表自动更新
+- `best_promo` 永远不需要改
+
+这也是“装饰器 + 一等函数”组合拳在工程里的典型用途。
+

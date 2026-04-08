@@ -10,6 +10,8 @@
 |------|------|------|
 | `chapter-07/` | 第 7 章「函数是一等对象」 | 一等对象四条件、高阶函数、`lambda`、可调用对象；见 `chapter-07/README.md` |
 | `chapter-08/` | 第 8 章「函数中的类型提示」 | Type Hints 开篇：PEP 484、渐进式类型、动态/静态边界；见 `chapter-08/README.md` |
+| `chapter-09/` | 第 9 章「装饰器和闭包」 | 作用域（LEGB）、闭包、装饰器从基础到参数化；见 `chapter-09/README.md` |
+| `chapter-10/` | 第 10 章「用一等函数实现设计模式」 | 用函数/闭包简化策略、命令等模式；见 `chapter-10/README.md` |
 
 ---
 
