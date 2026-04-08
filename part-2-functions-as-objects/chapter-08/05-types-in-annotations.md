@@ -4,6 +4,8 @@
 
 配套脚本：`types_in_annotations_demo.py`。
 
+**进阶续篇**（类型别名、`Iterable`/`Sequence`、`TypeVar`、`Protocol`、`Callable`、`NoReturn`）：见 `06-types-in-annotations-advanced.md` 与 `types_advanced_demo.py`。
+
 ---
 
 ## 8.5.1 `Any`：渐进式类型的“通配符”

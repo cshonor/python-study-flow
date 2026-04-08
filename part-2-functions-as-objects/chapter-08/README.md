@@ -24,6 +24,8 @@
 | `duck_nominal_typing_demo.py` | 配套：`Bird`/`Duck`/`quack`，无注解 vs 注解下 mypy 与运行时的对照 |
 | `05-types-in-annotations.md` | 8.5 注解中可用的类型：`Any`/`object`、简单类型、`Optional`/`Union`、泛型容器、元组、`Mapping`/`Sequence`、语法演进 |
 | `types_in_annotations_demo.py` | 配套：`parse_token`、`tokenize`、`NamedTuple`、`Mapping` 入参等可运行片段 |
+| `06-types-in-annotations-advanced.md` | 8.5（续）进阶：类型别名、`Iterable`/`Sequence`、`TypeVar`（受限/有界）、`AnyStr`、`Protocol`、`Callable`、`NoReturn` |
+| `types_advanced_demo.py` | 配套：`FromTo` 别名、`SupportsLessThan` + `top`、`apply_func`、`fatal_error` |
 
 ---
 
@@ -37,6 +39,7 @@ python part-2-functions-as-objects/chapter-08/gradual_typing_demo.py
 python part-2-functions-as-objects/chapter-08/show_count_demo.py
 python part-2-functions-as-objects/chapter-08/duck_nominal_typing_demo.py
 python part-2-functions-as-objects/chapter-08/types_in_annotations_demo.py
+python part-2-functions-as-objects/chapter-08/types_advanced_demo.py
 ```
 
 如果你装了 mypy，还可以做静态检查：
@@ -45,5 +48,6 @@ python part-2-functions-as-objects/chapter-08/types_in_annotations_demo.py
 mypy part-2-functions-as-objects/chapter-08/type_hints_mypy_demo.py
 mypy part-2-functions-as-objects/chapter-08/duck_nominal_typing_demo.py
 mypy part-2-functions-as-objects/chapter-08/types_in_annotations_demo.py
+mypy part-2-functions-as-objects/chapter-08/types_advanced_demo.py
 ```
 
