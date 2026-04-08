@@ -1,5 +1,7 @@
 """
-Demo for 01-functions-as-first-class-objects-overview.md
+Demos for chapter 7 notes:
+  - 01-functions-as-first-class-objects-overview.md
+  - 02-examples-7-1-7-2-function-object-and-map.md
 
 Run from repo root:
   python part-2-functions-as-objects/chapter-07/first_class_functions_demo.py
@@ -13,7 +15,39 @@ def section(title: str) -> None:
 
 
 def factorial(n: int) -> int:
+    """returns n!"""
     return 1 if n < 2 else n * factorial(n - 1)
+
+
+def demo_example_7_1_function_as_object() -> None:
+    section("Ex 7-1: function object has __doc__, type, __class__")
+    print("factorial.__doc__:", repr(factorial.__doc__))
+    print("type(factorial):", type(factorial))
+    print("factorial.__class__:", factorial.__class__)
+    print("type(factorial) is factorial.__class__:", type(factorial) is factorial.__class__)
+
+
+def demo_example_7_2_assign_and_map() -> None:
+    section("Ex 7-2: alias + map(factorial, range(11))")
+    fact = factorial
+    print("fact is factorial:", fact is factorial)
+    print("fact(5):", fact(5))
+    mapped = list(map(factorial, range(11)))
+    print("list(map(factorial, range(11))):", mapped)
+
+
+def annotated_sample(a: int, b: str = "x") -> bool:
+    """sample for __annotations__ / __defaults__"""
+    return True
+
+
+def demo_common_function_attributes() -> None:
+    section("Function attrs: __name__, __defaults__, __annotations__, __code__")
+    print("factorial.__name__:", factorial.__name__)
+    print("annotated_sample.__defaults__:", annotated_sample.__defaults__)
+    print("annotated_sample.__kwdefaults__:", annotated_sample.__kwdefaults__)
+    print("annotated_sample.__annotations__:", annotated_sample.__annotations__)
+    print("annotated_sample.__code__.co_argcount:", annotated_sample.__code__.co_argcount)
 
 
 def demo_assign_and_identity() -> None:
@@ -69,6 +103,9 @@ def demo_callable_instance() -> None:
 
 
 def main() -> None:
+    demo_example_7_1_function_as_object()
+    demo_example_7_2_assign_and_map()
+    demo_common_function_attributes()
     demo_assign_and_identity()
     demo_container_of_callables()
     demo_higher_order_sorted()

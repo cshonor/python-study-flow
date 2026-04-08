@@ -1,0 +1,108 @@
+# 7.5 Python 的 9 种可调用对象（Callable）：谁能用 `()`，以及怎么安全判断
+
+这一节把“可调用对象”系统梳理一遍。你要记住的定义很简单：
+
+> **只要能写成 `obj(...)` 的对象，就是可调用对象（callable）。**
+
+判断方式也很简单：
+
+> 用 `callable(obj)`，返回 `True` 就代表它能被 `()` 调用。
+
+但“能调用”并不代表“调用后立刻得到业务数据”。有些可调用对象（生成器函数 / 协程函数 / 异步生成器函数）**调用后返回的是迭代器/协程对象**，需要进一步消费或 `await` 才会产生结果。
+
+配套脚本：`callable_objects_demo.py`（把 9 类都跑出来，并打印类型信息）。  
+
+---
+
+## 一、先把两件事区分开：可调用对象 vs 调用结果
+
+### 1.1 可调用对象（callable）
+能写 `obj(...)`。
+
+### 1.2 调用结果（result）
+调用之后返回的对象是什么：
+
+- 普通函数/方法/内置函数：通常直接返回业务数据；
+- 生成器函数：返回生成器对象（你需要 `next(...)` 或 `list(...)` 才能得到数据）；
+- `async def` 协程函数：返回协程对象（要 `await` 或交给事件循环执行）；
+- 异步生成器函数：返回异步生成器对象（要 `async for` 消费）。
+
+---
+
+## 二、9 种可调用对象（Python 3.9+ 常见梳理）
+
+下面的分类是“用法视角”的分类，重点是你写代码时怎么识别。
+
+### 2.1 用户定义函数（`def` / `lambda`）
+- 你写出来的普通函数对象。
+- 特点：有 `__name__`、可写 docstring、支持闭包、可作为参数/返回值。
+
+### 2.2 内置函数（built-in function）
+- 由解释器/标准库 C 扩展提供的函数对象。
+- 示例：`len`、`sum`、`print`、`math.sqrt`。
+
+### 2.3 内置方法（built-in method）
+- 内置类型的方法（很多也是 C 实现）。
+- 示例：`dict.get`（绑定到实例后得到 built-in method）、`list.append`。
+
+### 2.4 方法（method）
+你在类体中 `def` 定义的方法，绑定到实例后成为“绑定方法”可调用。
+- 例：`obj.method(...)`
+- 细分：实例方法、`@classmethod`、`@staticmethod`（本节只需知道它们都能被调用）
+
+### 2.5 类（type object）
+类本身也可调用：`MyClass(...)`。
+- 调用过程大致是：`__new__` 创建实例 → `__init__` 初始化 → 返回实例。
+
+### 2.6 实现了 `__call__` 的实例（user-defined callable instance）
+只要类里定义了 `__call__`，它的实例就能像函数一样被 `()` 调用。
+- 这是 7.6 要展开的重点（BingoCage）。
+
+### 2.7 生成器函数（generator function）
+函数体里包含 `yield` 的函数。**调用它不会执行函数体**，而是返回一个生成器对象（iterator-like）。  
+示例：`def gen(): yield 1`
+
+### 2.8 原生协程函数（native coroutine function）
+用 `async def` 定义的函数。调用后返回协程对象，需要 `await` 或由事件循环调度。  
+示例：`async def coro(): return 1`
+
+### 2.9 异步生成器函数（async generator function）
+用 `async def` 定义、并包含 `yield` 的函数。调用后返回异步生成器对象，需要 `async for` 消费。  
+示例：`async def agen(): yield 1`
+
+---
+
+## 三、怎么安全判断“是不是可调用”
+
+### 3.1 `callable(obj)`：最直接、最通用
+
+```python
+callable(len)       # True
+callable(str)       # True（类可调用）
+callable("Ni!")     # False
+```
+
+### 3.2 `callable` 为 True，不代表“调用就得到结果”
+
+这三个也都是 callable，但调用结果不是“值”，而是“待消费对象”：
+
+- 生成器函数 → 生成器对象
+- 协程函数 → 协程对象（需 await）
+- 异步生成器函数 → 异步生成器对象（需 async for）
+
+因此实际写代码时，除了 `callable` 以外，你经常还要配合 `inspect` 做更细的分类（demo 里会展示）。
+
+---
+
+## 四、运行
+
+```bash
+python part-2-functions-as-objects/chapter-07/callable_objects_demo.py
+```
+
+输出会列出每一类对象：
+
+- `callable(...)` 的结果
+- `type(obj)` / `type(obj).__name__`
+- 对 generator/coroutine/async generator：会展示它们“调用后返回的对象类型”
+
