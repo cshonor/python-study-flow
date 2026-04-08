@@ -67,8 +67,11 @@
 | `02-decorators-basics.md` | 装饰器基础：`@` 的等价形式、函数替换、装饰发生在导入时（最小例子） |
 | `03-registration-decorator-import-time.md` | 注册式装饰器：`registry` 收集函数引用，脚本运行 vs import 的执行时机对照 |
 | `registration.py` | 配套：`@register` + 全局 `registry`，展示导入时执行装饰过程 |
+| `04-registration-decorators-in-practice.md` | 9.4 注册装饰器实战：包装式 vs 注册式、跨模块组织、工程注意点 |
+| `05-scope-traps-and-dis.md` | 9.5 作用域陷阱：赋值导致局部、`global` 修复、`dis` 看 `LOAD_GLOBAL`/`LOAD_FAST` |
+| `scope_dis_demo.py` | 配套：复现 `UnboundLocalError`，并反汇编对比关键字节码指令 |
 | `scope_closure_nonlocal_demo.py` | 配套：LEGB、自由变量、闭包、`nonlocal` 对比（ASCII 输出，适配 Windows 控制台） |
-| `decorator_and_cache_demo.py` | 配套：最小装饰器 + `functools.wraps`；`lru_cache`/`cache` 对比演示（避免复杂依赖） |
+| `decorator_and_cache_demo.py` | 配套：最小装饰器 + `functools.wraps`；`lru_cache` 演示缓存减少重复计算 |
 
 ---
 
@@ -79,6 +82,7 @@
 ```bash
 python part-2-functions-as-objects/chapter-09/registration.py
 python part-2-functions-as-objects/chapter-09/decorators_basics_demo.py
+python part-2-functions-as-objects/chapter-09/scope_dis_demo.py
 python part-2-functions-as-objects/chapter-09/scope_closure_nonlocal_demo.py
 python part-2-functions-as-objects/chapter-09/decorator_and_cache_demo.py
 ```
