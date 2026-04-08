@@ -20,6 +20,8 @@
 | `gradual_typing_demo.py` | 配套：Any 逃生舱、逐步收紧边界、运行时 vs 静态检查的对照 |
 | `03-gradual-typing-in-practice.md` | 8.3 渐进式类型实践：`show_count` 从无注解到 Optional/None 默认值 |
 | `show_count_demo.py` | 配套：`show_count` 最终版 + 断言用例 |
+| `04-types-defined-by-operations.md` | 8.4 类型由受支持的操作定义：鸭子类型 vs 名义类型、`double`/`Sequence` 与静态检查的错位 |
+| `duck_nominal_typing_demo.py` | 配套：`Bird`/`Duck`/`quack`，无注解 vs 注解下 mypy 与运行时的对照 |
 
 ---
 
@@ -31,11 +33,13 @@
 python part-2-functions-as-objects/chapter-08/type_hints_mypy_demo.py
 python part-2-functions-as-objects/chapter-08/gradual_typing_demo.py
 python part-2-functions-as-objects/chapter-08/show_count_demo.py
+python part-2-functions-as-objects/chapter-08/duck_nominal_typing_demo.py
 ```
 
 如果你装了 mypy，还可以做静态检查：
 
 ```bash
 mypy part-2-functions-as-objects/chapter-08/type_hints_mypy_demo.py
+mypy part-2-functions-as-objects/chapter-08/duck_nominal_typing_demo.py
 ```
 
