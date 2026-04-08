@@ -1,0 +1,55 @@
+# 12.7 `Vector` 第 4 版：哈希与快速等值测试（map-reduce）
+
+这一节对 `Vector` 做两项“工程级”升级：
+
+- **可哈希**：实现 `__hash__`，使其可作为 `set` 元素 / `dict` 键
+- **更快的等值比较**：优化高维 `__eq__`，避免 `tuple(self)` 的全量拷贝
+
+---
+
+## 一、可哈希的前提条件
+
+要让对象可哈希（hashable），通常要同时满足：
+
+- **不可变**：对象的“相等性依据”在生命周期内不应变化  
+  （我们在 v3 里通过 `__slots__` + `__setattr__` 已经把“重绑定/新增属性”堵住）
+- **实现 `__hash__`**
+- **`__eq__` 与 `__hash__` 一致**：若 `a == b`，必须 `hash(a) == hash(b)`
+
+---
+
+## 二、`__hash__`：map-reduce（hash each component → xor reduce）
+
+思路是典型的 map-reduce：
+
+- **Map**：对每个分量做 `hash(x)`
+- **Reduce**：用异或 `xor` 把所有分量哈希聚合成一个值
+
+实现要点：
+
+- 用生成器表达式 `(hash(x) for x in self._components)` 保持 **O(1)** 额外内存
+- `functools.reduce(operator.xor, hashes, 0)` 的初始值 `0` 是 xor 的单位元（空向量也安全）
+
+---
+
+## 三、`__eq__`：长度预检查 + `zip`/`all` 的短路
+
+旧写法（教学上直观，但高维时会拷贝大元组）：
+
+- `tuple(self) == tuple(other)`
+
+新写法的核心优化：
+
+- **长度预检查**：能 `len(other)` 的话，长度不等立刻返回 `False`
+- **短路比较**：`all(a == b for a, b in zip(self, other))`  
+  一旦出现不相等分量，会立即停止比较
+- **不做全量拷贝**：全程生成器惰性迭代，额外内存 **O(1)**
+
+> 注意：为了兼容“任意可迭代对象”，`__eq__` 需要对 `other` 做一些温和的防御处理（例如 `other` 没有 `len` 时不做长度预检查）。
+
+---
+
+## 四、配套代码
+
+对应可运行示例见 `vector_v4_hash_eq_demo.py`。
+

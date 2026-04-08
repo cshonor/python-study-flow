@@ -22,10 +22,16 @@
 | `03-vector-v1-compatible-with-vector2d.md` | 12.3 `Vector` 第 1 版：与 `Vector2d` 行为兼容（从二维到 N 维） |
 | `04-protocols-and-duck-typing.md` | 协议与鸭子类型：Python 的“非正式接口”（含 PEP 544 `Protocol`） |
 | `05-vector-v2-sequence-and-slicing.md` | 12.3 `Vector` 第 2 版：实现序列协议与切片（slice → `Vector`） |
+| `06-vector-v3-dynamic-attributes-and-setattr.md` | 12.6 `Vector` 第 3 版：动态属性（`__getattr__`）与不可变性（`__setattr__`/`__slots__`） |
+| `07-vector-v4-hash-and-fast-eq.md` | 12.7 `Vector` 第 4 版：可哈希（`__hash__`）与快速等值比较（`zip`/`all`） |
+| `08-vector-v5-format-and-hyperspherical.md` | 12.8 `Vector` 第 5 版：自定义格式化（笛卡尔/超球面，`h` 后缀） |
 | `vector_len_getitem_demo.py` | 配套：最小可运行 `Vector`（N 维、不可变、支持索引/切片） |
 | `vector_v1_compat_demo.py` | 配套：`Vector` v1（repr 截断、bytes/frombytes、eq/abs/bool） |
 | `protocols_duck_typing_demo.py` | 配套：`FrenchDeck` 序列协议 + `typing.Protocol` 静态协议演示 |
 | `vector_v2_sequence_demo.py` | 配套：`Vector` v2（v1 + `__len__`/`__getitem__` + 切片返回同类型） |
+| `vector_v3_dynamic_attrs_demo.py` | 配套：`Vector` v3（动态属性 `x/y/z/t` + 禁止赋值） |
+| `vector_v4_hash_eq_demo.py` | 配套：`Vector` v4（可哈希 + 更快的等值比较） |
+| `vector_v5_format_demo.py` | 配套：`Vector` v5（`__format__` + 超球面坐标 `h`） |
 
 ---
 
@@ -53,5 +59,23 @@ python part-3-classes-and-protocols/chapter-12/protocols_duck_typing_demo.py
 
 ```bash
 python part-3-classes-and-protocols/chapter-12/vector_v2_sequence_demo.py
+```
+
+`Vector` v3（动态属性 + `__setattr__`/`__slots__`）示例：
+
+```bash
+python part-3-classes-and-protocols/chapter-12/vector_v3_dynamic_attrs_demo.py
+```
+
+`Vector` v4（可哈希 + 快速等值比较）示例：
+
+```bash
+python part-3-classes-and-protocols/chapter-12/vector_v4_hash_eq_demo.py
+```
+
+`Vector` v5（自定义格式化 + `h` 超球面坐标）示例：
+
+```bash
+python part-3-classes-and-protocols/chapter-12/vector_v5_format_demo.py
 ```
 
