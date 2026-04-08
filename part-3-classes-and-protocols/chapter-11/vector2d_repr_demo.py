@@ -1,0 +1,81 @@
+"""
+Demo for 02-repr-str-bytes-format-vector2d.md.
+
+Implements a minimal Vector2d that supports:
+- repr() / str() (must return str in Python 3)
+- bytes() (must return bytes)
+- format() (custom format spec, including polar mode via trailing 'p')
+"""
+
+from __future__ import annotations
+
+import math
+from array import array
+
+
+class Vector2d:
+    typecode = "d"
+
+    def __init__(self, x: float, y: float) -> None:
+        self._x = float(x)
+        self._y = float(y)
+
+    @property
+    def x(self) -> float:
+        return self._x
+
+    @property
+    def y(self) -> float:
+        return self._y
+
+    def __iter__(self):
+        return (i for i in (self.x, self.y))
+
+    def __repr__(self) -> str:
+        cls_name = type(self).__name__
+        return f"{cls_name}({self.x!r}, {self.y!r})"
+
+    def __str__(self) -> str:
+        return str(tuple(self))
+
+    def __bytes__(self) -> bytes:
+        # One-byte typecode + binary array payload of two floats.
+        return bytes([ord(self.typecode)]) + bytes(array(self.typecode, self))
+
+    def __format__(self, fmt_spec: str) -> str:
+        # If fmt_spec ends with 'p', format in polar coordinates.
+        polar = False
+        if fmt_spec.endswith("p"):
+            polar = True
+            fmt_spec = fmt_spec[:-1]
+        if polar:
+            r = abs(self)
+            theta = math.atan2(self.y, self.x)
+            coords = (r, theta)
+            outer = "<{}, {}>"
+        else:
+            coords = tuple(self)
+            outer = "({}, {})"
+        components = (format(c, fmt_spec) for c in coords)
+        return outer.format(*components)
+
+    def __abs__(self) -> float:
+        return math.hypot(self.x, self.y)
+
+    def __bool__(self) -> bool:
+        return bool(abs(self))
+
+
+def main() -> None:
+    v = Vector2d(3, 4)
+    print("repr(v) ->", repr(v))
+    print("str(v) ->", str(v))
+    print("bytes(v) ->", bytes(v))
+    print("format(v) ->", format(v))
+    print("format(v, '.2f') ->", format(v, ".2f"))
+    print("format(v, '.2fp') ->", format(v, ".2fp"))
+
+
+if __name__ == "__main__":
+    main()
+
