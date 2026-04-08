@@ -21,6 +21,10 @@
 | `vector2d_frombytes_demo.py` | 配套：断言 `v == Vector2d.frombytes(bytes(v))`（从 `vector2d_repr_demo.py` 动态加载类） |
 | `04-classmethod-vs-staticmethod.md` | 11.5 `classmethod` vs `staticmethod`：调用行为、继承差异与实践建议 |
 | `classmethod_staticmethod_demo.py` | 配套：复现 `Demo` 输出；展示 `from_polar`（classmethod）与静态方法误用对比 |
+| `05-formatting-display-vector2d.md` | 11.6 格式化显示：`__format__` 与格式规范微语言；`p` 极坐标扩展 |
+| `vector2d_format_demo.py` | 配套：`format()` / f-string 对 `Vector2d` 的直角/极坐标格式化输出 |
+| `06-hashable-vector2d.md` | 11.7 可哈希的 `Vector2d`：不可变性、`__eq__`/`__hash__` 一致性、set/dict 用法 |
+| `vector2d_hash_demo.py` | 配套：验证 `Vector2d` 可哈希并禁止修改坐标（避免哈希漂移） |
 
 ---
 
@@ -32,5 +36,7 @@
 python part-3-classes-and-protocols/chapter-11/vector2d_repr_demo.py
 python part-3-classes-and-protocols/chapter-11/vector2d_frombytes_demo.py
 python part-3-classes-and-protocols/chapter-11/classmethod_staticmethod_demo.py
+python part-3-classes-and-protocols/chapter-11/vector2d_format_demo.py
+python part-3-classes-and-protocols/chapter-11/vector2d_hash_demo.py
 ```
 

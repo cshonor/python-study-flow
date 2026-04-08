@@ -15,18 +15,25 @@ from array import array
 
 class Vector2d:
     typecode = "d"
+    __slots__ = ("__x", "__y")
 
     def __init__(self, x: float, y: float) -> None:
-        self._x = float(x)
-        self._y = float(y)
+        object.__setattr__(self, "_Vector2d__x", float(x))
+        object.__setattr__(self, "_Vector2d__y", float(y))
 
     @property
     def x(self) -> float:
-        return self._x
+        return self.__x
 
     @property
     def y(self) -> float:
-        return self._y
+        return self.__y
+
+    def __setattr__(self, name: str, value: object) -> None:
+        # Make instances effectively immutable after initialization.
+        if name in ("_Vector2d__x", "_Vector2d__y", "__x", "__y"):
+            raise AttributeError(f"{type(self).__name__} is immutable")
+        raise AttributeError(f"cannot set attribute {name!r}")
 
     def __iter__(self):
         return (i for i in (self.x, self.y))
@@ -84,6 +91,12 @@ class Vector2d:
             return NotImplemented
         return (self.x, self.y) == (float(ox), float(oy))
 
+    def __hash__(self) -> int:
+        return hash((self.x, self.y))
+
+    def __complex__(self) -> complex:
+        return complex(self.x, self.y)
+
 
 def main() -> None:
     v = Vector2d(3, 4)
@@ -97,6 +110,8 @@ def main() -> None:
     print("Vector2d.frombytes(bytes(v)) ->", v2, "equal:", v2 == v)
     vp = Vector2d.from_polar(2, math.pi / 2)
     print("Vector2d.from_polar(2, pi/2) ->", vp)
+    print("hash(v) ->", hash(v))
+    print("complex(v) ->", complex(v))
 
 
 if __name__ == "__main__":

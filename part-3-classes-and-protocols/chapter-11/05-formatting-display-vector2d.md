@@ -1,0 +1,72 @@
+# 11.6 格式化显示：用 `__format__` 扩展格式规范微语言（Vector2d 的 `p` 极坐标）
+
+这一节围绕 `__format__(format_spec)`：当你写
+
+- `format(obj, spec)`
+- `f"{obj:spec}"`
+- `"{:spec}".format(obj)`
+
+最终都会调用 `obj.__format__(spec)`。
+
+配套脚本：`vector2d_format_demo.py`。
+
+---
+
+## 一、默认行为：`object.__format__` 的两个规则
+
+如果类没有自定义 `__format__`：
+
+- `format(obj)`（空 spec）等价于 `str(obj)`
+- `format(obj, "non-empty")` 会抛 `TypeError`
+
+所以一旦你实现了 `__format__`，务必支持 `fmt_spec=''` 的调用。
+
+---
+
+## 二、第一版：把格式说明符应用到每个分量
+
+`Vector2d` 的直角坐标格式化可以写成：
+
+```python
+def __format__(self, fmt_spec: str = "") -> str:
+    components = (format(c, fmt_spec) for c in self)
+    return "({}, {})".format(*components)
+```
+
+关键点：
+
+- `format(c, fmt_spec)` 复用内置类型（float）的格式规则
+- 你只是把“格式说明符”转发给分量，不需要重复实现 `.2f`、`.3e` 等细节
+
+---
+
+## 三、第二版：扩展极坐标（自定义格式码 `p`）
+
+我们给 `Vector2d` 扩展一个自定义约定：如果 `fmt_spec` 以 `'p'` 结尾，就输出极坐标 `<r, theta>`：
+
+- `r = abs(self)`
+- `theta = atan2(y, x)`
+
+实现套路：
+
+1. 检查 `fmt_spec.endswith('p')`
+2. 若是，去掉末尾 `p`，剩余部分仍然交给 `format()` 格式化数值
+3. 选择不同的外层包装：直角用 `(x, y)`，极坐标用 `<r, theta>`
+
+示例效果：
+
+- `format(Vector2d(3, 4), "p")` → `"<5.0, 0.927...>"`
+- `format(Vector2d(3, 4), ".2fp")` → `"<5.00, 0.93>"`
+
+---
+
+## 四、`__str__` / `__repr__` / `__format__` 的分工
+
+| 方法 | 触发方式 | 目标 |
+|---|---|---|
+| `__repr__` | `repr(obj)` / 交互式回显 | 面向开发者：尽量无歧义 |
+| `__str__` | `str(obj)` / `print(obj)` | 面向用户：更友好 |
+| `__format__` | `format()` / f-string | 面向格式：可由 `format_spec` 驱动的输出 |
+
+结论：`__format__` 不是 `__str__` 的替代品；它是“可参数化的字符串协议”。
+
