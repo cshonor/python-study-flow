@@ -15,6 +15,8 @@
 | `chapter-05/` | 第 5 章「数据类构建器」 | `namedtuple` / `typing.NamedTuple` / `@dataclass` / `TypedDict` + 配套 demo |
 | `chapter-06/` | 第 6 章「对象引用、可变性和垃圾回收」 | 变量/对象/引用、浅深拷贝、参数传递、GC、弱引用 |
 
+第 7 章「函数是一等对象」等材料在 **`part-2-functions-as-objects/`**（本书 Part 2 对应目录），见该 Part 内 `README` 与 `chapter-07/`。
+
 每章目录内约定：**两位编号**的 `NN-主题.md` 为笔记，同名主题的 `*_demo.py` 为可运行示例（见下）。
 
 ---
