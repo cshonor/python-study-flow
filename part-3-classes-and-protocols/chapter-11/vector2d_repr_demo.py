@@ -15,6 +15,7 @@ from array import array
 
 class Vector2d:
     typecode = "d"
+    __match_args__ = ("x", "y")
     __slots__ = ("__x", "__y")
 
     def __init__(self, x: float, y: float) -> None:

@@ -25,6 +25,8 @@
 | `vector2d_format_demo.py` | 配套：`format()` / f-string 对 `Vector2d` 的直角/极坐标格式化输出 |
 | `06-hashable-vector2d.md` | 11.7 可哈希的 `Vector2d`：不可变性、`__eq__`/`__hash__` 一致性、set/dict 用法 |
 | `vector2d_hash_demo.py` | 配套：验证 `Vector2d` 可哈希并禁止修改坐标（避免哈希漂移） |
+| `07-positional-pattern-matching.md` | 11.8 位置模式匹配：`__match_args__` 让 `case Vector2d(x, y)` 可用 |
+| `vector2d_match_demo.py` | 配套：关键字模式 vs 位置模式的 `match-case` 示例 |
 
 ---
 
@@ -38,5 +40,6 @@ python part-3-classes-and-protocols/chapter-11/vector2d_frombytes_demo.py
 python part-3-classes-and-protocols/chapter-11/classmethod_staticmethod_demo.py
 python part-3-classes-and-protocols/chapter-11/vector2d_format_demo.py
 python part-3-classes-and-protocols/chapter-11/vector2d_hash_demo.py
+python part-3-classes-and-protocols/chapter-11/vector2d_match_demo.py
 ```
 

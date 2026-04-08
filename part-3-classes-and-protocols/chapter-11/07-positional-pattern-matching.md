@@ -1,0 +1,72 @@
+# 11.8 支持位置模式匹配：`__match_args__` 让 `Vector2d` 能写成 `case Vector2d(x, y)`
+
+Python 3.10+ 的结构化模式匹配（`match/case`）对自定义类有两种常见匹配方式：
+
+- **关键字模式**：`case Vector2d(x=..., y=...)`（无需额外改造）
+- **位置模式**：`case Vector2d(..., ...)`（需要类声明 `__match_args__`）
+
+本节的目标是让 `Vector2d` 支持更简洁的位置模式。
+
+配套脚本：`vector2d_match_demo.py`。
+
+---
+
+## 一、为什么位置模式需要 `__match_args__`
+
+对内置序列（`tuple/list`）来说，“第 1 个/第 2 个元素”顺序是天然的；但对自定义类来说，属性顺序没有统一约定。
+
+因此 Python 要求你显式声明：
+
+```python
+class Vector2d:
+    __match_args__ = ("x", "y")
+```
+
+含义是：当写 `case Vector2d(a, b)` 时，等价于按顺序绑定：
+
+- `x = a`
+- `y = b`
+
+---
+
+## 二、关键字模式 vs 位置模式（对比）
+
+### 关键字模式（默认支持）
+
+```python
+match v:
+    case Vector2d(y=0):
+        ...
+```
+
+### 位置模式（需要 `__match_args__`）
+
+```python
+match v:
+    case Vector2d(_, 0):
+        ...
+```
+
+实践建议：
+
+- 简单场景（两个分量都明显）：位置模式更简洁
+- 复杂场景（属性多、顺序不直观）：关键字模式更可读
+
+---
+
+## 三、一个完整例子（含 guard）
+
+```python
+match v:
+    case Vector2d(0, 0):
+        ...
+    case Vector2d(0, _):
+        ...
+    case Vector2d(_, 0):
+        ...
+    case Vector2d(x, y) if x == y:
+        ...
+```
+
+注意：`__match_args__` 应对齐 `__init__` 的参数顺序（这里就是 `x, y`），否则会造成认知混乱。
+
