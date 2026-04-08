@@ -26,6 +26,8 @@
 | `types_in_annotations_demo.py` | 配套：`parse_token`、`tokenize`、`NamedTuple`、`Mapping` 入参等可运行片段 |
 | `06-types-in-annotations-advanced.md` | 8.5（续）进阶：类型别名、`Iterable`/`Sequence`、`TypeVar`（受限/有界）、`AnyStr`、`Protocol`、`Callable`、`NoReturn` |
 | `types_advanced_demo.py` | 配套：`FromTo` 别名、`SupportsLessThan` + `top`、`apply_func`、`fatal_error` |
+| `07-positional-varargs-and-type-limits.md` | 8.6 仅限位置参数与 `*`/`**` 注解；8.7 类型系统局限性（误报/漏报）与测试 |
+| `tag_type_hints_demo.py` | 配套：`tag(name, /, *content, class_=..., **attrs)` 最小可运行示例 |
 
 ---
 
@@ -40,6 +42,7 @@ python part-2-functions-as-objects/chapter-08/show_count_demo.py
 python part-2-functions-as-objects/chapter-08/duck_nominal_typing_demo.py
 python part-2-functions-as-objects/chapter-08/types_in_annotations_demo.py
 python part-2-functions-as-objects/chapter-08/types_advanced_demo.py
+python part-2-functions-as-objects/chapter-08/tag_type_hints_demo.py
 ```
 
 如果你装了 mypy，还可以做静态检查：
@@ -49,5 +52,6 @@ mypy part-2-functions-as-objects/chapter-08/type_hints_mypy_demo.py
 mypy part-2-functions-as-objects/chapter-08/duck_nominal_typing_demo.py
 mypy part-2-functions-as-objects/chapter-08/types_in_annotations_demo.py
 mypy part-2-functions-as-objects/chapter-08/types_advanced_demo.py
+mypy part-2-functions-as-objects/chapter-08/tag_type_hints_demo.py
 ```
 
