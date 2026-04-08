@@ -72,6 +72,8 @@
 | `scope_dis_demo.py` | 配套：复现 `UnboundLocalError`，并反汇编对比关键字节码指令 |
 | `scope_closure_nonlocal_demo.py` | 配套：LEGB、自由变量、闭包、`nonlocal` 对比（ASCII 输出，适配 Windows 控制台） |
 | `decorator_and_cache_demo.py` | 配套：最小装饰器 + `functools.wraps`；`lru_cache` 演示缓存减少重复计算 |
+| `06-closures-averager-and-cells.md` | 9.6 闭包深度理解：累计平均值，`co_freevars`/`__closure__`/cell，`nonlocal` 坑与修复 |
+| `averager_closure_demo.py` | 配套：类实现 vs 闭包实现；打印 `co_freevars` 与 `cell_contents`；演示 `nonlocal` |
 
 ---
 
@@ -85,4 +87,5 @@ python part-2-functions-as-objects/chapter-09/decorators_basics_demo.py
 python part-2-functions-as-objects/chapter-09/scope_dis_demo.py
 python part-2-functions-as-objects/chapter-09/scope_closure_nonlocal_demo.py
 python part-2-functions-as-objects/chapter-09/decorator_and_cache_demo.py
+python part-2-functions-as-objects/chapter-09/averager_closure_demo.py
 ```
