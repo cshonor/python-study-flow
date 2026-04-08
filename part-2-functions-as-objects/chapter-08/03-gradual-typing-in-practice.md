@@ -1,0 +1,164 @@
+# 8.3 渐进式类型实践：从 0 注解到可检查的函数签名（`show_count` 实战）
+
+8.2 讲的是“渐进式类型”的哲学：可选、可逐步、主要给工具看。  
+8.3 则是把这套哲学落到最常见的工作流：**从一个完全无注解的函数开始，逐步加上类型提示，并用静态检查器把问题提前暴露出来**。
+
+本节用一个很小但很真实的函数 `show_count` 做贯穿案例：根据数量返回单复数文本。
+
+配套脚本：`show_count_demo.py`（包含最终版实现 + 断言测试）。  
+
+---
+
+## 一、起点：没有任何类型提示的函数（示例 8-1）
+
+```python
+def show_count(count, word):
+    if count == 1:
+        return f"1 {word}"
+    count_str = str(count) if count else "no"
+    return f"{count_str} {word}s"
+```
+
+它能用：
+
+- `show_count(99, "bird")` → `"99 birds"`
+- `show_count(1, "bird")` → `"1 bird"`
+- `show_count(0, "bird")` → `"no birds"`
+
+### 1.1 mypy 默认为什么“看起来什么都没做”
+
+mypy 默认策略是：**只对“它看得懂类型”的部分严格**。当函数完全没注解时，它往往不会强行要求你补全（这就是渐进式类型“可选”的体现）。
+
+---
+
+## 二、让 mypy 变严格：把“渐进”变成“可控”
+
+你可以在命令行上逐步收紧：
+
+- `--disallow-untyped-defs`：禁止无注解函数（逼你把边界写清楚）
+- `--disallow-incomplete-defs`：禁止“只写一半”的注解（例如只写参数不写返回值）
+
+示例：
+
+```bash
+mypy --disallow-untyped-defs --disallow-incomplete-defs your_file.py
+```
+
+也可以放进 `mypy.ini`（项目级配置），避免每次都敲一串参数。
+
+---
+
+## 三、第一步：只加返回值类型（让工具知道“你想返回什么”）
+
+```python
+def show_count(count, word) -> str:
+    ...
+```
+
+这一步的意义：
+
+- 你先把“输出契约”固定住；
+- mypy 会进一步提醒你：参数也需要类型（在严格模式下）。
+
+---
+
+## 四、第二步：补全参数类型（把边界写清楚）
+
+```python
+def show_count(count: int, word: str) -> str:
+    ...
+```
+
+此时静态检查器能做的事就多了：
+
+- 调用处如果写 `show_count("a lot", "bird")`，它可以提前报错；
+- IDE 也能更好地补全和提示。
+
+---
+
+## 五、需求升级：加入不规则复数（第三个参数）
+
+我们希望支持：
+
+- `show_count(3, "mouse", "mice")` → `"3 mice"`
+
+最直接的扩展是加入 `plural` 参数。
+
+### 5.1 一个常见“写得能跑，但类型不理想”的版本
+
+```python
+def show_count(count: int, singular: str, plural: str = "") -> str:
+    if count == 1:
+        return f"1 {singular}"
+    count_str = str(count) if count else "no"
+    if not plural:
+        plural = singular + "s"
+    return f"{count_str} {plural}"
+```
+
+这个版本的缺点不是“运行”，而是“表达意图”：
+
+- `plural=""` 既表示“用户传了空字符串”，也表示“用户没传”
+- 语义不够干净
+
+---
+
+## 六、用 `None` 表达“没提供”：`Optional[str]`（或 `str | None`）
+
+这是 Python 类型提示里非常常用的模式：
+
+- **可选参数**：用 `= None` 表示“没传”
+- **可选类型**：用 `Optional[T]`（或 3.10+ 的 `T | None`）表示“可能为 None”
+
+最终推荐版：
+
+```python
+from typing import Optional
+
+def show_count(count: int, singular: str, plural: Optional[str] = None) -> str:
+    if count == 1:
+        return f"1 {singular}"
+    count_str = str(count) if count else "no"
+    if plural is None:
+        plural = singular + "s"
+    return f"{count_str} {plural}"
+```
+
+这里有两条新手常混淆的规则：
+
+- **“参数可不可以省略”** 由 **是否有默认值**决定（`= None` 让它可省略）
+- **“参数允许不允许为 None”** 由 **类型注解**决定（`Optional[str]` 允许为 `None`）
+
+---
+
+## 七、最常见语法错误：把默认值当成注解
+
+错误写法：
+
+```python
+def hex2rgb(color=str) -> tuple[int, int, int]:
+    ...
+```
+
+这里 `color=str` 是“默认值是 `str` 这个对象”，不是“类型是 str”。  
+正确写法应该是：
+
+```python
+def hex2rgb(color: str) -> tuple[int, int, int]:
+    ...
+```
+
+---
+
+## 八、运行（最终版代码 + 断言）
+
+```bash
+python part-2-functions-as-objects/chapter-08/show_count_demo.py
+```
+
+（可选）如果你装了 mypy：
+
+```bash
+mypy part-2-functions-as-objects/chapter-08/show_count_demo.py
+```
+
