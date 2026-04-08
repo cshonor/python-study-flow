@@ -27,6 +27,7 @@
 | `vector2d_hash_demo.py` | 配套：验证 `Vector2d` 可哈希并禁止修改坐标（避免哈希漂移） |
 | `07-positional-pattern-matching.md` | 11.8 位置模式匹配：`__match_args__` 让 `case Vector2d(x, y)` 可用 |
 | `vector2d_match_demo.py` | 配套：关键字模式 vs 位置模式的 `match-case` 示例 |
+| `vector2d_v3.py` | 11.9 第 3 版 `Vector2d`（整合版）：包含 doctest，可一键验证全功能 |
 
 ---
 
@@ -41,5 +42,6 @@ python part-3-classes-and-protocols/chapter-11/classmethod_staticmethod_demo.py
 python part-3-classes-and-protocols/chapter-11/vector2d_format_demo.py
 python part-3-classes-and-protocols/chapter-11/vector2d_hash_demo.py
 python part-3-classes-and-protocols/chapter-11/vector2d_match_demo.py
+python -m doctest part-3-classes-and-protocols/chapter-11/vector2d_v3.py
 ```
 
