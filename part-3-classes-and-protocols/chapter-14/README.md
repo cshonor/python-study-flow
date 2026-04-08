@@ -23,6 +23,10 @@
 | `builtin_subclass_pitfalls_demo.py` | 配套：`dict`/`list` 子类陷阱与 `UserDict`/`UserList` 修复 |
 | `04-multiple-inheritance-and-mro.md` | 14.4 多重继承与 MRO：钻石问题、协作式 `super()`、调用链中断 |
 | `mro_diamond_root_ab_leaf_demo.py` | 配套：`Root/A/B/Leaf` + `LeafUA`（MRO 与调用链输出） |
+| `06-real-world-multiple-inheritance.md` | 14.6 实战收尾：标准库/框架里的 mixin 组合范式与反模式 |
+| `real_world_mixins_demo.py` | 配套：`ThreadingMixIn` + 迷你 CBV mixin + Tkinter MRO（可选） |
+| `07-multiple-inheritance-survival-guide.md` | 14.7 收官：继承与多重继承的避坑终极指南（10 条军规） |
+| `inheritance-cheatsheet.md` | 可打印速查表：继承 / `super()` / MRO / Mixin |
 
 ---
 
@@ -33,5 +37,6 @@ python part-3-classes-and-protocols/chapter-14/super_last_updated_ordereddict_de
 python part-3-classes-and-protocols/chapter-14/super_mro_diamond_demo.py
 python part-3-classes-and-protocols/chapter-14/builtin_subclass_pitfalls_demo.py
 python part-3-classes-and-protocols/chapter-14/mro_diamond_root_ab_leaf_demo.py
+python part-3-classes-and-protocols/chapter-14/real_world_mixins_demo.py
 ```
 
