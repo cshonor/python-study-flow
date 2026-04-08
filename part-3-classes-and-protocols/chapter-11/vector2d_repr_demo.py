@@ -42,6 +42,16 @@ class Vector2d:
         # One-byte typecode + binary array payload of two floats.
         return bytes([ord(self.typecode)]) + bytes(array(self.typecode, self))
 
+    @classmethod
+    def frombytes(cls, octets: bytes) -> "Vector2d":
+        typecode = chr(octets[0])
+        memv = memoryview(octets[1:]).cast(typecode)
+        return cls(*memv)
+
+    @classmethod
+    def from_polar(cls, r: float, theta: float) -> "Vector2d":
+        return cls(r * math.cos(theta), r * math.sin(theta))
+
     def __format__(self, fmt_spec: str) -> str:
         # If fmt_spec ends with 'p', format in polar coordinates.
         polar = False
@@ -65,6 +75,15 @@ class Vector2d:
     def __bool__(self) -> bool:
         return bool(abs(self))
 
+    def __eq__(self, other: object) -> bool:
+        if isinstance(other, Vector2d):
+            return (self.x, self.y) == (other.x, other.y)
+        try:
+            ox, oy = other  # type: ignore[misc]
+        except Exception:
+            return NotImplemented
+        return (self.x, self.y) == (float(ox), float(oy))
+
 
 def main() -> None:
     v = Vector2d(3, 4)
@@ -74,6 +93,10 @@ def main() -> None:
     print("format(v) ->", format(v))
     print("format(v, '.2f') ->", format(v, ".2f"))
     print("format(v, '.2fp') ->", format(v, ".2fp"))
+    v2 = Vector2d.frombytes(bytes(v))
+    print("Vector2d.frombytes(bytes(v)) ->", v2, "equal:", v2 == v)
+    vp = Vector2d.from_polar(2, math.pi / 2)
+    print("Vector2d.from_polar(2, pi/2) ->", vp)
 
 
 if __name__ == "__main__":

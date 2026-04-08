@@ -17,6 +17,10 @@
 | `01-special-methods-cheatsheet.md` | 常用特殊方法速查表（按“协议/能力”归类），并给出 `Vector2d` 开发清单 |
 | `02-repr-str-bytes-format-vector2d.md` | `repr` vs `str`，以及 `bytes()`/`format()`：用最小 `Vector2d` 一次做对四个协议 |
 | `vector2d_repr_demo.py` | 配套：`Vector2d` 的 `__repr__`/`__str__`/`__bytes__`/`__format__` 可运行示例 |
+| `03-alternative-constructor-frombytes.md` | 11.4 备选构造函数：`frombytes` 反序列化（让 `bytes(v)` 可逆） |
+| `vector2d_frombytes_demo.py` | 配套：断言 `v == Vector2d.frombytes(bytes(v))`（从 `vector2d_repr_demo.py` 动态加载类） |
+| `04-classmethod-vs-staticmethod.md` | 11.5 `classmethod` vs `staticmethod`：调用行为、继承差异与实践建议 |
+| `classmethod_staticmethod_demo.py` | 配套：复现 `Demo` 输出；展示 `from_polar`（classmethod）与静态方法误用对比 |
 
 ---
 
@@ -26,5 +30,7 @@
 
 ```bash
 python part-3-classes-and-protocols/chapter-11/vector2d_repr_demo.py
+python part-3-classes-and-protocols/chapter-11/vector2d_frombytes_demo.py
+python part-3-classes-and-protocols/chapter-11/classmethod_staticmethod_demo.py
 ```
 
