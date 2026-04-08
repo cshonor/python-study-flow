@@ -16,4 +16,22 @@
 | 文件 | 说明 |
 |---|---|
 | `01-inheritance-intro.md` | 14.1 开篇导读：继承的本质、坑点与本章学习路线 |
+| `02-super.md` | 14.2 `super()`：单继承的正确扩展方式 + 多重继承的协作式调用 |
+| `super_last_updated_ordereddict_demo.py` | 配套：`LastUpdatedOrderedDict`（正确 `super()` vs 硬编码父类名） |
+| `super_mro_diamond_demo.py` | 配套：菱形继承 + MRO 下 `super()` 的真实调用顺序 |
+| `03-subclassing-builtin-types.md` | 14.3 子类化内置类型的坑：`dict`/`list`/`str` 与 `User*` 替代 |
+| `builtin_subclass_pitfalls_demo.py` | 配套：`dict`/`list` 子类陷阱与 `UserDict`/`UserList` 修复 |
+| `04-multiple-inheritance-and-mro.md` | 14.4 多重继承与 MRO：钻石问题、协作式 `super()`、调用链中断 |
+| `mro_diamond_root_ab_leaf_demo.py` | 配套：`Root/A/B/Leaf` + `LeafUA`（MRO 与调用链输出） |
+
+---
+
+## 运行
+
+```bash
+python part-3-classes-and-protocols/chapter-14/super_last_updated_ordereddict_demo.py
+python part-3-classes-and-protocols/chapter-14/super_mro_diamond_demo.py
+python part-3-classes-and-protocols/chapter-14/builtin_subclass_pitfalls_demo.py
+python part-3-classes-and-protocols/chapter-14/mro_diamond_root_ab_leaf_demo.py
+```
 
