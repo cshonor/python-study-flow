@@ -31,6 +31,8 @@
 | `08-slots-memory-optimization.md` | 11.11 `__slots__` 节省空间：原理、继承规则、weakref 与 cached_property 取舍 |
 | `slots_inheritance_demo.py` | 配套：`__dict__`/动态属性/继承/weakref 行为演示 |
 | `slots_memory_demo.py` | 配套：用 `tracemalloc` 对比 slots vs 普通类的分配量（小规模） |
+| `09-overriding-class-attributes.md` | 11.12 覆盖类属性：实例覆盖 vs 子类覆盖（以 `typecode` 为例） |
+| `vector2d_typecode_override_demo.py` | 配套：`typecode` 覆盖导致 `bytes(v)` 长度变化（基于 `vector2d_v3.py`） |
 
 ---
 
@@ -48,5 +50,6 @@ python part-3-classes-and-protocols/chapter-11/vector2d_match_demo.py
 python -m doctest part-3-classes-and-protocols/chapter-11/vector2d_v3.py
 python part-3-classes-and-protocols/chapter-11/slots_inheritance_demo.py
 python part-3-classes-and-protocols/chapter-11/slots_memory_demo.py
+python part-3-classes-and-protocols/chapter-11/vector2d_typecode_override_demo.py
 ```
 
