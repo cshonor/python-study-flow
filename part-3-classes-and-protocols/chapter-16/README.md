@@ -13,8 +13,10 @@
 | `01-operator-overloading-intro.md` | 16.1 开篇导读：设计哲学、Python vs Java、适用场景与最佳实践 |
 | `02-operator-overloading-basics.md` | 16.2 入门：本章范围、运算符重载的三条限制 |
 | `03-unary-operators.md` | 16.3 一元运算符：特殊方法、约定、`x != +x` 例外 |
+| `04-vector-add-operator-overloading.md` | 16.4 向量 `+`：`__add__` / `__radd__`、分派与 `NotImplemented` |
 | `operator_overloading_intro_demo.py` | 配套：`Decimal` 复利 + `Position` 中缀示例 |
 | `unary_operators_demo.py` | 配套：`Vector` 一元运算符 + `Decimal` / `Counter` 例外 |
+| `vector_add_operator_demo.py` | 配套：多维 `Vector` 分量相加 + 交换律 |
 
 ---
 
@@ -23,6 +25,7 @@
 ```bash
 python part-3-classes-and-protocols/chapter-16/operator_overloading_intro_demo.py
 python part-3-classes-and-protocols/chapter-16/unary_operators_demo.py
+python part-3-classes-and-protocols/chapter-16/vector_add_operator_demo.py
 ```
 
 ---
