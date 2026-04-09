@@ -189,12 +189,19 @@ def demo() -> None:
         "(c)",
         "(c)",
         "(c)",
+        # The guard `if func_exp not in KEYWORDS` prevents this from being treated as a call.
+        # (Here it should raise a SyntaxError, not a NameError for looking up 'lambda'.)
+        "(lambda is not like this)",
     ]
 
     for p in programs:
-        val = evaluate(parse(p), env)
-        if val is not None:
-            print("=>", lispstr(val))
+        try:
+            val = evaluate(parse(p), env)
+        except Exception as e:  # demo output
+            print("=> ERROR:", type(e).__name__, "-", e)
+        else:
+            if val is not None:
+                print("=>", lispstr(val))
 
 
 if __name__ == "__main__":
