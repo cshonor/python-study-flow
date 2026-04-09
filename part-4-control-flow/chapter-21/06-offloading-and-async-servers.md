@@ -1,0 +1,71 @@
+# 21.8–21.9 任务委托（executors）与异步服务器（FastAPI / asyncio TCP）
+
+## 21.8：把阻塞从事件循环里“搬出去”
+
+异步铁律再次强调：
+
+- **事件循环线程里不能做阻塞事**（同步 I/O、CPU 密集计算、`time.sleep`、慢的同步 API…）
+
+解决方案是把这些工作委托给执行器：
+
+### 1) `asyncio.to_thread`（Python 3.9+）
+
+- 目标：把同步函数丢到线程池里跑
+- 语法最短：
+
+```python
+result = await asyncio.to_thread(blocking_fn, *args, **kwargs)
+```
+
+适合：
+
+- 文件 I/O
+- 调用没有异步版的第三方同步 API
+- 轻量 CPU（少量计算）也能用，但重 CPU 更建议进程池
+
+### 2) `loop.run_in_executor`（兼容写法）
+
+```python
+loop = asyncio.get_running_loop()
+result = await loop.run_in_executor(None, blocking_fn, *args)
+```
+
+`None` 表示用默认线程池；也可以传 `ThreadPoolExecutor` / `ProcessPoolExecutor`。
+
+### 3) CPU 密集：`ProcessPoolExecutor`
+
+CPU 密集任务想要真正并行（多核），一般用：
+
+- `ProcessPoolExecutor`（每个子进程独立解释器 + GIL）
+
+---
+
+## 21.9：异步服务器两种形态
+
+### A) FastAPI（ASGI Web 服务）
+
+核心点：
+
+- FastAPI 的路由函数可以是 `async def`
+- 由 ASGI 服务器（如 `uvicorn`）驱动事件循环
+- 适合：HTTP API、微服务、Web 后端
+
+本仓库提供一个 **可选依赖** 示例文件（未安装依赖也不影响其他 demo 运行）。
+
+### B) asyncio 原生 TCP 服务器（`asyncio.start_server`）
+
+核心点：
+
+- 每个连接由一个协程处理（`StreamReader/StreamWriter`）
+- 读写都是 `await` 的异步 I/O
+- 适合：自定义协议、内网工具、Telnet/文本协议服务
+
+---
+
+## 配套代码
+
+- `offload_to_thread_and_process_demo.py`：演示阻塞调用如何卡住 loop，以及如何用线程/进程委托修复
+- `tcp_mojifinder_demo.py`：原生 asyncio TCP 服务器（简化版“搜索服务”）
+- `tcp_mojifinder_client_demo.py`：简单客户端，连上服务器发送查询
+- `web_mojifinder_fastapi_demo.py`：FastAPI 示例（可选依赖）
+
