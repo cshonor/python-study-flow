@@ -11,7 +11,10 @@
 | 文件 | 说明 |
 |---|---|
 | `01-operator-overloading-intro.md` | 16.1 开篇导读：设计哲学、Python vs Java、适用场景与最佳实践 |
-| `operator_overloading_intro_demo.py` | 配套：`Decimal` 复利公式 + 轻量量化风格 `Position` 运算符示例 |
+| `02-operator-overloading-basics.md` | 16.2 入门：本章范围、运算符重载的三条限制 |
+| `03-unary-operators.md` | 16.3 一元运算符：特殊方法、约定、`x != +x` 例外 |
+| `operator_overloading_intro_demo.py` | 配套：`Decimal` 复利 + `Position` 中缀示例 |
+| `unary_operators_demo.py` | 配套：`Vector` 一元运算符 + `Decimal` / `Counter` 例外 |
 
 ---
 
@@ -19,6 +22,7 @@
 
 ```bash
 python part-3-classes-and-protocols/chapter-16/operator_overloading_intro_demo.py
+python part-3-classes-and-protocols/chapter-16/unary_operators_demo.py
 ```
 
 ---
@@ -26,7 +30,7 @@ python part-3-classes-and-protocols/chapter-16/operator_overloading_intro_demo.p
 ## GitHub 笔记模板（可复制）
 
 - **定义**：本章要解决什么问题（可读性 / 与内置类型一致 / 反向运算符）？
-- **对照表**：运算符 ↔ 特殊方法（如 `+` → `__add__` / `__radd__`）
+- **对照表**：中缀 ↔ `__add__` / `__radd__`；一元 ↔ `__neg__` / `__pos__` / `__abs__`
 - **最小示例**：一个可运行 `.py`
 - **最佳实践**：语义不变、避免滥用、不可变返回新对象
 - **坑点**：`NotImplemented`、`__radd__`、与 `float` 混用等
