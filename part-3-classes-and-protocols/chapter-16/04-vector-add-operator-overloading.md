@@ -57,4 +57,4 @@ __radd__ = __add__
 | `NotImplemented` | 本类型无法处理该组合时返回，交给对方类型或最终报错 |
 | `zip_longest(..., fillvalue=0.0)` | 变长向量按 0 补齐再相加 |
 
-配套代码：`vector_add_operator_demo.py`。
+配套代码：`vector_add_operator_demo.py`（该脚本在后续 16.5–16.6 中还实现了 `*` 与 `@`）。

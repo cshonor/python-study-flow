@@ -14,9 +14,10 @@
 | `02-operator-overloading-basics.md` | 16.2 入门：本章范围、运算符重载的三条限制 |
 | `03-unary-operators.md` | 16.3 一元运算符：特殊方法、约定、`x != +x` 例外 |
 | `04-vector-add-operator-overloading.md` | 16.4 向量 `+`：`__add__` / `__radd__`、分派与 `NotImplemented` |
+| `05-vector-scalar-mul-and-matmul.md` | 16.5–16.6 标量 `*` 与 `@` 点积：`__matmul__` / `__rmatmul__` |
 | `operator_overloading_intro_demo.py` | 配套：`Decimal` 复利 + `Position` 中缀示例 |
 | `unary_operators_demo.py` | 配套：`Vector` 一元运算符 + `Decimal` / `Counter` 例外 |
-| `vector_add_operator_demo.py` | 配套：多维 `Vector` 分量相加 + 交换律 |
+| `vector_add_operator_demo.py` | 配套：`Vector` 的 `+` / 标量 `*` / `@` 点积 |
 
 ---
 
@@ -33,7 +34,7 @@ python part-3-classes-and-protocols/chapter-16/vector_add_operator_demo.py
 ## GitHub 笔记模板（可复制）
 
 - **定义**：本章要解决什么问题（可读性 / 与内置类型一致 / 反向运算符）？
-- **对照表**：中缀 ↔ `__add__` / `__radd__`；一元 ↔ `__neg__` / `__pos__` / `__abs__`
+- **对照表**：`+` ↔ `__add__` / `__radd__`；`*` ↔ `__mul__` / `__rmul__`；`@` ↔ `__matmul__` / `__rmatmul__`；一元 ↔ `__neg__` / `__pos__` / `__abs__`
 - **最小示例**：一个可运行 `.py`
 - **最佳实践**：语义不变、避免滥用、不可变返回新对象
 - **坑点**：`NotImplemented`、`__radd__`、与 `float` 混用等
