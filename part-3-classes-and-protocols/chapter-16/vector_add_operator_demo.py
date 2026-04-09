@@ -1,4 +1,4 @@
-"""Ch. 16.4–16.6: Vector + (add), * (scalar), @ (dot) with reverse methods."""
+"""Ch. 16.4–16.9: Vector +, scalar *, @, strict __eq__, += without __iadd__."""
 
 from __future__ import annotations
 
@@ -96,6 +96,19 @@ def main() -> None:
         _ = va @ 3  # noqa: F841
     except TypeError as e:
         print("va @ 3 -> TypeError:", e)
+
+    print("--- 16.8 __eq__ (only Vector)")
+    print("Vector([1, 2]) == Vector([1, 2]) ->", Vector([1, 2]) == Vector([1, 2]))
+    print("Vector([1, 2]) == (1, 2) ->", Vector([1, 2]) == (1, 2))
+
+    print("--- 16.9 += falls back to __add__ (new object)")
+    v_acc = Vector([1, 2, 3])
+    v_alias = v_acc
+    before = id(v_acc)
+    v_acc += Vector([4, 5, 6])
+    print("v_acc ->", v_acc)
+    print("id changed ->", id(v_acc) != before)
+    print("v_alias (unchanged) ->", v_alias)
 
 
 if __name__ == "__main__":

@@ -15,9 +15,10 @@
 | `03-unary-operators.md` | 16.3 一元运算符：特殊方法、约定、`x != +x` 例外 |
 | `04-vector-add-operator-overloading.md` | 16.4 向量 `+`：`__add__` / `__radd__`、分派与 `NotImplemented` |
 | `05-vector-scalar-mul-and-matmul.md` | 16.5–16.6 标量 `*` 与 `@` 点积：`__matmul__` / `__rmatmul__` |
+| `06-arithmetic-comparison-augmented-assignment.md` | 16.7–16.9 算术表、比较分派、`+=` 与就地方法 |
 | `operator_overloading_intro_demo.py` | 配套：`Decimal` 复利 + `Position` 中缀示例 |
 | `unary_operators_demo.py` | 配套：`Vector` 一元运算符 + `Decimal` / `Counter` 例外 |
-| `vector_add_operator_demo.py` | 配套：`Vector` 的 `+` / 标量 `*` / `@` 点积 |
+| `vector_add_operator_demo.py` | 配套：`Vector` 的 `+` / `*` / `@` / `__eq__` / `+=` 行为 |
 
 ---
 
@@ -37,4 +38,4 @@ python part-3-classes-and-protocols/chapter-16/vector_add_operator_demo.py
 - **对照表**：`+` ↔ `__add__` / `__radd__`；`*` ↔ `__mul__` / `__rmul__`；`@` ↔ `__matmul__` / `__rmatmul__`；一元 ↔ `__neg__` / `__pos__` / `__abs__`
 - **最小示例**：一个可运行 `.py`
 - **最佳实践**：语义不变、避免滥用、不可变返回新对象
-- **坑点**：`NotImplemented`、`__radd__`、与 `float` 混用等
+- **坑点**：`NotImplemented`、`__radd__`、比较反射、`==` 与 `is`、`+=` 是否原地
