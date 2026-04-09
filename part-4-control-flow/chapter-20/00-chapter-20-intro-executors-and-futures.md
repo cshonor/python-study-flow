@@ -55,3 +55,5 @@ Future 的核心能力：
 - 演示异常如何通过 Future 传播
 - 演示 `add_done_callback` 的最小用法
 
+另见 **20.2**：`02-concurrent-flag-downloads.md` + `flags_threadpool_download_demo.py`（顺序 / 线程池 / Future 演示 / asyncio）。
+
