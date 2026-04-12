@@ -14,13 +14,13 @@
 
 | 文件 | 说明 |
 |---|---|
-| `01-design-patterns-with-first-class-functions-overview.md` | 第 10 章开篇导读：为什么动态语言会让许多模式“消失或简化”；策略/命令模式预告 |
-| `02-strategy-pattern-class-vs-function.md` | 10.2 策略模式：类实现 vs 函数式重构；best_promo 的收集方式；装饰器自动注册 |
-| `strategy_promotions_demo.py` | 配套：折扣策略（类式/函数式）、best_promo、装饰器自动注册策略 |
-| `03-strategy-auto-registration-with-decorator.md` | 10.3 用装饰器自动注册策略：零维护 `best_promo`；可选的分组注册 |
-| `strategy_auto_register_demo.py` | 配套：`@promotion` 自动登记；`best_promo` 无需维护列表；分组注册示例 |
-| `04-command-pattern-functions-and-callables.md` | 10.4 命令模式：回调的面向对象替代品；用函数/可调用对象简化；宏命令与撤销思路 |
-| `command_pattern_demo.py` | 配套：Menu invoker + Document receiver；MacroCommand；最小 undo 栈 |
+| `01-10.1 开篇导读：用一等函数重构设计模式（别被类图绑架）.md` | 第 10 章开篇导读：为什么动态语言会让许多模式“消失或简化”；策略/命令模式预告 |
+| `02-10.2 策略模式：从“类层级”到“一等函数”重构.md` | 10.2 策略模式：类实现 vs 函数式重构；best_promo 的收集方式；装饰器自动注册 |
+| `02_strategy_promotions_demo.py` | 配套：折扣策略（类式/函数式）、best_promo、装饰器自动注册策略 |
+| `03-10.3 用装饰器解决策略模式“自动注册”：零维护的 best_promo.md` | 10.3 用装饰器自动注册策略：零维护 `best_promo`；可选的分组注册 |
+| `03_strategy_auto_register_demo.py` | 配套：`@promotion` 自动登记；`best_promo` 无需维护列表；分组注册示例 |
+| `04-10.4 命令模式：把“面向对象回调”还原成 Python 回调.md` | 10.4 命令模式：回调的面向对象替代品；用函数/可调用对象简化；宏命令与撤销思路 |
+| `04_command_pattern_demo.py` | 配套：Menu invoker + Document receiver；MacroCommand；最小 undo 栈 |
 
 ---
 
@@ -29,8 +29,8 @@
 在仓库根目录执行：
 
 ```bash
-python part-2-functions-as-objects/chapter-10/strategy_promotions_demo.py
-python part-2-functions-as-objects/chapter-10/strategy_auto_register_demo.py
-python part-2-functions-as-objects/chapter-10/command_pattern_demo.py
+python part-2-functions-as-objects/chapter-10/02_strategy_promotions_demo.py
+python part-2-functions-as-objects/chapter-10/03_strategy_auto_register_demo.py
+python part-2-functions-as-objects/chapter-10/04_command_pattern_demo.py
 ```
 

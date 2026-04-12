@@ -63,25 +63,25 @@
 
 | 文件 | 说明 |
 |---|---|
-| `01-decorators-and-closures-overview.md` | 开篇路线：LEGB、闭包与 `nonlocal`、装饰器为何重要、以及“装饰发生在导入时” |
-| `02-decorators-basics.md` | 装饰器基础：`@` 的等价形式、函数替换、装饰发生在导入时（最小例子） |
-| `03-registration-decorator-import-time.md` | 注册式装饰器：`registry` 收集函数引用，脚本运行 vs import 的执行时机对照 |
-| `registration.py` | 配套：`@register` + 全局 `registry`，展示导入时执行装饰过程 |
-| `04-registration-decorators-in-practice.md` | 9.4 注册装饰器实战：包装式 vs 注册式、跨模块组织、工程注意点 |
-| `05-scope-traps-and-dis.md` | 9.5 作用域陷阱：赋值导致局部、`global` 修复、`dis` 看 `LOAD_GLOBAL`/`LOAD_FAST` |
-| `scope_dis_demo.py` | 配套：复现 `UnboundLocalError`，并反汇编对比关键字节码指令 |
-| `scope_closure_nonlocal_demo.py` | 配套：LEGB、自由变量、闭包、`nonlocal` 对比（ASCII 输出，适配 Windows 控制台） |
-| `decorator_and_cache_demo.py` | 配套：最小装饰器 + `functools.wraps`；`lru_cache` 演示缓存减少重复计算 |
-| `06-closures-averager-and-cells.md` | 9.6 闭包深度理解：累计平均值，`co_freevars`/`__closure__`/cell，`nonlocal` 坑与修复 |
-| `averager_closure_demo.py` | 配套：类实现 vs 闭包实现；打印 `co_freevars` 与 `cell_contents`；演示 `nonlocal` |
-| `07-nonlocal-and-name-resolution.md` | 9.7 `nonlocal` 与名字解析：`+=` 为何触发局部判定；`global` vs `nonlocal`；查找规则 |
-| `nonlocal_name_resolution_demo.py` | 配套：复现/修复 `averager`；`global` 示例；带状态装饰器（调用次数统计） |
-| `08-timing-decorator-clock.md` | 9.8 计时装饰器：基础版缺陷与三项修复（`**kwargs`、`wraps`、完整参数打印） |
-| `clock_decorator_demo.py` | 配套：`clock0` vs `clock`；`snooze`/递归 `factorial`；验证 `__name__` 与 kwargs 支持 |
-| `09-functools-standard-decorators.md` | 9.9 标准库装饰器：`cache`/`lru_cache`、叠放顺序、`singledispatch` 要点 |
-| `functools_decorators_demo.py` | 配套：Fibonacci（plain vs cache vs lru）；`singledispatch` 的 `htmlize` 示例 |
-| `10-parameterized-and-class-decorators.md` | 9.10 参数化装饰器与类式装饰器：工厂函数三层结构、class `__call__` 方案 |
-| `parameterized_decorators_demo.py` | 配套：参数化注册装饰器、带 `fmt` 的 clock、类式 clock（含 `wraps`） |
+| `01-9.1 开篇路线：为什么装饰器离不开闭包（以及这章怎么学）.md` | 开篇路线：LEGB、闭包与 `nonlocal`、装饰器为何重要、以及“装饰发生在导入时” |
+| `02-9.2 装饰器基础知识：@ 到底做了什么（以及它什么时候执行）.md` | 装饰器基础：`@` 的等价形式、函数替换、装饰发生在导入时（最小例子） |
+| `03-9.3 注册式装饰器：为什么 import 一下就“执行了代码”.md` | 注册式装饰器：`registry` 收集函数引用，脚本运行 vs import 的执行时机对照 |
+| `03_registration.py` | 配套：`@register` + 全局 `registry`，展示导入时执行装饰过程 |
+| `04-9.4 注册装饰器（实战）：装饰器与被装饰对象不在同一模块时怎么组织.md` | 9.4 注册装饰器实战：包装式 vs 注册式、跨模块组织、工程注意点 |
+| `05-9.5 变量作用域：为什么“函数里一赋值就变局部”（用 dis 看证据）.md` | 9.5 作用域陷阱：赋值导致局部、`global` 修复、`dis` 看 `LOAD_GLOBAL`/`LOAD_FAST` |
+| `05_scope_dis_demo.py` | 配套：复现 `UnboundLocalError`，并反汇编对比关键字节码指令 |
+| `05_scope_closure_nonlocal_demo.py` | 配套：LEGB、自由变量、闭包、`nonlocal` 对比（ASCII 输出，适配 Windows 控制台） |
+| `02_decorator_and_cache_demo.py` | 配套：最小装饰器 + `functools.wraps`；`lru_cache` 演示缓存减少重复计算 |
+| `06-9.6 闭包（Closure）深度理解：累计平均值、自由变量与 cell.md` | 9.6 闭包深度理解：累计平均值，`co_freevars`/`__closure__`/cell，`nonlocal` 坑与修复 |
+| `06_averager_closure_demo.py` | 配套：类实现 vs 闭包实现；打印 `co_freevars` 与 `cell_contents`；演示 `nonlocal` |
+| `07-9.7 nonlocal 与名字解析：闭包里为什么 += 会炸（以及完整查找规则）.md` | 9.7 `nonlocal` 与名字解析：`+=` 为何触发局部判定；`global` vs `nonlocal`；查找规则 |
+| `07_nonlocal_name_resolution_demo.py` | 配套：复现/修复 `averager`；`global` 示例；带状态装饰器（调用次数统计） |
+| `08-9.8 计时装饰器（clock）：从最小可用到“可用于生产”的三个修复.md` | 9.8 计时装饰器：基础版缺陷与三项修复（`**kwargs`、`wraps`、完整参数打印） |
+| `08_clock_decorator_demo.py` | 配套：`clock0` vs `clock`；`snooze`/递归 `factorial`；验证 `__name__` 与 kwargs 支持 |
+| `09-9.9 functools 标准库装饰器：缓存（cache lru_cache）与单分派（singledispatch）.md` | 9.9 标准库装饰器：`cache`/`lru_cache`、叠放顺序、`singledispatch` 要点 |
+| `09_functools_decorators_demo.py` | 配套：Fibonacci（plain vs cache vs lru）；`singledispatch` 的 `htmlize` 示例 |
+| `10-9.10 参数化装饰器与类式装饰器：让装饰器“可配置”.md` | 9.10 参数化装饰器与类式装饰器：工厂函数三层结构、class `__call__` 方案 |
+| `10_parameterized_decorators_demo.py` | 配套：参数化注册装饰器、带 `fmt` 的 clock、类式 clock（含 `wraps`） |
 
 ---
 
@@ -90,14 +90,14 @@
 在仓库根目录执行：
 
 ```bash
-python part-2-functions-as-objects/chapter-09/registration.py
-python part-2-functions-as-objects/chapter-09/decorators_basics_demo.py
-python part-2-functions-as-objects/chapter-09/scope_dis_demo.py
-python part-2-functions-as-objects/chapter-09/scope_closure_nonlocal_demo.py
-python part-2-functions-as-objects/chapter-09/decorator_and_cache_demo.py
-python part-2-functions-as-objects/chapter-09/averager_closure_demo.py
-python part-2-functions-as-objects/chapter-09/nonlocal_name_resolution_demo.py
-python part-2-functions-as-objects/chapter-09/clock_decorator_demo.py
-python part-2-functions-as-objects/chapter-09/functools_decorators_demo.py
-python part-2-functions-as-objects/chapter-09/parameterized_decorators_demo.py
+python part-2-functions-as-objects/chapter-09/03_registration.py
+python part-2-functions-as-objects/chapter-09/02_decorators_basics_demo.py
+python part-2-functions-as-objects/chapter-09/05_scope_dis_demo.py
+python part-2-functions-as-objects/chapter-09/05_scope_closure_nonlocal_demo.py
+python part-2-functions-as-objects/chapter-09/02_decorator_and_cache_demo.py
+python part-2-functions-as-objects/chapter-09/06_averager_closure_demo.py
+python part-2-functions-as-objects/chapter-09/07_nonlocal_name_resolution_demo.py
+python part-2-functions-as-objects/chapter-09/08_clock_decorator_demo.py
+python part-2-functions-as-objects/chapter-09/09_functools_decorators_demo.py
+python part-2-functions-as-objects/chapter-09/10_parameterized_decorators_demo.py
 ```

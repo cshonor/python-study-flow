@@ -31,7 +31,7 @@ python-study-flow/
 │       ├── 10_french_deck_shuffle_demo.py
 │       ├── 12_collections_abc_minimal_demo.py
 │       └── …
-├── part-2-functions-as-objects/
+├── part-2-functions-as-objects/       # 笔记：NN-<中文>.md；脚本：NN_…_demo.py（与 Part 1 同理）
 ├── part-3-classes-and-protocols/
 ├── part-4-control-flow/
 └── part-5-metaprogramming/

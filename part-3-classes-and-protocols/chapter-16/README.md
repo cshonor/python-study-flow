@@ -10,27 +10,27 @@
 
 | 文件 | 说明 |
 |---|---|
-| `01-operator-overloading-intro.md` | 16.1 开篇导读：设计哲学、Python vs Java、适用场景与最佳实践 |
-| `02-operator-overloading-basics.md` | 16.2 入门：本章范围、运算符重载的三条限制 |
-| `03-unary-operators.md` | 16.3 一元运算符：特殊方法、约定、`x != +x` 例外 |
-| `04-vector-add-operator-overloading.md` | 16.4 向量 `+`：`__add__` / `__radd__`、分派与 `NotImplemented` |
-| `05-vector-scalar-mul-and-matmul.md` | 16.5–16.6 标量 `*` 与 `@` 点积：`__matmul__` / `__rmatmul__` |
-| `06-arithmetic-comparison-augmented-assignment.md` | 16.7–16.9 算术表、比较分派、`+=` 与就地方法 |
-| `07-mutable-plus-iadd-addable-bingo-cage.md` | 可变容器：`AddableBingoCage` 的 `__add__` / `__iadd__` |
-| `operator_overloading_intro_demo.py` | 配套：`Decimal` 复利 + `Position` 中缀示例 |
-| `unary_operators_demo.py` | 配套：`Vector` 一元运算符 + `Decimal` / `Counter` 例外 |
-| `vector_add_operator_demo.py` | 配套：`Vector` 的 `+` / `*` / `@` / `__eq__` / `+=` 行为 |
-| `addable_bingo_cage_demo.py` | 配套：`AddableBingoCage`（`+` 新建，`+=` 原地并 `return self`） |
+| `01-16.1 开篇导读：运算符重载的设计哲学与适用场景.md` | 16.1 开篇导读：设计哲学、Python vs Java、适用场景与最佳实践 |
+| `02-16.2 运算符重载入门：范围与限制.md` | 16.2 入门：本章范围、运算符重载的三条限制 |
+| `03-16.3 一元运算符重载.md` | 16.3 一元运算符：特殊方法、约定、`x != +x` 例外 |
+| `04-16.4 重载向量加法运算符 +.md` | 16.4 向量 `+`：`__add__` / `__radd__`、分派与 `NotImplemented` |
+| `05-16.5–16.6 标量乘法 与矩阵乘法 @（点积）.md` | 16.5–16.6 标量 `*` 与 `@` 点积：`__matmul__` / `__rmatmul__` |
+| `06-16.7–16.9 收尾总览：算术、比较、增量赋值.md` | 16.7–16.9 算术表、比较分派、`+=` 与就地方法 |
+| `07-可变对象的 + 与 +=：AddableBingoCage（示例 16-19）.md` | 可变容器：`AddableBingoCage` 的 `__add__` / `__iadd__` |
+| `01_operator_overloading_intro_demo.py` | 配套：`Decimal` 复利 + `Position` 中缀示例 |
+| `03_unary_operators_demo.py` | 配套：`Vector` 一元运算符 + `Decimal` / `Counter` 例外 |
+| `04_vector_add_operator_demo.py` | 配套：`Vector` 的 `+` / `*` / `@` / `__eq__` / `+=` 行为 |
+| `07_addable_bingo_cage_demo.py` | 配套：`AddableBingoCage`（`+` 新建，`+=` 原地并 `return self`） |
 
 ---
 
 ## 运行
 
 ```bash
-python part-3-classes-and-protocols/chapter-16/operator_overloading_intro_demo.py
-python part-3-classes-and-protocols/chapter-16/unary_operators_demo.py
-python part-3-classes-and-protocols/chapter-16/vector_add_operator_demo.py
-python part-3-classes-and-protocols/chapter-16/addable_bingo_cage_demo.py
+python part-3-classes-and-protocols/chapter-16/01_operator_overloading_intro_demo.py
+python part-3-classes-and-protocols/chapter-16/03_unary_operators_demo.py
+python part-3-classes-and-protocols/chapter-16/04_vector_add_operator_demo.py
+python part-3-classes-and-protocols/chapter-16/07_addable_bingo_cage_demo.py
 ```
 
 ---
