@@ -4,6 +4,135 @@
 
 ---
 
+## 新手零基础：鸭子类型、ABC、虚拟子类（分开讲 + 最短例子）
+
+先记住一句总逻辑（后面各节都是把它展开、加细节）：
+
+- **鸭子类型**：管**能不能运行**（干活）。
+- **ABC**：管**有没有一套可对照的标准**（规矩）；**只有你选择继承「带抽象方法的 ABC」时，才会变成硬约束**。
+- **虚拟子类**：**登记身份**——**不是** `class C(Parent)` 那种真继承；**一般也拿不到**对方类体里的实现代码，主要影响 **`issubclass` / `isinstance`** 这类「认不认账」。
+
+---
+
+### 新手-1：鸭子类型（最好懂，先学这个）
+
+**人话**：**不看你爸爸是谁，只看你会不会干活**；有对应魔法方法，就能参与对应语法。
+
+```python
+# 没有继承 list，也没有继承任何 ABC
+class MyList:
+    def __len__(self) -> int:
+        return 10
+
+
+obj = MyList()
+print(len(obj))  # 10
+```
+
+**看懂这三点就行**：
+
+1. `MyList` **没有**写 `class MyList(list): ...`。  
+2. 只实现了 **`__len__`**。  
+3. 解释器照样让 **`len(obj)`** 工作。  
+
+👉 这就是 **鸭子类型**：**会干活就行**，继承树不是第一顺位。
+
+---
+
+### 新手-2：ABC（定规矩的「抽象模板」）
+
+**人话**：ABC 像**说明书**：规定「想扮演某个抽象角色，**至少**要提供哪些方法」。下面用标准库里的 **`abc.ABC` + `abstractmethod`** 演示「继承 = 立硬规矩」，最容易一眼看懂（`collections.abc` 里的 `Sequence` 等也是同一套机制，只是方法更多）。
+
+```python
+from abc import ABC, abstractmethod
+
+
+class ShowRule(ABC):
+    @abstractmethod
+    def show(self) -> None:
+        ...
+
+
+class A(ShowRule):
+    def show(self) -> None:
+        print("我遵守规矩")
+
+
+A().show()
+```
+
+**如果继承却不实现抽象方法**（运行时会在实例化阶段失败）：
+
+```python
+class B(ShowRule):
+    pass
+
+
+# B()  # TypeError：抽象方法未实现（具体文案以版本为准）
+```
+
+**和鸭子类型怎么分？**
+
+- **只写魔法方法、不继承 ABC**：照样能跑，**没人强迫你「考证」**（`FrenchDeck` 一路）。  
+- **一旦 `class C(SomeABC)` 且抽象方法没齐**：**实例化**往往直接失败——**这时** ABC 才是「强制守规矩」。
+
+---
+
+### 新手-3：虚拟子类（登记身份，不是真继承）
+
+**人话**：**代码里没有** `class Visitor(Ticket)`，但可以用 **`Ticket.register(Visitor)`** 告诉类型系统：「在 **`isinstance` / `issubclass`** 这层，把 `Visitor` 当作 `Ticket` 的虚拟子类」。**注意**：`register` **不等于**把父类里的实现「拷贝」进子类；也不保证 `Visitor` 真有 `Ticket` 要求的方法——**它主要管「身份认不认」**。
+
+下面用**自定义小 ABC**演示，避免和 **`Sized.__subclasshook__`（会自动认有 `__len__` 的类）**搅在一起：
+
+```python
+from abc import ABC, abstractmethod
+
+
+class Ticket(ABC):
+    @abstractmethod
+    def price(self) -> int:
+        """示意：抽象票种必须能报价格。"""
+        ...
+
+
+class Visitor:
+    """普通游客：与 Ticket 无继承关系，也没实现 price。"""
+    role = "visitor"
+
+
+v = Visitor()
+print(isinstance(v, Ticket))  # False：未登记
+
+Ticket.register(Visitor)
+print(isinstance(v, Ticket))  # True：虚拟子类登记后，isinstance 认账
+```
+
+**看懂三点**：
+
+1. `Visitor` **全程没有写继承 `Ticket`**。  
+2. **`register` 是「打标签」**：主要影响 **`isinstance` / `issubclass`**。  
+3. **别和鸭子类型混谈**：业务方法能不能用，看协议；**`isinstance` 认不认**，看继承 / `register` / `__subclasshook__`（第七节还会提醒）。
+
+> **对照 `collections.abc`**：`Sequence.register(YourClass)` 同理；而像 **`Sized`** 这类常带 **`__subclasshook__`** 的 ABC，**有时不等 `register`，`isinstance` 也会为 True**——以你本机为准。
+
+---
+
+### 新手-4：一秒区分（背诵用）
+
+| 概念 | 一句话 | 管什么 |
+| :--- | :--- | :--- |
+| **鸭子类型** | 有方法就能参与 `len` / `[]` / `for` … | **运行时干活** |
+| **ABC（继承抽象模板）** | 抽象方法不齐，**常常实例化失败** | **硬规矩（你自愿继承才生效）** |
+| **虚拟子类（`register`）** | 不继承，只登记；**`isinstance` 可能变 True** | **身份 / 类型圈地** |
+
+### 新手-5：终极比喻（图一乐，别当真考证）
+
+- **鸭子类型**：你会做饭，客人就能点你的菜——**先不管证**。  
+- **ABC（继承抽象模板）**：考证大纲写明必须会什么，**不达标就不发证**（实例化失败）。  
+- **虚拟子类**：**没去上那门继承课**，但在系统里**登记一下身份**，查证件时显示「符合某条标准」——**登记的是身份，不是把别人的厨艺下载到你身上**。
+
+---
+
 ## 一句话吃透：**鸭子类型 + ABC**（《流畅的 Python》语境）
 
 ### 鸭子类型（Duck Typing）
@@ -386,7 +515,7 @@ print("Set        ->", isinstance(s, Set))
 
 ## 附录：一页背诵用（可自行打印）
 
-与文首 **「一句话吃透」** 三句、以及 **「附读：Python / Go / Rust」** 粗对照呼应；展开细节仍以 **「一」～「八」** 各节为准。
+与 **「新手零基础」**、**「一句话吃透」**、**「附读：Python / Go / Rust」** 三层的粗对照呼应；展开细节仍以 **「一」～「八」** 各节为准。
 
 - **三能力**：Iterable / Sized / Container → **Collection**。  
 - **三分支**：Sequence / Mapping / Set。  
