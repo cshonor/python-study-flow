@@ -1,5 +1,5 @@
 """
-Demo for 03-typical-namedtuple.md
+Demo for 03-典型具名元组namedtuple.md
 
 Run:
   python part-1-data-structures/chapter-05/namedtuple_typical_demo.py

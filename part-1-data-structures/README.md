@@ -12,7 +12,7 @@
 | `chapter-02/` | 第 2 章「丰富的序列」等 | 开篇、容器/扁平、`PyObject*`、ABC、对象模型、可变/不可变协议：`01`…`08` |
 | `chapter-03/` | 第 3 章「字典和集合」 | `01`–`14`（含 §3.6 / §3.8 / §3.10–§3.12）；见该目录 `README` |
 | `chapter-04/` | 第 4 章「Unicode 文本与字节序列」 | `01` 开篇；见该目录 `README` |
-| `chapter-05/` | 第 5 章「数据类构建器」 | `namedtuple` / `typing.NamedTuple` / `@dataclass` / `TypedDict` + 配套 demo |
+| `chapter-05/` | 第 5 章「数据类构建器」 | `01`–`07` 笔记；`namedtuple` / `typing.NamedTuple` / `@dataclass` / `TypedDict` + 配套 demo |
 | `chapter-06/` | 第 6 章「对象引用、可变性和垃圾回收」 | 变量/对象/引用、浅深拷贝、参数传递、GC、弱引用 |
 
 第 7 章「函数是一等对象」等材料在 **`part-2-functions-as-objects/`**（本书 Part 2 对应目录），见该 Part 内 `README` 与 `chapter-07/`。
@@ -212,6 +212,32 @@ python part-1-data-structures/chapter-04/unicode_sorting_demo.py
 python part-1-data-structures/chapter-04/unicode_numeric_demo.py
 python part-1-data-structures/chapter-04/unicode_char_finder.py CAT EYES --limit 20
 python part-1-data-structures/chapter-04/dual_mode_api_demo.py
+```
+
+---
+
+## `chapter-05/` 笔记与脚本
+
+本章目录内另有 **`chapter-05/README.md`**：以 `01-第5章数据类构建器笔记.md` 为主线。
+
+| 编号 | 文件 | 主题简述 |
+|------|------|----------|
+| 01 | `01-第5章数据类构建器笔记.md` | 数据类构建器：选型、差异与常见坑 |
+| 02 | `02-Coordinate与三种构建器功能矩阵.md` | Coordinate 与手写类 / `namedtuple` / `NamedTuple` / `@dataclass` 对照 |
+| 03 | `03-典型具名元组namedtuple.md` | `collections.namedtuple` 用法与 API |
+| 04 | `04-typing-NamedTuple详解.md` | `typing.NamedTuple` 与类型注解 |
+| 05 | `05-类型提示入门.md` | 类型提示基础与运行时行为 |
+| 06 | `06-dataclass详解.md` | `@dataclass` 参数、`field`、`__post_init__` 等 |
+| 07 | `07-08-数据类异味与match-case.md` | 数据类反模式与 `match/case` 类模式 |
+
+```bash
+python part-1-data-structures/chapter-05/data_class_builders_demo.py
+python part-1-data-structures/chapter-05/coordinate_builders_demo.py
+python part-1-data-structures/chapter-05/namedtuple_typical_demo.py
+python part-1-data-structures/chapter-05/typed_namedtuple_demo.py
+python part-1-data-structures/chapter-05/type_hints_primer_demo.py
+python part-1-data-structures/chapter-05/dataclass_deep_dive_demo.py
+python part-1-data-structures/chapter-05/dataclass_code_smell_and_match_demo.py
 ```
 
 ---

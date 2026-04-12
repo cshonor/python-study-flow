@@ -1,5 +1,5 @@
 """
-Demo for 07-08-dataclass-code-smell-and-pattern-matching.md
+Demo for 07-08-数据类异味与match-case.md
 
 Requires Python 3.10+ for match/case.
 

@@ -1,5 +1,5 @@
 """
-Demo for 04-typed-namedtuple.md
+Demo for 04-typing-NamedTuple详解.md
 
 Run:
   python part-1-data-structures/chapter-05/typed_namedtuple_demo.py

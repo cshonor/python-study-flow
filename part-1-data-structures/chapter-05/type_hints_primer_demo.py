@@ -1,5 +1,5 @@
 """
-Demo for 05-type-hints-primer.md
+Demo for 05-类型提示入门.md
 
 Run:
   python part-1-data-structures/chapter-05/type_hints_primer_demo.py

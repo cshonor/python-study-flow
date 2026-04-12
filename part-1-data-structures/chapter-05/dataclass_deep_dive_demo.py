@@ -1,5 +1,5 @@
 """
-Demo for 06-dataclass-deep-dive.md
+Demo for 06-dataclass详解.md
 
 Run from repo root:
   python part-1-data-structures/chapter-05/dataclass_deep_dive_demo.py
