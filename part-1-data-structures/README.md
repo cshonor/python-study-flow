@@ -33,8 +33,8 @@
 - **排序与工具**：`sorted(..., key=自定义函数)`；`random.choice` / `shuffle` 与序列协议的关系。
 - **容器抽象**：`collections.abc`（`Sized` / `Iterable` / `Container` / `Sequence` 等）用于理解协议与类型注解；**鸭子类型**与 **`isinstance` + `register()`** 可并存。
 
-更系统的特殊方法对照与分类见：`chapter-01/11-special-methods-implicit-invocation.md`。  
-容器 ABC 与 `FrenchDeck` 的对照见：`chapter-01/12-collections-abc-container-api.md`。
+更系统的特殊方法对照与分类见：`chapter-01/11-特殊方法隐式调用与对照表.md`。  
+容器 ABC 与 `FrenchDeck` 的对照见：`chapter-01/12-collections-abc容器API.md`。
 
 ---
 
@@ -46,14 +46,14 @@
 |------|----------------|----------|
 | 01 | `01-python-list-tuple-array` | list / tuple / array / namedtuple 对比 |
 | 02–04 | `02`…`04` | 基础语法、魔法方法与类属性/推导式等 |
-| 05 | `05-python-namedtuple-usage-guide` | `namedtuple` 参数、`rename`、与 `array` 区别 |
-| 06 | `06-class-vs-namedtuple-attributes` | 普通类与 namedtuple 的属性与可读性 |
-| 07 | `07-pythonic-french-deck-namedtuple-and-class` | `Card` + `FrenchDeck` 协作 |
-| 08 | `08-random-choice-and-special-methods` | `random.choice` 与 `__len__` / `__getitem__` |
-| 09 | `09-dunder-getitem-and-contains` | `__getitem__`、`__contains__` 与 set / bisect 优化 |
-| 10 | `10-french-deck-composition-setitem-shuffle` | 组合、`__setitem__`、`shuffle`、`spades_high` |
-| 11 | `11-special-methods-implicit-invocation` | 隐式调用原则 + 对照表 + 三类归纳 |
-| 12 | `12-collections-abc-container-api` | `collections.abc`、Collection / Sequence / Mapping / Set、鸭子类型 |
+| 05 | `05-namedtuple用法指南与rename参数` | `namedtuple` 参数、`rename`、与 `array` 区别 |
+| 06 | `06-普通类与namedtuple属性及可读性` | 普通类与 namedtuple 的属性与可读性 |
+| 07 | `07-Pythonic法式扑克牌namedtuple与类` | `Card` + `FrenchDeck` 协作 |
+| 08 | `08-random-choice与特殊方法lengetitem` | `random.choice` 与 `__len__` / `__getitem__` |
+| 09 | `09-getitem与contains及成员检测优化` | `__getitem__`、`__contains__` 与 set / bisect 优化 |
+| 10 | `10-法式扑克牌组合setitem与洗牌` | 组合、`__setitem__`、`shuffle`、`spades_high` |
+| 11 | `11-特殊方法隐式调用与对照表` | 隐式调用原则 + 对照表 + 三类归纳 |
+| 12 | `12-collections-abc容器API` | `collections.abc`、Collection / Sequence / Mapping / Set、鸭子类型 |
 
 可运行脚本（均在 `chapter-01/`）：
 

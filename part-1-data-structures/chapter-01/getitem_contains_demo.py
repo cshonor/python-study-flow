@@ -5,7 +5,7 @@
 - __contains__ + bisect：有序 + 二分（O(log n)）
 - __contains__ 手写 for：与默认同类，无优化
 
-对应笔记：09-dunder-getitem-and-contains.md
+对应笔记：09-getitem与contains及成员检测优化.md
 运行：python part-1-data-structures/chapter-01/getitem_contains_demo.py
 """
 

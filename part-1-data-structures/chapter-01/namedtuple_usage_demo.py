@@ -1,5 +1,5 @@
 """
-与 05-python-namedtuple-usage-guide.md 配套的演示脚本。
+与 05-namedtuple用法指南与rename参数.md 配套的演示脚本。
 
 运行：python part-1-data-structures/chapter-01/namedtuple_usage_demo.py
 """
@@ -62,7 +62,7 @@ def demo_tuple_subclass() -> None:
 
 
 def main() -> None:
-    print("=== namedtuple 用法演示（对应 05-python-namedtuple-usage-guide.md）===\n")
+    print("=== namedtuple 用法演示（对应 05-namedtuple用法指南与rename参数.md）===\n")
     demo_field_names_forms()
     print()
     demo_rename()

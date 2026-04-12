@@ -1,7 +1,7 @@
 """
 FrenchDeck：组合 + __len__ / __getitem__ / __setitem__，支持 random.shuffle 与自定义排序 key。
 
-对应笔记：10-french-deck-composition-setitem-shuffle.md
+对应笔记：10-法式扑克牌组合setitem与洗牌.md
 """
 
 from __future__ import annotations
@@ -56,7 +56,7 @@ def demo_spades_high_weights() -> None:
         Card("A", "clubs"),
         Card("A", "spades"),
     ]
-    print("\n--- spades_high 权重分解（对照 10-...md §5）---")
+    print("\n--- spades_high 权重分解（对照 10-法式扑克牌组合setitem与洗牌.md §5）---")
     for c in samples:
         rv, rpart, spart, total = explain_spades_high(c)
         print(

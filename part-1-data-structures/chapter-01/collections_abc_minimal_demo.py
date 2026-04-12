@@ -4,7 +4,7 @@
 要点：即使没有 __iter__，for 仍可能通过「下标 0,1,2…」协议工作；这与 Iterable ABC 的
 isinstance 检测不是同一件事。部分 ABC 也可用 register() 显式登记虚拟子类。
 
-对应笔记：12-collections-abc-container-api.md
+对应笔记：12-collections-abc容器API.md
 """
 
 from __future__ import annotations
