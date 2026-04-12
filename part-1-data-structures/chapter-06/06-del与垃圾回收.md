@@ -6,7 +6,7 @@
 
 对象能不能被回收，取决于它是不是还“可达”（是否还有强引用链能找到它）。
 
-配套脚本：`object_refs_mutability_gc_demo.py`（本节新增 `del`/循环引用/弱引用 finalize 证据段）。
+配套脚本：`06_del_and_garbage_collection_demo.py`（`del`/循环引用/弱引用 finalize 证据段）。
 
 ---
 
@@ -152,7 +152,7 @@ a.append(b)
 ## 六、运行验证（强烈建议）
 
 ```bash
-python part-1-data-structures/chapter-06/object_refs_mutability_gc_demo.py
+python part-1-data-structures/chapter-06/06_del_and_garbage_collection_demo.py
 ```
 
 重点看输出：

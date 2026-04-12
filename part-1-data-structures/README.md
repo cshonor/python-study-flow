@@ -13,7 +13,7 @@
 | `chapter-03/` | 第 3 章「字典和集合」 | `01`–`14`（含 §3.6 / §3.8 / §3.10–§3.12）；见该目录 `README` |
 | `chapter-04/` | 第 4 章「Unicode 文本与字节序列」 | `01` 开篇；见该目录 `README` |
 | `chapter-05/` | 第 5 章「数据类构建器」 | `01`–`07` 笔记；`namedtuple` / `typing.NamedTuple` / `@dataclass` / `TypedDict` + 配套 demo |
-| `chapter-06/` | 第 6 章「对象引用、可变性和垃圾回收」 | `01`–`07` 笔记；变量/对象/引用、浅深拷贝、参数传递、GC、弱引用 |
+| `chapter-06/` | 第 6 章「对象引用、可变性和垃圾回收」 | `01`–`07` 笔记 + 同编号演示脚本（`01` 为导航）；引用、拷贝、传参、GC |
 
 第 7 章「函数是一等对象」等材料在 **`part-2-functions-as-objects/`**（本书 Part 2 对应目录），见该 Part 内 `README` 与 `chapter-07/`。
 
@@ -256,8 +256,16 @@ python part-1-data-structures/chapter-05/dataclass_code_smell_and_match_demo.py
 | 06 | `06-del与垃圾回收.md` | `del`、引用计数、循环 GC、弱引用 |
 | 07 | `07-不可变类型技巧.md` | 驻留、`intern`、`is` 边界 |
 
+脚本与笔记编号一致：`01_object_refs_gc_overview_demo.py`（导航）、`02_variable_not_a_box_demo.py` … `07_immutable_type_tricks_demo.py`（详见 `chapter-06/README.md`）。
+
 ```bash
-python part-1-data-structures/chapter-06/object_refs_mutability_gc_demo.py
+python part-1-data-structures/chapter-06/01_object_refs_gc_overview_demo.py
+python part-1-data-structures/chapter-06/02_variable_not_a_box_demo.py
+python part-1-data-structures/chapter-06/03_identity_equality_aliasing_demo.py
+python part-1-data-structures/chapter-06/04_shallow_copy_and_deepcopy_demo.py
+python part-1-data-structures/chapter-06/05_call_by_sharing_mutable_defaults_demo.py
+python part-1-data-structures/chapter-06/06_del_and_garbage_collection_demo.py
+python part-1-data-structures/chapter-06/07_immutable_type_tricks_demo.py
 ```
 
 ---

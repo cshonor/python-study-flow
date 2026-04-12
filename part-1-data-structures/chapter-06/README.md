@@ -27,17 +27,31 @@
 | 06 | `06-del与垃圾回收.md` | 6.6 深入：`del` 的解绑语义、引用计数与循环 GC、弱引用与 `weakref.finalize`、排查入口 |
 | 07 | `07-不可变类型技巧.md` | 6.7 深入：不可变对象复用/驻留（tuple/frozenset/str/int）、`sys.intern`、`is` 的边界 |
 
-| 脚本 | 说明 |
-|---|---|
-| `object_refs_mutability_gc_demo.py` | 与 `01` 配套：把每个坑都跑出“证据输出”（含 Windows 控制台安全打印） |
+### 脚本（与上表编号一一对应）
+
+| 编号 | 脚本 | 说明 |
+|---|---|---|
+| — | `ch06_demo_support.py` | 公用：`section()` / `safe()`，被下列脚本导入 |
+| 01 | `01_object_refs_gc_overview_demo.py` | 导航：列出 01–07 各脚本及运行命令 |
+| 02 | `02_variable_not_a_box_demo.py` | 与 `02` 笔记配套 |
+| 03 | `03_identity_equality_aliasing_demo.py` | 与 `03` 笔记配套 |
+| 04 | `04_shallow_copy_and_deepcopy_demo.py` | 与 `04` 笔记配套 |
+| 05 | `05_call_by_sharing_mutable_defaults_demo.py` | 与 `05` 笔记配套 |
+| 06 | `06_del_and_garbage_collection_demo.py` | 与 `06` 笔记配套 |
+| 07 | `07_immutable_type_tricks_demo.py` | 与 `07` 笔记配套 |
 
 ---
 
 ## 运行
 
-在仓库根目录执行：
+在仓库根目录执行（任选一篇对应的脚本）：
 
 ```bash
-python part-1-data-structures/chapter-06/object_refs_mutability_gc_demo.py
+python part-1-data-structures/chapter-06/01_object_refs_gc_overview_demo.py
+python part-1-data-structures/chapter-06/02_variable_not_a_box_demo.py
+python part-1-data-structures/chapter-06/03_identity_equality_aliasing_demo.py
+python part-1-data-structures/chapter-06/04_shallow_copy_and_deepcopy_demo.py
+python part-1-data-structures/chapter-06/05_call_by_sharing_mutable_defaults_demo.py
+python part-1-data-structures/chapter-06/06_del_and_garbage_collection_demo.py
+python part-1-data-structures/chapter-06/07_immutable_type_tricks_demo.py
 ```
-
