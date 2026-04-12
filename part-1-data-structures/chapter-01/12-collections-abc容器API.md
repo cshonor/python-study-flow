@@ -4,6 +4,85 @@
 
 ---
 
+## 一句话吃透：**鸭子类型 + ABC**（《流畅的 Python》语境）
+
+### 鸭子类型（Duck Typing）
+
+> **口诀：长得像鸭子、走起来像鸭子、叫起来像鸭子，就当它是鸭子。**
+
+1. Python 是动态语言：**不看出身（继承树），先看有没有对应的方法**（协议 / 魔法方法）。
+2. 以 **`FrenchDeck`** 为例（与书中一致）：
+   - 有 **`__len__`** → 能用 **`len()`**（**`Sized`** 这一路能力）。
+   - 有 **`__getitem__`** → 常能 **索引、切片**；并常能驱动 **`for`**、以及 **`in`** 的某种回退路径（细节见下文第四节、第七节）。
+   - **不必继承 `list`**，也能在**用法上**「像列表」——这就是 **协议编程**：靠约定的方法名表达行为，而不是靠「绑死父类」。
+
+3. 一句话记本质：**不在乎你是谁（类名），只在乎你能干什么（方法集合）。**
+
+### ABC（`collections.abc`）
+
+ABC 用来描述 **「某类容器在标准里应该长什么样」**：例如 **`Sequence`**、**`Mapping`**、**`Set`** 等，都是**行为标准模板**（再配 mixin 给默认实现）。
+
+1. **作用**：给鸭子类型 **「画标准、起名字」**，方便 **`isinstance` / `issubclass`**、类型注解、团队协作。
+2. **常见两种接法**：
+   - **主动继承**某 ABC：抽象方法没实现全，实例化前就会报错（契约更硬）。
+   - **`SomeABC.register(MyClass)`**：**虚拟子类**，不改变继承链，只影响「类型系统认不认」。
+3. **`isinstance(obj, Sequence)`**：检查 **「在类型层级上是否被认成 Sequence」**；**与「`for` 能不能跑」不是同一件事**（后者看运行时协议；且未 `register` 时，**不同 CPython 版本的 `__subclasshook__` 也可能让 `isinstance` 为 True**，以 **`12_collections_abc_minimal_demo.py`** 在本机打印为准）。
+
+### 二者最关键区别（秒懂）
+
+| | **鸭子类型（协议）** | **ABC（`collections.abc`）** |
+| :--- | :--- | :--- |
+| **管什么** | **运行时**：有没有方法、解释器肯不肯这么调用 | **规范与检查**：标准长什么样、`isinstance`、注解、可读性 |
+| **`FrenchDeck`** | 不继承 `list`，照样 **`len` / `for` / 切片** | 可选用 **`Sequence.register`** 或 **继承 `Sequence`**，把「我是序列」写进类型世界 |
+
+### 极简打通例（可先背这段再往下看细节）
+
+```python
+# 鸭子类型：只靠方法「能跑」
+class Deck:
+    def __len__(self) -> int:
+        return 52
+
+    def __getitem__(self, i):  # 示意：真实牌堆应 return self._cards[i]
+        return i
+
+
+deck = Deck()
+len(deck)   # 52
+deck[0]     # 0
+
+from collections.abc import Sequence
+
+# 「能跑」≠「isinstance 一定 False」：以你本机打印为准
+print(isinstance(deck, Sequence))
+```
+
+**背法**：**代码能跑，靠鸭子类型；`isinstance` / 注解认不认，靠 ABC 与 `register`。** 更细的陷阱见第七节。
+
+### 极简对比图（面试一句话）
+
+```mermaid
+flowchart LR
+  subgraph A[运行时]
+    DT[鸭子类型 / 协议]
+    DT --> R[有 __len__ __getitem__ 等就能用]
+  end
+  subgraph B[规范与工具]
+    ABC[collections.abc]
+    ABC --> C[继承或 register]
+    ABC --> I[isinstance 与类型注解]
+  end
+  A -.->|别混为一谈| B
+```
+
+**终极三句**：
+
+1. **鸭子类型**：**看方法不看继承**；Python **运行时**主要靠它。
+2. **ABC**：**定规矩、做检查、写注解**；工程里把「像」变成「可声明」。
+3. **关系**：**鸭子类型负责干活，ABC 负责立规矩**；二者互补，不是二选一。
+
+---
+
 ## 一、三大基础能力（容器的最小接口）
 
 所有「像容器」的对象，都可以从三个维度问：**能不能迭代、有没有长度、能不能做 `in`**。
@@ -220,6 +299,8 @@ print("Set        ->", isinstance(s, Set))
 ---
 
 ## 附录：一页背诵用（可自行打印）
+
+与文首 **「一句话吃透」** 中的三句总结呼应；展开细节仍以第二～八节为准。
 
 - **三能力**：Iterable / Sized / Container → **Collection**。  
 - **三分支**：Sequence / Mapping / Set。  
