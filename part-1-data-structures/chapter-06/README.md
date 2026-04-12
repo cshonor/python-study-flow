@@ -2,6 +2,8 @@
 
 本目录对应《流畅的 Python》（第二版）第 6 章：**对象引用、可变性和垃圾回收**。
 
+建议先读：[`01-第6章对象引用可变性与GC总览.md`](01-第6章对象引用可变性与GC总览.md)。
+
 这一章偏“底层直觉”，但它直接决定你能不能解释清楚并避开这些高频坑：
 
 - “为什么我改了一个列表，另一个变量也变了？”
@@ -15,16 +17,19 @@
 
 ## 文件一览（建议顺序）
 
-| 文件 | 说明 |
+| 顺序 | 文件 | 说明 |
+|---|---|---|
+| 01 | `01-第6章对象引用可变性与GC总览.md` | 第 6 章开篇导读：变量/对象/引用、可变性、拷贝、参数传递、GC、弱引用（配大量可运行例子） |
+| 02 | `02-变量不是盒子.md` | 6.2 深入：变量是标签不是盒子；赋值先右后左；别名与术语纠正（含 Gizmo 证据） |
+| 03 | `03-同一性相等与别名.md` | 6.3 深入：同一性 vs 相等性（`is`/`==`）、别名风险、`None` 判断、元组相对不可变与 hash |
+| 04 | `04-浅拷贝为默认.md` | 6.4 深入：浅拷贝只拷外壳；三种浅拷贝写法；嵌套可变对象陷阱；copy vs deepcopy |
+| 05 | `05-共享传参与可变默认参数.md` | 6.5 深入：共享传参（call by sharing）、`+=` 差异、可变默认值（HauntedBus）、防御性拷贝（TwilightBus）、`__defaults__` 取证 |
+| 06 | `06-del与垃圾回收.md` | 6.6 深入：`del` 的解绑语义、引用计数与循环 GC、弱引用与 `weakref.finalize`、排查入口 |
+| 07 | `07-不可变类型技巧.md` | 6.7 深入：不可变对象复用/驻留（tuple/frozenset/str/int）、`sys.intern`、`is` 的边界 |
+
+| 脚本 | 说明 |
 |---|---|
-| `01-object-references-mutability-and-gc-overview.md` | 第 6 章开篇导读：变量/对象/引用、可变性、拷贝、参数传递、GC、弱引用（配大量可运行例子） |
-| `02-variable-not-a-box.md` | 6.2 深入：变量是标签不是盒子；赋值先右后左；别名与术语纠正（含 Gizmo 证据） |
-| `03-identity-equality-and-aliasing.md` | 6.3 深入：同一性 vs 相等性（`is`/`==`）、别名风险、`None` 判断、元组相对不可变与 hash |
-| `04-shallow-copy-by-default.md` | 6.4 深入：浅拷贝只拷外壳；三种浅拷贝写法；嵌套可变对象陷阱；copy vs deepcopy |
-| `05-call-by-sharing-and-mutable-defaults.md` | 6.5 深入：共享传参（call by sharing）、`+=` 差异、可变默认值（HauntedBus）、防御性拷贝（TwilightBus）、`__defaults__` 取证 |
-| `06-del-and-garbage-collection.md` | 6.6 深入：`del` 的解绑语义、引用计数与循环 GC、弱引用与 `weakref.finalize`、排查入口 |
-| `07-immutable-type-tricks.md` | 6.7 深入：不可变对象复用/驻留（tuple/frozenset/str/int）、`sys.intern`、`is` 的边界 |
-| `object_refs_mutability_gc_demo.py` | 与 `01` 配套的可运行脚本：把每个坑都跑出“证据输出”（含 Windows 控制台安全打印） |
+| `object_refs_mutability_gc_demo.py` | 与 `01` 配套：把每个坑都跑出“证据输出”（含 Windows 控制台安全打印） |
 
 ---
 

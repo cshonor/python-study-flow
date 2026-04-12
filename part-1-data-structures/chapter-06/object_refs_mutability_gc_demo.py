@@ -1,5 +1,5 @@
 """
-Demo for 01-object-references-mutability-and-gc-overview.md
+Demo for 01-第6章对象引用可变性与GC总览.md
 
 Run from repo root:
   python part-1-data-structures/chapter-06/object_refs_mutability_gc_demo.py

@@ -13,7 +13,7 @@
 | `chapter-03/` | 第 3 章「字典和集合」 | `01`–`14`（含 §3.6 / §3.8 / §3.10–§3.12）；见该目录 `README` |
 | `chapter-04/` | 第 4 章「Unicode 文本与字节序列」 | `01` 开篇；见该目录 `README` |
 | `chapter-05/` | 第 5 章「数据类构建器」 | `01`–`07` 笔记；`namedtuple` / `typing.NamedTuple` / `@dataclass` / `TypedDict` + 配套 demo |
-| `chapter-06/` | 第 6 章「对象引用、可变性和垃圾回收」 | 变量/对象/引用、浅深拷贝、参数传递、GC、弱引用 |
+| `chapter-06/` | 第 6 章「对象引用、可变性和垃圾回收」 | `01`–`07` 笔记；变量/对象/引用、浅深拷贝、参数传递、GC、弱引用 |
 
 第 7 章「函数是一等对象」等材料在 **`part-2-functions-as-objects/`**（本书 Part 2 对应目录），见该 Part 内 `README` 与 `chapter-07/`。
 
@@ -238,6 +238,26 @@ python part-1-data-structures/chapter-05/typed_namedtuple_demo.py
 python part-1-data-structures/chapter-05/type_hints_primer_demo.py
 python part-1-data-structures/chapter-05/dataclass_deep_dive_demo.py
 python part-1-data-structures/chapter-05/dataclass_code_smell_and_match_demo.py
+```
+
+---
+
+## `chapter-06/` 笔记与脚本
+
+本章目录内另有 **`chapter-06/README.md`**：以 `01-第6章对象引用可变性与GC总览.md` 为入口。
+
+| 编号 | 文件 | 主题简述 |
+|------|------|----------|
+| 01 | `01-第6章对象引用可变性与GC总览.md` | 变量/对象/引用、可变性、拷贝、GC 总览 |
+| 02 | `02-变量不是盒子.md` | 变量是标签、赋值与别名 |
+| 03 | `03-同一性相等与别名.md` | `is`/`==`、别名与元组相对不可变 |
+| 04 | `04-浅拷贝为默认.md` | 浅拷贝、`copy`/`deepcopy` |
+| 05 | `05-共享传参与可变默认参数.md` | 共享传参、可变默认参数 |
+| 06 | `06-del与垃圾回收.md` | `del`、引用计数、循环 GC、弱引用 |
+| 07 | `07-不可变类型技巧.md` | 驻留、`intern`、`is` 边界 |
+
+```bash
+python part-1-data-structures/chapter-06/object_refs_mutability_gc_demo.py
 ```
 
 ---
