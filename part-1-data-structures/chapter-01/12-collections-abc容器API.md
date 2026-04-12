@@ -298,6 +298,106 @@ flowchart LR
 
 ---
 
+## 附读二：Python 继承 vs Java（结合鸭子类型，粗线条对比）
+
+> 目标：回答「**Python 到底有没有正统 OOP 继承？**」以及「**为什么说 Python 可以不靠继承过日子**」——和上文 **新手零基础**、**一句话吃透**、**附读（Go/Rust）** 同一条故事线。
+
+### 附读二-1：一句结论（先背这个）
+
+- **Python**：**完整支持**类继承、多继承、重写、`super()`、多态——**和 Java 一样有「正统 OOP 继承」这一套**。  
+- **差别在习惯与类型系统**：Java 写**类型安全的多态**时，日常更依赖 **`extends` / `implements`** 把能力写进**继承树**；Python **同样能这么写**，但还并行存在 **「鸭子类型」** 这条路：**不必**先造一个 `Animal` 接口，也能让不同类在同一个函数里「像多态一样」被调用。  
+- **ABC（`collections.abc`）**：像是给 Python **补一层「可选的、接近 Java 接口的契约」**——**不是**运行时的唯一门槛。
+
+（Java 侧当然也有 `Object`、反射、泛型上界等绕过手段；下面是**教材式对比**，不抠边角语法。）
+
+---
+
+### 附读二-2：Python 的正统继承（和 `extends` 同一气质）
+
+```python
+class Animal:
+    def speak(self) -> None:
+        print("动物叫声")
+
+
+class Dog(Animal):
+    def speak(self) -> None:
+        print("汪汪")
+
+
+Dog().speak()  # 汪汪
+```
+
+👉 **标准继承 + 重写 + 多态**，与 Java 的 `extends` / `@Override` **同一类心智**。
+
+---
+
+### 附读二-3：「离不开继承」vs「可以不用继承」
+
+**Java（静态、名义类型为主）**：想让 `hello(x)` 在**类型检查友好**的前提下，对多种类型统一调用 `x.speak()`，常见写法是让它们**实现同一接口**或**继承同一抽象父类**——**能力绑定在类型声明上**的习惯更强。
+
+**Python（动态 + 协议）**：**两套并存**：
+
+1. **正统继承**：想写「Java 味」完全可以。  
+2. **鸭子类型**：**无共同父类**，只要各自有 **`speak`**，就能进同一个函数：
+
+```python
+class Dog:
+    def speak(self) -> None:
+        print("汪汪")
+
+
+class Cat:
+    def speak(self) -> None:
+        print("喵喵")
+
+
+def hello(animal) -> None:
+    animal.speak()
+
+
+hello(Dog())
+hello(Cat())
+```
+
+在 Java 里若 **`Dog`/`Cat` 不共享带 `speak()` 的接口或父类**，就很难在**保持同样简洁与静态检查**的前提下写出等价的 `hello`——这正是对比想强调的点（**不是**说 Java 语法上绝对做不到任何变通）。
+
+---
+
+### 附读二-4：把四个词收成闭环
+
+1. **Python 有继承**：与 Java 同类的 OOP 工具箱。  
+2. **Python 还有鸭子类型**：**协议 / 魔法方法**先保证「能跑」。  
+3. **`collections.abc` / ABC**：给鸭子类型补 **「可声明的契约」**（继承、`register`、`__subclasshook__`）。  
+4. **背一句**：**Java 日常更常先把类型钉在继承树上；Python 可以先协议跑起来，再决定要不要钉 ABC。**
+
+### 附读二-5：Java vs Python 两条路线（一眼图）
+
+```mermaid
+flowchart TB
+  subgraph Java[Java 常见心智]
+    J1[extends implements] --> J2[类型树上声明能力]
+    J2 --> J3[多态调用]
+  end
+  subgraph Py[Python 两条路都能走]
+    P1[继承 super 重写]
+    P2[鸭子类型 魔法方法]
+    P1 --> P3[多态调用]
+    P2 --> P3
+    P4[collections.abc 可选契约] -.-> P1
+    P4 -.-> P2
+  end
+```
+
+### 附读二-6：极简背诵（接在附读-5 后面记）
+
+1. Python **有完整继承**；**不是**「没有 OOP」。  
+2. Java：**名义类型 + 静态检查**习惯里，**接口/父类**往往是多态主入口。  
+3. Python：**继承 + 鸭子类型**并行；**ABC** 给第二条补「像接口一样的标准」。  
+4. **Python 继承 ≈ 学 Java 时的正统 OOP**；**鸭子类型 ≈ Python 数据模型自带的自由捷径**。
+
+---
+
 ## 一、三大基础能力（容器的最小接口）
 
 所有「像容器」的对象，都可以从三个维度问：**能不能迭代、有没有长度、能不能做 `in`**。
@@ -515,7 +615,7 @@ print("Set        ->", isinstance(s, Set))
 
 ## 附录：一页背诵用（可自行打印）
 
-与 **「新手零基础」**、**「一句话吃透」**、**「附读：Python / Go / Rust」** 三层的粗对照呼应；展开细节仍以 **「一」～「八」** 各节为准。
+与 **「新手零基础」**、**「一句话吃透」**、**「附读：Python / Go / Rust」**、**「附读二：Python vs Java」** 四层粗对照呼应；展开细节仍以 **「一」～「八」** 各节为准。
 
 - **三能力**：Iterable / Sized / Container → **Collection**。  
 - **三分支**：Sequence / Mapping / Set。  
