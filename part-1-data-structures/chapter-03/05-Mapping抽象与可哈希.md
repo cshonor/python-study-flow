@@ -148,12 +148,12 @@ def is_hashable(x: object) -> bool:
 
 ## 五、可运行对照
 
-见 `mapping_abc_hashable_demo.py`（`**rest` 示例、`isinstance` Mapping、`hash`/`TypeError`、简易可哈希数据类）。
+见 `05_mapping_abc_hashable_demo.py`（`**rest` 示例、`isinstance` Mapping、`hash`/`TypeError`、简易可哈希数据类）。
 
 运行：
 
 ```bash
-python part-1-data-structures/chapter-03/mapping_abc_hashable_demo.py
+python part-1-data-structures/chapter-03/05_mapping_abc_hashable_demo.py
 ```
 
 下一篇会把 `dict/defaultdict/OrderedDict` 常用方法差异做成一张更易查的表，并补上“哪些点最容易写错”，见 `06-dict-defaultdict与OrderedDict对照.md`。

@@ -87,7 +87,7 @@ class SortedDeck:
 
 ## 五、可运行示例（扑克牌）
 
-同目录 `getitem_contains_demo.py` 对比：
+同目录 `09_getitem_contains_demo.py` 对比：
 
 1. **仅** `__len__` + `__getitem__`：默认 `in` 顺序扫描。  
 2. **`__contains__` + `set`**：近似 O(1)。  
@@ -97,5 +97,5 @@ class SortedDeck:
 运行：
 
 ```bash
-python part-1-data-structures/chapter-01/getitem_contains_demo.py
+python part-1-data-structures/chapter-01/09_getitem_contains_demo.py
 ```

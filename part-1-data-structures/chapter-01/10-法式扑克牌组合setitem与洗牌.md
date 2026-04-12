@@ -171,14 +171,14 @@ for card in sorted(deck, key=spades_high):
 
 ### 5.5 具体权重数值 demo
 
-同目录 `french_deck_shuffle_demo.py` 运行时会打印例如 **2♣**、**2♠**、**A♣**、**A♠** 的 `rank_value`、花色项与最终权重，便于对照公式。
+同目录 `10_french_deck_shuffle_demo.py` 运行时会打印例如 **2♣**、**2♠**、**A♣**、**A♠** 的 `rank_value`、花色项与最终权重，便于对照公式。
 
 ---
 
 ## 6. 完整可运行示例（逐行对照）
 
-同目录：`french_deck_shuffle_demo.py`（含 `FrenchDeck`、`__setitem__`、`spades_high`、权重打印、`random.shuffle` 与 `sorted`）。
+同目录：`10_french_deck_shuffle_demo.py`（含 `FrenchDeck`、`__setitem__`、`spades_high`、权重打印、`random.shuffle` 与 `sorted`）。
 
 ```bash
-python part-1-data-structures/chapter-01/french_deck_shuffle_demo.py
+python part-1-data-structures/chapter-01/10_french_deck_shuffle_demo.py
 ```

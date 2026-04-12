@@ -16,7 +16,7 @@
 - `__eq__`（以及可选的排序方法）
 - `__hash__`（在“安全”的条件下自动生成）
 
-配套脚本：`dataclass_deep_dive_demo.py`（把本节所有关键点都跑出来）。
+配套脚本：`06_dataclass_deep_dive_demo.py`（把本节所有关键点都跑出来）。
 
 ---
 
@@ -247,7 +247,7 @@ all_handles: ClassVar[set[str]] = set()
 ## 八、运行
 
 ```bash
-python part-1-data-structures/chapter-05/dataclass_deep_dive_demo.py
+python part-1-data-structures/chapter-05/06_dataclass_deep_dive_demo.py
 ```
 
 你将看到每一节关键点的“可证据输出”：异常类型、字段列表、是否进 `__init__`、是否可变、`ClassVar/InitVar` 是否成为字段等。

@@ -113,12 +113,12 @@ for row in reader:
 
 ## 六、可运行对照
 
-见 `csv_dictreader_pattern_matching_demo.py`：用内存中的 CSV 字符串（`io.StringIO`）演示 **`match` 与 `if` 两版**，无需自备文件。
+见 `04_csv_dictreader_pattern_matching_demo.py`：用内存中的 CSV 字符串（`io.StringIO`）演示 **`match` 与 `if` 两版**，无需自备文件。
 
 运行：
 
 ```bash
-python part-1-data-structures/chapter-03/csv_dictreader_pattern_matching_demo.py
+python part-1-data-structures/chapter-03/04_csv_dictreader_pattern_matching_demo.py
 ```
 
 下一篇会把“映射的抽象接口（Mapping）”“可哈希”“映射模式里的 `**rest`”讲清楚，见 `05-Mapping抽象与可哈希.md`。

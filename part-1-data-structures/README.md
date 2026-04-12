@@ -12,12 +12,12 @@
 | `chapter-02/` | 第 2 章「丰富的序列」等 | 开篇、容器/扁平、`PyObject*`、ABC、对象模型、可变/不可变协议：`01`…`08` |
 | `chapter-03/` | 第 3 章「字典和集合」 | `01`–`14`（含 §3.6 / §3.8 / §3.10–§3.12）；见该目录 `README` |
 | `chapter-04/` | 第 4 章「Unicode 文本与字节序列」 | `01` 开篇；见该目录 `README` |
-| `chapter-05/` | 第 5 章「数据类构建器」 | `01`–`07` 笔记；`namedtuple` / `typing.NamedTuple` / `@dataclass` / `TypedDict` + 配套 demo |
-| `chapter-06/` | 第 6 章「对象引用、可变性和垃圾回收」 | `01`–`07` 笔记 + 同编号演示脚本（`01` 为导航）；引用、拷贝、传参、GC |
+| `chapter-05/` | 第 5 章「数据类构建器」 | `01`–`07` 笔记；演示脚本为 `01_`…`07_*.py` 与篇号对齐 |
+| `chapter-06/` | 第 6 章「对象引用、可变性和垃圾回收」 | `01`–`07` 笔记 + 同编号 `NN_*.py`（`01` 为导航）；引用、拷贝、传参、GC |
 
 第 7 章「函数是一等对象」等材料在 **`part-2-functions-as-objects/`**（本书 Part 2 对应目录），见该 Part 内 `README` 与 `chapter-07/`。
 
-每章目录内约定：**两位编号**的 `NN-主题.md` 为笔记，同名主题的 `*_demo.py` 为可运行示例（见下）。
+每章目录内约定：**两位编号**的 `NN-主题.md` 为笔记；**`NN_` 前缀**的 `NN_描述_demo.py` 为与篇号对齐的可运行示例（`chapter-01` 仅部分篇目有脚本；`chapter-02` 的 `02` 篇对应两个 `02_*.py`；`chapter-04` 的 `09` 篇对应 `09_unicode_numeric_demo.py` 与 `09_unicode_char_finder.py`）。
 
 ---
 
@@ -59,17 +59,22 @@
 
 | 脚本 | 说明 |
 |------|------|
-| `french_deck_demo.py` | 基础 `FrenchDeck` + `Card` |
-| `french_deck_shuffle_demo.py` | `__setitem__`、`shuffle`、`spades_high`、权重打印 |
-| `namedtuple_usage_demo.py` | 与 `05` 笔记配套 |
-| `random_choice_special_methods_demo.py` | 与 `08` 笔记配套 |
-| `getitem_contains_demo.py` | 与 `09` 笔记配套 |
-| `collections_abc_minimal_demo.py` | 与 `12` 笔记配套（`isinstance` + `Sequence.register`） |
+| `05_namedtuple_usage_demo.py` | 与 `05` 笔记配套 |
+| `07_french_deck_demo.py` | 与 `07` 配套：基础 `FrenchDeck` + `Card` |
+| `08_random_choice_special_methods_demo.py` | 与 `08` 配套：`random.choice` 与特殊方法 |
+| `09_getitem_contains_demo.py` | 与 `09` 配套：`__getitem__` / `__contains__` |
+| `10_french_deck_shuffle_demo.py` | 与 `10` 配套：`__setitem__`、`shuffle`、`spades_high` |
+| `12_collections_abc_minimal_demo.py` | 与 `12` 配套：`collections.abc` / `isinstance` |
 
 在仓库根目录执行示例：
 
 ```bash
-python part-1-data-structures/chapter-01/french_deck_shuffle_demo.py
+python part-1-data-structures/chapter-01/05_namedtuple_usage_demo.py
+python part-1-data-structures/chapter-01/07_french_deck_demo.py
+python part-1-data-structures/chapter-01/08_random_choice_special_methods_demo.py
+python part-1-data-structures/chapter-01/09_getitem_contains_demo.py
+python part-1-data-structures/chapter-01/10_french_deck_shuffle_demo.py
+python part-1-data-structures/chapter-01/12_collections_abc_minimal_demo.py
 ```
 
 ---
@@ -91,24 +96,24 @@ python part-1-data-structures/chapter-01/french_deck_shuffle_demo.py
 
 | 脚本 | 说明 |
 |------|------|
-| `container_vs_flat_memory_demo.py` | `list` 与 `array.array` 的 `sys.getsizeof` 粗略对比（含注释与局限） |
-| `sequence_virtual_subclass_demo.py` | `abc.Sequence.register` 与 `isinstance`（虚拟子类） |
-| `listcomps_and_genexps_demo.py` | 列表推导式 / genexp / map+filter / 作用域 / `:=` 演示 |
-| `tuples_as_records_and_unpaking_demo.py` | 元组作为记录、`*` 拆包、嵌套拆包、hashable 判断 |
-| `pattern_matching_sequence_demo.py` | Python 3.10+ `match/case`：序列模式、guard、`*rest` 顺序坑 |
-| `slicing_demo.py` | 切片：步距/反转、命名 `slice`、切片赋值与 `Ellipsis` |
-| `sequence_plus_mul_and_nested_list_trap_demo.py` | 序列 `+`/`*` 与 `[[]]*n` 引用共享陷阱 |
-| `list_sort_vs_sorted_demo.py` | `list.sort` / `sorted` / `key` / `itemgetter` / 稳定排序 |
+| `02_container_vs_flat_memory_demo.py` | 与 `02`：`list` / `array.array` 的 `getsizeof` 粗测 |
+| `02_sequence_virtual_subclass_demo.py` | 与 `02`：`abc.Sequence.register` 虚拟子类 |
+| `03_listcomps_and_genexps_demo.py` | 与 `03`：列表推导式 / genexp / `:=` 等 |
+| `04_tuples_as_records_and_unpaking_demo.py` | 与 `04`：元组记录与拆包 |
+| `05_pattern_matching_sequence_demo.py` | 与 `05`：`match/case`（需 3.10+） |
+| `06_slicing_demo.py` | 与 `06`：切片与 `slice` |
+| `07_sequence_plus_mul_and_nested_list_trap_demo.py` | 与 `07`：`+`/`*` 与嵌套列表陷阱 |
+| `08_list_sort_vs_sorted_demo.py` | 与 `08`：`sort` / `sorted` / `key` |
 
 ```bash
-python part-1-data-structures/chapter-02/container_vs_flat_memory_demo.py
-python part-1-data-structures/chapter-02/sequence_virtual_subclass_demo.py
-python part-1-data-structures/chapter-02/listcomps_and_genexps_demo.py
-python part-1-data-structures/chapter-02/tuples_as_records_and_unpaking_demo.py
-python part-1-data-structures/chapter-02/pattern_matching_sequence_demo.py
-python part-1-data-structures/chapter-02/slicing_demo.py
-python part-1-data-structures/chapter-02/sequence_plus_mul_and_nested_list_trap_demo.py
-python part-1-data-structures/chapter-02/list_sort_vs_sorted_demo.py
+python part-1-data-structures/chapter-02/02_container_vs_flat_memory_demo.py
+python part-1-data-structures/chapter-02/02_sequence_virtual_subclass_demo.py
+python part-1-data-structures/chapter-02/03_listcomps_and_genexps_demo.py
+python part-1-data-structures/chapter-02/04_tuples_as_records_and_unpaking_demo.py
+python part-1-data-structures/chapter-02/05_pattern_matching_sequence_demo.py
+python part-1-data-structures/chapter-02/06_slicing_demo.py
+python part-1-data-structures/chapter-02/07_sequence_plus_mul_and_nested_list_trap_demo.py
+python part-1-data-structures/chapter-02/08_list_sort_vs_sorted_demo.py
 ```
 
 ---
@@ -136,36 +141,36 @@ python part-1-data-structures/chapter-02/list_sort_vs_sorted_demo.py
 
 | 脚本 | 说明 |
 |------|------|
-| `dict_and_set_quickstart_demo.py` | `get`/`setdefault`、`Counter`、集合运算、`frozenset` 作键 |
-| `dict_comprehension_demo.py` | 区号示例、`sorted`+`if`、重复键、自测题答案 |
-| `dict_unpack_merge_demo.py` | `**` 调用/字面量、`{**d1, **d2}`、`|` / `|=`、`ChainMap` |
-| `csv_dictreader_pattern_matching_demo.py` | `DictReader` + `match` / `if`（3.10+） |
-| `mapping_abc_hashable_demo.py` | `**rest`、`isinstance(Mapping)`、`hash`、`frozen` dataclass |
-| `mapping_types_three_way_demo.py` | 三种映射、`fromkeys` 陷阱、`OrderedDict.move_to_end` |
-| `zen_word_index_demo.py` | §3.4.3 词索引、默认实参求值、`defaultdict` 工厂 |
-| `defaultdict_and_missing_demo.py` | §3.5、`get` 不插入、嵌套、`__missing__` |
-| `str_key_dict_demo.py` | `StrKeyDict0`、`StrKeyDict`（`get`/`in` 与 `d[k]` 一致） |
-| `dict_variants_demo.py` | §3.6 三种映射变体 |
-| `shelf_counter_userdict_demo.py` | §3.6 续：`Counter` / `shelve` / `UserDict` |
-| `dict_views_demo.py` | §3.8 字典视图 |
-| `set_theory_demo.py` | §3.10–§3.11 集合 |
-| `dict_view_setops_demo.py` | §3.12 视图集合运算 |
+| `01_dict_and_set_quickstart_demo.py` | 与 `01`：`get`/`setdefault`、`Counter`、集合运算 |
+| `02_dict_comprehension_demo.py` | 与 `02`：字典/集合推导式 |
+| `03_dict_unpack_merge_demo.py` | 与 `03`：`**`、`|=`、`ChainMap` |
+| `04_csv_dictreader_pattern_matching_demo.py` | 与 `04`：`DictReader` + `match`（3.10+） |
+| `05_mapping_abc_hashable_demo.py` | 与 `05`：`Mapping`、可哈希 |
+| `06_mapping_types_three_way_demo.py` | 与 `06`：`dict` / `defaultdict` / `OrderedDict` |
+| `07_zen_word_index_demo.py` | 与 `07`：词索引与 `defaultdict` |
+| `08_defaultdict_and_missing_demo.py` | 与 `08`：`defaultdict`、`__missing__` |
+| `09_str_key_dict_demo.py` | 与 `09`：字符串键与 `UserDict` |
+| `10_dict_variants_demo.py` | 与 `10`：`OrderedDict` / `ChainMap` / `Counter` |
+| `11_shelf_counter_userdict_demo.py` | 与 `11`：`shelve`、`UserDict` |
+| `12_dict_views_demo.py` | 与 `12`：字典视图 |
+| `13_set_theory_demo.py` | 与 `13`：`set` / `frozenset` |
+| `14_dict_view_setops_demo.py` | 与 `14`：视图集合运算 |
 
 ```bash
-python part-1-data-structures/chapter-03/dict_and_set_quickstart_demo.py
-python part-1-data-structures/chapter-03/dict_comprehension_demo.py
-python part-1-data-structures/chapter-03/dict_unpack_merge_demo.py
-python part-1-data-structures/chapter-03/csv_dictreader_pattern_matching_demo.py
-python part-1-data-structures/chapter-03/mapping_abc_hashable_demo.py
-python part-1-data-structures/chapter-03/mapping_types_three_way_demo.py
-python part-1-data-structures/chapter-03/zen_word_index_demo.py
-python part-1-data-structures/chapter-03/defaultdict_and_missing_demo.py
-python part-1-data-structures/chapter-03/str_key_dict_demo.py
-python part-1-data-structures/chapter-03/dict_variants_demo.py
-python part-1-data-structures/chapter-03/shelf_counter_userdict_demo.py
-python part-1-data-structures/chapter-03/dict_views_demo.py
-python part-1-data-structures/chapter-03/set_theory_demo.py
-python part-1-data-structures/chapter-03/dict_view_setops_demo.py
+python part-1-data-structures/chapter-03/01_dict_and_set_quickstart_demo.py
+python part-1-data-structures/chapter-03/02_dict_comprehension_demo.py
+python part-1-data-structures/chapter-03/03_dict_unpack_merge_demo.py
+python part-1-data-structures/chapter-03/04_csv_dictreader_pattern_matching_demo.py
+python part-1-data-structures/chapter-03/05_mapping_abc_hashable_demo.py
+python part-1-data-structures/chapter-03/06_mapping_types_three_way_demo.py
+python part-1-data-structures/chapter-03/07_zen_word_index_demo.py
+python part-1-data-structures/chapter-03/08_defaultdict_and_missing_demo.py
+python part-1-data-structures/chapter-03/09_str_key_dict_demo.py
+python part-1-data-structures/chapter-03/10_dict_variants_demo.py
+python part-1-data-structures/chapter-03/11_shelf_counter_userdict_demo.py
+python part-1-data-structures/chapter-03/12_dict_views_demo.py
+python part-1-data-structures/chapter-03/13_set_theory_demo.py
+python part-1-data-structures/chapter-03/14_dict_view_setops_demo.py
 ```
 
 ---
@@ -189,29 +194,29 @@ python part-1-data-structures/chapter-03/dict_view_setops_demo.py
 
 | 脚本 | 说明 |
 |------|------|
-| `unicode_bytes_quickstart_demo.py` | 与 `01` 配套：`encode`/`decode`、`errors=` |
-| `codepoints_encoding_demo.py` | 与 `02` 配套：码点、UTF-8 字节与解码差异、`errors=` |
-| `io_encoding_troubleshoot_demo.py` | 与 `03` 配套：I/O 编码排查 demo |
-| `bytes_bytearray_demo.py` | 与 `04` 配套 |
-| `codecs_encodings_table_demo.py` | 与 `05` 配套 |
-| `encoding_decoding_fixes_demo.py` | 与 `06` 配套 |
-| `unicode_normalization_demo.py` | 与 `07` 配套 |
-| `unicode_sorting_demo.py` | 与 `08` 配套 |
-| `unicode_numeric_demo.py` / `unicode_char_finder.py` | 与 `09` 配套 |
-| `dual_mode_api_demo.py` | 与 `10` 配套 |
+| `01_unicode_bytes_quickstart_demo.py` | 与 `01`：`encode`/`decode`、`errors=` |
+| `02_codepoints_encoding_demo.py` | 与 `02`：码点、UTF-8、`errors=` |
+| `03_io_encoding_troubleshoot_demo.py` | 与 `03`：I/O 编码排查 |
+| `04_bytes_bytearray_demo.py` | 与 `04`：`bytes`/`bytearray` |
+| `05_codecs_encodings_table_demo.py` | 与 `05`：编码与 codecs |
+| `06_encoding_decoding_fixes_demo.py` | 与 `06`：编解码修复 |
+| `07_unicode_normalization_demo.py` | 与 `07`：规范化 |
+| `08_unicode_sorting_demo.py` | 与 `08`：排序 |
+| `09_unicode_numeric_demo.py` / `09_unicode_char_finder.py` | 与 `09`：`unicodedata` / 按名查字符 |
+| `10_dual_mode_api_demo.py` | 与 `10`：str/bytes 双模式 API |
 
 ```bash
-python part-1-data-structures/chapter-04/unicode_bytes_quickstart_demo.py
-python part-1-data-structures/chapter-04/codepoints_encoding_demo.py
-python part-1-data-structures/chapter-04/io_encoding_troubleshoot_demo.py
-python part-1-data-structures/chapter-04/bytes_bytearray_demo.py
-python part-1-data-structures/chapter-04/codecs_encodings_table_demo.py
-python part-1-data-structures/chapter-04/encoding_decoding_fixes_demo.py
-python part-1-data-structures/chapter-04/unicode_normalization_demo.py
-python part-1-data-structures/chapter-04/unicode_sorting_demo.py
-python part-1-data-structures/chapter-04/unicode_numeric_demo.py
-python part-1-data-structures/chapter-04/unicode_char_finder.py CAT EYES --limit 20
-python part-1-data-structures/chapter-04/dual_mode_api_demo.py
+python part-1-data-structures/chapter-04/01_unicode_bytes_quickstart_demo.py
+python part-1-data-structures/chapter-04/02_codepoints_encoding_demo.py
+python part-1-data-structures/chapter-04/03_io_encoding_troubleshoot_demo.py
+python part-1-data-structures/chapter-04/04_bytes_bytearray_demo.py
+python part-1-data-structures/chapter-04/05_codecs_encodings_table_demo.py
+python part-1-data-structures/chapter-04/06_encoding_decoding_fixes_demo.py
+python part-1-data-structures/chapter-04/07_unicode_normalization_demo.py
+python part-1-data-structures/chapter-04/08_unicode_sorting_demo.py
+python part-1-data-structures/chapter-04/09_unicode_numeric_demo.py
+python part-1-data-structures/chapter-04/09_unicode_char_finder.py CAT EYES --limit 20
+python part-1-data-structures/chapter-04/10_dual_mode_api_demo.py
 ```
 
 ---
@@ -231,13 +236,13 @@ python part-1-data-structures/chapter-04/dual_mode_api_demo.py
 | 07 | `07-08-数据类异味与match-case.md` | 数据类反模式与 `match/case` 类模式 |
 
 ```bash
-python part-1-data-structures/chapter-05/data_class_builders_demo.py
-python part-1-data-structures/chapter-05/coordinate_builders_demo.py
-python part-1-data-structures/chapter-05/namedtuple_typical_demo.py
-python part-1-data-structures/chapter-05/typed_namedtuple_demo.py
-python part-1-data-structures/chapter-05/type_hints_primer_demo.py
-python part-1-data-structures/chapter-05/dataclass_deep_dive_demo.py
-python part-1-data-structures/chapter-05/dataclass_code_smell_and_match_demo.py
+python part-1-data-structures/chapter-05/01_data_class_builders_demo.py
+python part-1-data-structures/chapter-05/02_coordinate_builders_demo.py
+python part-1-data-structures/chapter-05/03_namedtuple_typical_demo.py
+python part-1-data-structures/chapter-05/04_typed_namedtuple_demo.py
+python part-1-data-structures/chapter-05/05_type_hints_primer_demo.py
+python part-1-data-structures/chapter-05/06_dataclass_deep_dive_demo.py
+python part-1-data-structures/chapter-05/07_dataclass_code_smell_and_match_demo.py
 ```
 
 ---

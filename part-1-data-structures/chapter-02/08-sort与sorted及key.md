@@ -127,7 +127,7 @@ Python 的排序（Timsort）是**稳定**的：键相等时，**保持原有相
 
 ## 七、可运行对照
 
-见 `list_sort_vs_sorted_demo.py`（第 1–5 段：基础与 `itemgetter` / 稳定两趟；第 6–8 段：`fruits` 全书示例、多字段商品、`shuffle` 返回 `None`）。
+见 `08_list_sort_vs_sorted_demo.py`（第 1–5 段：基础与 `itemgetter` / 稳定两趟；第 6–8 段：`fruits` 全书示例、多字段商品、`shuffle` 返回 `None`）。
 
 ---
 

@@ -10,7 +10,7 @@
 2. **大小写不敏感比较用 `casefold()`**（不要只用 `lower()`）
 3. **NFKC/NFKD 只能用于搜索/索引，不要用于持久化存储**（可能改变语义/丢失格式）
 
-配套脚本：`unicode_normalization_demo.py`。
+配套脚本：`07_unicode_normalization_demo.py`。
 
 ---
 
@@ -178,7 +178,7 @@ def shave_marks(txt: str) -> str:
 运行：
 
 ```bash
-python part-1-data-structures/chapter-04/unicode_normalization_demo.py
+python part-1-data-structures/chapter-04/07_unicode_normalization_demo.py
 ```
 
 脚本会打印：

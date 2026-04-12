@@ -114,6 +114,6 @@
 
 ## 八、可运行对照
 
-见 `mapping_types_three_way_demo.py`（计数、`get` vs `[]`、`fromkeys`、`move_to_end` / `popitem`、`|` 合并、简易 LRU、可哈希 `User`）。
+见 `06_mapping_types_three_way_demo.py`（计数、`get` vs `[]`、`fromkeys`、`move_to_end` / `popitem`、`|` 合并、简易 LRU、可哈希 `User`）。
 
 **下一篇**：词索引与可变值更新见 `07-可变值与词索引.md`。**§3.6** `OrderedDict` / `ChainMap` / `Counter` 专题见 `10-OrderedDict-ChainMap-Counter.md`；**`Counter` 深化、`shelve`、`UserDict` 子类化**见 `11-Counter与shelve及UserDict子类化.md`。**§3.8** `keys()` / `values()` / `items()` **字典视图**见 `12-字典视图.md`。

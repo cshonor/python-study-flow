@@ -4,7 +4,7 @@
 
 - **`Counter`**：除了计数，还能做“多重集运算”（`+ - & |`）\n- **`shelve`**：一个“像 dict 一样用”的持久化键值存储（但有严格边界）\n- **`UserDict`**：为什么很多时候“自定义映射”更推荐继承它，而不是直接继承 `dict`
 
-配套脚本：`shelf_counter_userdict_demo.py`。
+配套脚本：`11_shelf_counter_userdict_demo.py`。
 
 ---
 
@@ -23,7 +23,7 @@
 
 - **`+` / `-`**：按元素计数相加减（结果中**去掉**计数为 **0** 及以下的键）。  
 - **`&` / `|`**：分别取各键计数的 **min** / **max**。  
-- 具体边界以当前 CPython 文档为准；见 `shelf_counter_userdict_demo.py`。
+- 具体边界以当前 CPython 文档为准；见 `11_shelf_counter_userdict_demo.py`。
 
 ### 4. 常用 API
 
@@ -67,7 +67,7 @@
 
 ### 4. 与 `StrKeyDict` 的关系
 
-- **`StrKeyDict`**（示例 3-9）的完整对比（**`StrKeyDict0` 继承 `dict`** vs **`StrKeyDict` 继承 `UserDict`**）与代码见 **`09-字符串键字典与missing.md`** 及 **`str_key_dict_demo.py`**。  
+- **`StrKeyDict`**（示例 3-9）的完整对比（**`StrKeyDict0` 继承 `dict`** vs **`StrKeyDict` 继承 `UserDict`**）与代码见 **`09-字符串键字典与missing.md`** 及 **`09_str_key_dict_demo.py`**。  
 - 若在 **`UserDict`** 子类中实现 **`__setitem__(self, key, value): self.data[str(key)] = value`**，则从写入路径上**统一键类型**；再配合 **`__missing__`**、**`__contains__`** 与（可选）**`get`**，行为可完整对齐业务预期。
 
 ### 5. 不可变映射（与 §3.7 衔接）
@@ -89,4 +89,4 @@
 
 ## 五、可运行对照
 
-见 **`shelve_counter_userdict_demo.py`**（`Counter` 字符串与运算、`shelve` 临时文件、**`UserDict` + `update`** 走 **`__setitem__`**）。
+见 **`11_shelf_counter_userdict_demo.py`**（`Counter` 字符串与运算、`shelve` 临时文件、**`UserDict` + `update`** 走 **`__setitem__`**）。

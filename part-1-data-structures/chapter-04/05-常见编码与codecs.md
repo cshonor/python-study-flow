@@ -5,7 +5,7 @@
 
 这就是“乱码问题”的根：**你用什么编码写出来的 bytes，就必须用同样的编码解回来**；否则要么报错，要么“碰巧解出来但全是鬼画符”。
 
-配套脚本：`codecs_encodings_table_demo.py`（会生成一张“字符 × 编码 → hex bytes/不可编码”的对照表）。
+配套脚本：`05_codecs_encodings_table_demo.py`（会生成一张“字符 × 编码 → hex bytes/不可编码”的对照表）。
 
 ---
 
@@ -97,7 +97,7 @@
 运行：
 
 ```bash
-python part-1-data-structures/chapter-04/codecs_encodings_table_demo.py
+python part-1-data-structures/chapter-04/05_codecs_encodings_table_demo.py
 ```
 
 你会看到两部分输出：

@@ -4,7 +4,7 @@
 
 - **`OrderedDict`**：当你需要“显式控制顺序”（例如把某个 key 移到末尾）时用。\n- **`ChainMap`**：当你需要“多层查找（覆盖）”而不是“真合并”时用。\n- **`Counter`**：当你在做“计数/词频/多重集运算”时用（比自己写 `d.get(k, 0) + 1` 更直接）。
 
-配套脚本：`dict_variants_demo.py`。
+配套脚本：`10_dict_variants_demo.py`。
 
 ---
 
@@ -13,7 +13,7 @@
 ### 1. 与原生 `dict`（Python **3.7+** 语言保证插入顺序）
 
 - **3.7+** 的 `dict` 已保证**插入顺序**；仅当需要 **`move_to_end`**、**`popitem(last=...)` 的 FIFO/LIFO 控制**、或与旧代码协同时，再选 **`OrderedDict`**。  
-- **相等性**：两个 **`OrderedDict`** 若**键顺序不同**，可能 **`==` 为假**；**`OrderedDict` 与普通 `dict`** 在键值集合相同时，**通常仍按映射相等**（顺序不阻等）。以当前 CPython 行为为准，见 `dict_variants_demo.py`。
+- **相等性**：两个 **`OrderedDict`** 若**键顺序不同**，可能 **`==` 为假**；**`OrderedDict` 与普通 `dict`** 在键值集合相同时，**通常仍按映射相等**（顺序不阻等）。以当前 CPython 行为为准，见 `10_dict_variants_demo.py`。
 
 ### 2. 顺序 API（与 `06` 呼应）
 
@@ -64,4 +64,4 @@
 
 ## 五、可运行对照
 
-见 `dict_variants_demo.py`（`OrderedDict` 相等性与顺序、`ChainMap` 查找与写首表、`Counter`）。
+见 `10_dict_variants_demo.py`（`OrderedDict` 相等性与顺序、`ChainMap` 查找与写首表、`Counter`）。

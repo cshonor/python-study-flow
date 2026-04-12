@@ -3,7 +3,7 @@
 这一节的重点是：**在保留 namedtuple 的轻量与不可变语义的同时，加上类型注解**。  
 你会看到 `typing.NamedTuple` 和 `collections.namedtuple` 的关系是“同一个家族”，但它更适合现代代码库（IDE 友好、类型检查友好、可读性更强）。
 
-配套脚本：`typed_namedtuple_demo.py`（含与 `@dataclass` 的对比）。
+配套脚本：`04_typed_namedtuple_demo.py`（含与 `@dataclass` 的对比）。
 
 ---
 
@@ -101,7 +101,7 @@ class Bad(NamedTuple):
 运行：
 
 ```bash
-python part-1-data-structures/chapter-05/typed_namedtuple_demo.py
+python part-1-data-structures/chapter-05/04_typed_namedtuple_demo.py
 ```
 
 你会看到：

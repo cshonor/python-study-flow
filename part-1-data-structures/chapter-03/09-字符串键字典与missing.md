@@ -147,7 +147,7 @@ class StrKeyDict(UserDict):
 
 ## 八、可运行对照
 
-见 `str_key_dict_demo.py`（仅 **`__missing__`** 的 `StrKeyDict0`、补全后的 **`StrKeyDict0Complete`**、`StrKeyDict`）。
+见 `09_str_key_dict_demo.py`（仅 **`__missing__`** 的 `StrKeyDict0`、补全后的 **`StrKeyDict0Complete`**、`StrKeyDict`）。
 
 ---
 

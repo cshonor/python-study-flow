@@ -6,7 +6,7 @@
 
 - 元素必须是 **hashable**（可哈希）\n- 集合不按“插入顺序”提供稳定语义（不要依赖遍历顺序）\n- `set` 可变、`frozenset` 不可变，后者因此能当 `dict` 的 key 或另一个集合的元素
 
-配套脚本：`set_theory_demo.py`。
+配套脚本：`13_set_theory_demo.py`。
 
 ---
 
@@ -77,4 +77,4 @@
 
 ## 九、可运行对照
 
-见 **`set_theory_demo.py`**：空 **`{}`**、保序去重、**`needles & haystack`**、**`intersection`** 接列表、嵌套 **`frozenset`**。
+见 **`13_set_theory_demo.py`**：空 **`{}`**、保序去重、**`needles & haystack`**、**`intersection`** 接列表、嵌套 **`frozenset`**。

@@ -8,7 +8,7 @@
 - `typing.NamedTuple`（不可变 + 类型提示 + 可写方法）
 - `@dataclasses.dataclass`（现代默认：可变/不可变都行，可扩展）
 
-配套脚本：`coordinate_builders_demo.py`（把每个差异都跑出来）。
+配套脚本：`02_coordinate_builders_demo.py`（把每个差异都跑出来）。
 
 ---
 
@@ -197,7 +197,7 @@ class Coordinate:
 运行：
 
 ```bash
-python part-1-data-structures/chapter-05/coordinate_builders_demo.py
+python part-1-data-structures/chapter-05/02_coordinate_builders_demo.py
 ```
 
 你会看到：

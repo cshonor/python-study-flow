@@ -20,12 +20,12 @@ SNIPPET = (
 def _prepend_docstring(raw: str, path: Path) -> str:
     rel = path.relative_to(ROOT).as_posix()
     cmd = f"python {rel}"
-    if path.name == "french_deck_demo.py":
+    if path.name == "07_french_deck_demo.py":
         title = (
             "法式扑克牌最小示例：`collections.namedtuple` 定义单张牌，"
             "普通类 `FrenchDeck` 实现 `__len__` / `__getitem__`。"
         )
-    elif path.name == "random_choice_special_methods_demo.py":
+    elif path.name == "08_random_choice_special_methods_demo.py":
         title = "演示 `random.choice` 如何依赖 `__len__` 与 `__getitem__` 从自定义“序列”中取样。"
     else:
         title = f"配套脚本：{path.name}"

@@ -23,12 +23,13 @@ python-study-flow/
 ├── part-1-data-structures/            # Part 1：数据结构 / 数据模型
 │   ├── README.md
 │   └── chapter-01/                    # 示例：第 1 章相关笔记与 demo
-│       ├── 01-*.md … 10-*.md          # 按学习顺序编号的笔记
-│       ├── french_deck_demo.py
-│       ├── french_deck_shuffle_demo.py
-│       ├── namedtuple_usage_demo.py
-│       ├── random_choice_special_methods_demo.py
-│       ├── getitem_contains_demo.py
+│       ├── 01-*.md … 12-*.md          # 按学习顺序编号的笔记
+│       ├── 05_namedtuple_usage_demo.py
+│       ├── 07_french_deck_demo.py
+│       ├── 08_random_choice_special_methods_demo.py
+│       ├── 09_getitem_contains_demo.py
+│       ├── 10_french_deck_shuffle_demo.py
+│       ├── 12_collections_abc_minimal_demo.py
 │       └── …
 ├── part-2-functions-as-objects/
 ├── part-3-classes-and-protocols/
@@ -45,9 +46,9 @@ python-study-flow/
 3. 示例（Part 1、第 1 章）：
 
 ```bash
-python part-1-data-structures/chapter-01/french_deck_demo.py
-python part-1-data-structures/chapter-01/french_deck_shuffle_demo.py
-python part-1-data-structures/chapter-01/namedtuple_usage_demo.py
+python part-1-data-structures/chapter-01/07_french_deck_demo.py
+python part-1-data-structures/chapter-01/10_french_deck_shuffle_demo.py
+python part-1-data-structures/chapter-01/05_namedtuple_usage_demo.py
 ```
 
 Windows 终端若中文乱码，可先执行 `chcp 65001` 或使用 UTF-8 终端。

@@ -75,8 +75,8 @@
 
 ## 六、可运行示例
 
-同目录：`collections_abc_minimal_demo.py`：一个只实现 `__len__` + `__getitem__` 的小类，打印若干 `isinstance(..., abc.XXX)` 的结果，便于和本节对照。
+同目录：`12_collections_abc_minimal_demo.py`：一个只实现 `__len__` + `__getitem__` 的小类，打印若干 `isinstance(..., abc.XXX)` 的结果，便于和本节对照。
 
 ```bash
-python part-1-data-structures/chapter-01/collections_abc_minimal_demo.py
+python part-1-data-structures/chapter-01/12_collections_abc_minimal_demo.py
 ```

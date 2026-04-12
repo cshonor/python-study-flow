@@ -8,7 +8,7 @@
 - `re`：正则表达式（`str` 模式是 Unicode-aware，`bytes` 模式几乎是 ASCII-aware）
 - `os`：文件系统（很多系统把文件名当 bytes；Python 用 `str` 做抽象，但仍保留 bytes 入口）
 
-配套脚本：`dual_mode_api_demo.py`。
+配套脚本：`10_dual_mode_api_demo.py`。
 
 ---
 
@@ -117,7 +117,7 @@ Python 提供 `str` 形式的文件名是为了开发体验，但仍然保留 by
 运行：
 
 ```bash
-python part-1-data-structures/chapter-04/dual_mode_api_demo.py
+python part-1-data-structures/chapter-04/10_dual_mode_api_demo.py
 ```
 
 脚本会展示：

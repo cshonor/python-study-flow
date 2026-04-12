@@ -121,10 +121,10 @@ assert l == [0, 1, 2, 11, 4, 22, 6, 33, 8, 44]
 
 ## 七、配套 demo
 
-脚本：`part-1-data-structures/chapter-02/slicing_demo.py`
+脚本：`part-1-data-structures/chapter-02/06_slicing_demo.py`
 
 ```bash
-python part-1-data-structures/chapter-02/slicing_demo.py
+python part-1-data-structures/chapter-02/06_slicing_demo.py
 ```
 
 ---

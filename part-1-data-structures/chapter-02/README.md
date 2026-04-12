@@ -43,26 +43,26 @@
 ## 配套脚本（在仓库根目录执行）
 
 ```bash
-python part-1-data-structures/chapter-02/container_vs_flat_memory_demo.py
-python part-1-data-structures/chapter-02/sequence_virtual_subclass_demo.py
-python part-1-data-structures/chapter-02/listcomps_and_genexps_demo.py
-python part-1-data-structures/chapter-02/tuples_as_records_and_unpaking_demo.py
-python part-1-data-structures/chapter-02/pattern_matching_sequence_demo.py
-python part-1-data-structures/chapter-02/slicing_demo.py
-python part-1-data-structures/chapter-02/sequence_plus_mul_and_nested_list_trap_demo.py
-python part-1-data-structures/chapter-02/list_sort_vs_sorted_demo.py
+python part-1-data-structures/chapter-02/02_container_vs_flat_memory_demo.py
+python part-1-data-structures/chapter-02/02_sequence_virtual_subclass_demo.py
+python part-1-data-structures/chapter-02/03_listcomps_and_genexps_demo.py
+python part-1-data-structures/chapter-02/04_tuples_as_records_and_unpaking_demo.py
+python part-1-data-structures/chapter-02/05_pattern_matching_sequence_demo.py
+python part-1-data-structures/chapter-02/06_slicing_demo.py
+python part-1-data-structures/chapter-02/07_sequence_plus_mul_and_nested_list_trap_demo.py
+python part-1-data-structures/chapter-02/08_list_sort_vs_sorted_demo.py
 ```
 
 | 脚本 | 说明 |
 |------|------|
-| `container_vs_flat_memory_demo.py` | `list` vs `array.array` 的 `getsizeof` 粗测 |
-| `sequence_virtual_subclass_demo.py` | `abc.Sequence.register` 与虚拟子类 |
-| `listcomps_and_genexps_demo.py` | 与 `03` 配套 |
-| `tuples_as_records_and_unpaking_demo.py` | 与 `04` 配套 |
-| `pattern_matching_sequence_demo.py` | 与 `05` 配套（需 Python 3.10+） |
-| `slicing_demo.py` | 与 `06` 配套 |
-| `sequence_plus_mul_and_nested_list_trap_demo.py` | 与 `07` 配套 |
-| `list_sort_vs_sorted_demo.py` | 与 `08` 配套 |
+| `02_container_vs_flat_memory_demo.py` | 与 `02`：`list` vs `array.array` 的 `getsizeof` 粗测 |
+| `02_sequence_virtual_subclass_demo.py` | 与 `02`：`abc.Sequence.register` 与虚拟子类 |
+| `03_listcomps_and_genexps_demo.py` | 与 `03` 配套 |
+| `04_tuples_as_records_and_unpaking_demo.py` | 与 `04` 配套 |
+| `05_pattern_matching_sequence_demo.py` | 与 `05` 配套（需 Python 3.10+） |
+| `06_slicing_demo.py` | 与 `06` 配套 |
+| `07_sequence_plus_mul_and_nested_list_trap_demo.py` | 与 `07` 配套 |
+| `08_list_sort_vs_sorted_demo.py` | 与 `08` 配套 |
 
 ---
 

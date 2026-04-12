@@ -7,8 +7,8 @@
 
 配套脚本：
 
-- `unicode_char_finder.py`：按关键字搜索 Unicode 字符名（类似书里的 `cf.py`）
-- `unicode_numeric_demo.py`：演示 `digit`/`numeric`/`isdecimal`/`isdigit`/`isnumeric` 的差异与用法
+- `09_unicode_char_finder.py`：按关键字搜索 Unicode 字符名（类似书里的 `cf.py`）
+- `09_unicode_numeric_demo.py`：演示 `digit`/`numeric`/`isdecimal`/`isdigit`/`isnumeric` 的差异与用法
 
 ---
 
@@ -56,11 +56,11 @@ except ValueError:
 3. 把名字拆成单词（用空格分隔）
 4. 用查询词做“子集匹配”（例如同时包含 `CAT` 和 `EYES`）
 
-在仓库里我把它实现成 `unicode_char_finder.py`，你可以这样用：
+在仓库里我把它实现成 `09_unicode_char_finder.py`，你可以这样用：
 
 ```bash
-python part-1-data-structures/chapter-04/unicode_char_finder.py CAT EYES
-python part-1-data-structures/chapter-04/unicode_char_finder.py BLACK QUEEN
+python part-1-data-structures/chapter-04/09_unicode_char_finder.py CAT EYES
+python part-1-data-structures/chapter-04/09_unicode_char_finder.py BLACK QUEEN
 ```
 
 它会输出形如：
@@ -114,7 +114,7 @@ Unicode 的 `U+D800..U+DFFF` 是 UTF-16 代理项范围，不是独立字符。
 2. 再 fallback 到 `numeric`（更通用）
 3. 解析失败就跳过/报错/记录（看业务）
 
-你可以直接参考 `unicode_numeric_demo.py` 里的实现与输出对比。
+你可以直接参考 `09_unicode_numeric_demo.py` 里的实现与输出对比。
 
 ---
 
@@ -134,7 +134,7 @@ Unicode 的 `U+D800..U+DFFF` 是 UTF-16 代理项范围，不是独立字符。
 
 - **数据清洗**：识别/过滤不可见字符、控制符、奇怪符号（用 `name`/`category`/`combining` 等）
 - **用户输入**：把圈码数字、罗马数字、分数字符统一成数值
-- **写工具脚本**：类似 `unicode_char_finder.py` 的“按名查字符”工具，快速定位 emoji/符号
+- **写工具脚本**：类似 `09_unicode_char_finder.py` 的“按名查字符”工具，快速定位 emoji/符号
 
 ---
 
@@ -143,12 +143,12 @@ Unicode 的 `U+D800..U+DFFF` 是 UTF-16 代理项范围，不是独立字符。
 运行字符搜索工具：
 
 ```bash
-python part-1-data-structures/chapter-04/unicode_char_finder.py CAT EYES
+python part-1-data-structures/chapter-04/09_unicode_char_finder.py CAT EYES
 ```
 
 运行数值解析 demo：
 
 ```bash
-python part-1-data-structures/chapter-04/unicode_numeric_demo.py
+python part-1-data-structures/chapter-04/09_unicode_numeric_demo.py
 ```
 

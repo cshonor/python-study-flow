@@ -289,10 +289,10 @@ case ["define", [Symbol() as name, *parms], *body] if body:
 
 ## 九、配套 demo（建议边看边跑）
 
-脚本：`part-1-data-structures/chapter-02/pattern_matching_sequence_demo.py`
+脚本：`part-1-data-structures/chapter-02/05_pattern_matching_sequence_demo.py`
 
 ```bash
-python part-1-data-structures/chapter-02/pattern_matching_sequence_demo.py
+python part-1-data-structures/chapter-02/05_pattern_matching_sequence_demo.py
 ```
 
 你会看到 4 组输出：

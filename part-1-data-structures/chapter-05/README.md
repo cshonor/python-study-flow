@@ -2,7 +2,7 @@
 
 本目录对应《流畅的 Python》（第二版）**第 5 章：数据类构建器**：从 `namedtuple`、`typing.NamedTuple` 演进到 `@dataclass`，以及它们和 `TypedDict` 的边界。
 
-建议先读：[`01-第5章数据类构建器笔记.md`](01-第5章数据类构建器笔记.md)；再跑 demo：`data_class_builders_demo.py`（一次性对比三种构建方式 + TypedDict）。
+建议先读：[`01-第5章数据类构建器笔记.md`](01-第5章数据类构建器笔记.md)；再跑 demo：`01_data_class_builders_demo.py`（一次性对比三种构建方式 + TypedDict）。
 
 ---
 
@@ -20,13 +20,13 @@
 
 | 脚本 | 说明 |
 |---|---|
-| `data_class_builders_demo.py` | `namedtuple` / `typing.NamedTuple` / `@dataclass` / `TypedDict` 对比 demo |
-| `coordinate_builders_demo.py` | Coordinate 专项：`_asdict/_replace` vs `asdict/replace`、类型注解与 make_dataclass |
-| `namedtuple_typical_demo.py` | namedtuple 专项：`_fields/_make/_asdict/_replace`、defaults、动态注入、与 NamedTuple 对比 |
-| `typed_namedtuple_demo.py` | `typing.NamedTuple` 专项：默认值、注解读取、不可变性、与 dataclass 对比 |
-| `type_hints_primer_demo.py` | 5.5 配套：普通类/NamedTuple/dataclass 的注解与运行时行为对比 |
-| `dataclass_deep_dive_demo.py` | 5.6 配套：`@dataclass` 全要点综合 demo（参数/field/post_init/ClassVar/InitVar/案例） |
-| `dataclass_code_smell_and_match_demo.py` | 5.7/5.8 配套：代码异味提示 + `match/case`（关键字/位置/序列）对照 |
+| `01_data_class_builders_demo.py` | `namedtuple` / `typing.NamedTuple` / `@dataclass` / `TypedDict` 对比 demo |
+| `02_coordinate_builders_demo.py` | Coordinate 专项：`_asdict/_replace` vs `asdict/replace`、类型注解与 make_dataclass |
+| `03_namedtuple_typical_demo.py` | namedtuple 专项：`_fields/_make/_asdict/_replace`、defaults、动态注入、与 NamedTuple 对比 |
+| `04_typed_namedtuple_demo.py` | `typing.NamedTuple` 专项：默认值、注解读取、不可变性、与 dataclass 对比 |
+| `05_type_hints_primer_demo.py` | 5.5 配套：普通类/NamedTuple/dataclass 的注解与运行时行为对比 |
+| `06_dataclass_deep_dive_demo.py` | 5.6 配套：`@dataclass` 全要点综合 demo（参数/field/post_init/ClassVar/InitVar/案例） |
+| `07_dataclass_code_smell_and_match_demo.py` | 5.7/5.8 配套：代码异味提示 + `match/case`（关键字/位置/序列）对照 |
 
 ---
 
@@ -35,12 +35,12 @@
 在仓库根目录执行：
 
 ```bash
-python part-1-data-structures/chapter-05/data_class_builders_demo.py
-python part-1-data-structures/chapter-05/coordinate_builders_demo.py
-python part-1-data-structures/chapter-05/namedtuple_typical_demo.py
-python part-1-data-structures/chapter-05/typed_namedtuple_demo.py
-python part-1-data-structures/chapter-05/type_hints_primer_demo.py
-python part-1-data-structures/chapter-05/dataclass_deep_dive_demo.py
-python part-1-data-structures/chapter-05/dataclass_code_smell_and_match_demo.py
+python part-1-data-structures/chapter-05/01_data_class_builders_demo.py
+python part-1-data-structures/chapter-05/02_coordinate_builders_demo.py
+python part-1-data-structures/chapter-05/03_namedtuple_typical_demo.py
+python part-1-data-structures/chapter-05/04_typed_namedtuple_demo.py
+python part-1-data-structures/chapter-05/05_type_hints_primer_demo.py
+python part-1-data-structures/chapter-05/06_dataclass_deep_dive_demo.py
+python part-1-data-structures/chapter-05/07_dataclass_code_smell_and_match_demo.py
 ```
 

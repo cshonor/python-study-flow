@@ -83,6 +83,6 @@ with open(sys.argv[1], encoding="utf-8") as fp:
 
 ## 七、可运行对照
 
-见 `defaultdict_and_missing_demo.py`（`defaultdict(list)` 索引、`get` 对比、`int` 计数、嵌套、`__missing__` 子类）。
+见 `08_defaultdict_and_missing_demo.py`（`defaultdict(list)` 索引、`get` 对比、`int` 计数、嵌套、`__missing__` 子类）。
 
 **下一篇**：§3.5.2 **`StrKeyDict0` / `UserDict` + `__missing__`** 见 `09-字符串键字典与missing.md`。

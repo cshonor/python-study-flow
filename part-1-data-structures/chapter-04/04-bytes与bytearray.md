@@ -6,7 +6,7 @@
 - **`bytes` 不可变，`bytearray` 可变**：要不要“改内容”，决定你用哪一个。
 - **最常见的新手坑**：`b'abc'[0]` 不是 `'a'`，而是 `97`；以及“中文不能写成 `b'咖啡'`”。
 
-配套脚本：`bytes_bytearray_demo.py`。
+配套脚本：`04_bytes_bytearray_demo.py`。
 
 ---
 
@@ -142,6 +142,6 @@ assert raw == b"\x1bH\xce\xab"
 运行：
 
 ```bash
-python part-1-data-structures/chapter-04/bytes_bytearray_demo.py
+python part-1-data-structures/chapter-04/04_bytes_bytearray_demo.py
 ```
 

@@ -5,7 +5,7 @@
 1. **5.7**：告诉你“数据类用着用着变难维护”的典型信号（代码异味），以及怎么改。
 2. **5.8**：把 **Python 3.10+ 的结构化模式匹配**讲清楚，重点是“类实例怎么匹配”，以及它和数据类为什么特别搭。
 
-配套脚本：`dataclass_code_smell_and_match_demo.py`
+配套脚本：`07_dataclass_code_smell_and_match_demo.py`
 
 ---
 
@@ -212,7 +212,7 @@ case _:
 ## 八、运行
 
 ```bash
-python part-1-data-structures/chapter-05/dataclass_code_smell_and_match_demo.py
+python part-1-data-structures/chapter-05/07_dataclass_code_smell_and_match_demo.py
 ```
 
 你会看到：

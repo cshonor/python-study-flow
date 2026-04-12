@@ -6,7 +6,7 @@
 
 根因是：Python 默认的字符串比较是按 **Unicode 码点（code point）**做“字典序”，这对英文还凑合，但对带变音符号/特殊字母/多语言文本会很别扭。
 
-配套脚本：`unicode_sorting_demo.py`（默认排序 / `locale.strxfrm` / `pyuca` 三套对比，能跑哪个就展示哪个）。
+配套脚本：`08_unicode_sorting_demo.py`（默认排序 / `locale.strxfrm` / `pyuca` 三套对比，能跑哪个就展示哪个）。
 
 ---
 
@@ -105,7 +105,7 @@ sorted_fruits = sorted(fruits, key=coll.sort_key)
 运行：
 
 ```bash
-python part-1-data-structures/chapter-04/unicode_sorting_demo.py
+python part-1-data-structures/chapter-04/08_unicode_sorting_demo.py
 ```
 
 脚本会：

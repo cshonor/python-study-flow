@@ -7,7 +7,7 @@
 2. **核心 API**：`_fields` / `_make` / `_asdict` / `_replace`  
 3. **进阶与避坑**：默认值、动态注入方法、以及和 `typing.NamedTuple` 的关键区别
 
-配套脚本：`namedtuple_typical_demo.py`（把每一个点都跑出来）。
+配套脚本：`03_namedtuple_typical_demo.py`（把每一个点都跑出来）。
 
 ---
 
@@ -170,7 +170,7 @@ Card.overall_rank = overall_rank
 运行：
 
 ```bash
-python part-1-data-structures/chapter-05/namedtuple_typical_demo.py
+python part-1-data-structures/chapter-05/03_namedtuple_typical_demo.py
 ```
 
 脚本覆盖：

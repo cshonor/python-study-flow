@@ -26,32 +26,32 @@
 ## 配套脚本（在仓库根目录执行）
 
 ```bash
-python part-1-data-structures/chapter-04/unicode_bytes_quickstart_demo.py
-python part-1-data-structures/chapter-04/codepoints_encoding_demo.py
-python part-1-data-structures/chapter-04/io_encoding_troubleshoot_demo.py
-python part-1-data-structures/chapter-04/bytes_bytearray_demo.py
-python part-1-data-structures/chapter-04/codecs_encodings_table_demo.py
-python part-1-data-structures/chapter-04/encoding_decoding_fixes_demo.py
-python part-1-data-structures/chapter-04/unicode_normalization_demo.py
-python part-1-data-structures/chapter-04/unicode_sorting_demo.py
-python part-1-data-structures/chapter-04/unicode_numeric_demo.py
-python part-1-data-structures/chapter-04/unicode_char_finder.py CAT EYES --limit 20
-python part-1-data-structures/chapter-04/dual_mode_api_demo.py
+python part-1-data-structures/chapter-04/01_unicode_bytes_quickstart_demo.py
+python part-1-data-structures/chapter-04/02_codepoints_encoding_demo.py
+python part-1-data-structures/chapter-04/03_io_encoding_troubleshoot_demo.py
+python part-1-data-structures/chapter-04/04_bytes_bytearray_demo.py
+python part-1-data-structures/chapter-04/05_codecs_encodings_table_demo.py
+python part-1-data-structures/chapter-04/06_encoding_decoding_fixes_demo.py
+python part-1-data-structures/chapter-04/07_unicode_normalization_demo.py
+python part-1-data-structures/chapter-04/08_unicode_sorting_demo.py
+python part-1-data-structures/chapter-04/09_unicode_numeric_demo.py
+python part-1-data-structures/chapter-04/09_unicode_char_finder.py CAT EYES --limit 20
+python part-1-data-structures/chapter-04/10_dual_mode_api_demo.py
 ```
 
 | 脚本 | 说明 |
 |------|------|
-| `unicode_bytes_quickstart_demo.py` | 与 `01` 配套：`encode`/`decode`、字面量、`errors=` |
-| `codepoints_encoding_demo.py` | 与 `02` 配套：码点与 UTF-8 字节、错误与 `errors=`、控制台边界 |
-| `io_encoding_troubleshoot_demo.py` | 与 `03` 配套：文件/子进程/控制台排查套路 |
-| `bytes_bytearray_demo.py` | 与 `04` 配套：索引/切片差异、不可变 vs 可变、`fromhex` |
-| `codecs_encodings_table_demo.py` | 与 `05` 配套：同一字符在不同编码下的 hex bytes 对照表 |
-| `encoding_decoding_fixes_demo.py` | 与 `06` 配套：Encode/Decode 错误、BOM、非 UTF-8 源码的最小复现 |
-| `unicode_normalization_demo.py` | 与 `07` 配套：组合字符、NFC/NFD/NFKC、casefold 与比较工具函数 |
-| `unicode_sorting_demo.py` | 与 `08` 配套：默认排序 vs locale vs pyuca（若已安装） |
-| `unicode_numeric_demo.py` | 与 `09` 配套：digit/numeric 与 isdecimal/isdigit/isnumeric 对照 |
-| `unicode_char_finder.py` | 与 `09` 配套：按 Unicode 名称关键字搜索字符（类似 cf.py） |
-| `dual_mode_api_demo.py` | 与 `10` 配套：`re`（Unicode vs ASCII-ish）+ `os`（str vs bytes 路径） |
+| `01_unicode_bytes_quickstart_demo.py` | 与 `01` 配套：`encode`/`decode`、字面量、`errors=` |
+| `02_codepoints_encoding_demo.py` | 与 `02` 配套：码点与 UTF-8 字节、错误与 `errors=`、控制台边界 |
+| `03_io_encoding_troubleshoot_demo.py` | 与 `03` 配套：文件/子进程/控制台排查套路 |
+| `04_bytes_bytearray_demo.py` | 与 `04` 配套：索引/切片差异、不可变 vs 可变、`fromhex` |
+| `05_codecs_encodings_table_demo.py` | 与 `05` 配套：同一字符在不同编码下的 hex bytes 对照表 |
+| `06_encoding_decoding_fixes_demo.py` | 与 `06` 配套：Encode/Decode 错误、BOM、非 UTF-8 源码的最小复现 |
+| `07_unicode_normalization_demo.py` | 与 `07` 配套：组合字符、NFC/NFD/NFKC、casefold 与比较工具函数 |
+| `08_unicode_sorting_demo.py` | 与 `08` 配套：默认排序 vs locale vs pyuca（若已安装） |
+| `09_unicode_numeric_demo.py` | 与 `09` 配套：digit/numeric 与 isdecimal/isdigit/isnumeric 对照 |
+| `09_unicode_char_finder.py` | 与 `09` 配套：按 Unicode 名称关键字搜索字符（类似 cf.py） |
+| `10_dual_mode_api_demo.py` | 与 `10` 配套：`re`（Unicode vs ASCII-ish）+ `os`（str vs bytes 路径） |
 
 ---
 
