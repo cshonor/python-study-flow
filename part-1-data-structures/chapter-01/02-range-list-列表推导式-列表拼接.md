@@ -91,6 +91,7 @@ Python内置函数，将可迭代对象（字符串、元组、range对象等）
   
 ranks = [str(n) for n in range(2, 11)] + list('JQKA')
 
+
 ``` 
  
 - 拼接逻辑：数字牌字符串列表 + 花牌列表
