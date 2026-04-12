@@ -1,5 +1,5 @@
 """
-Demo for 12-dict-views.md (Fluent Python §3.8).
+Demo for 12-字典视图.md (Fluent Python §3.8).
 
 Run:
   python part-1-data-structures/chapter-03/dict_views_demo.py

@@ -1,5 +1,5 @@
 """
-Demo for 03-mapping-unpack-and-merge.md (PEP 448, PEP 584)
+Demo for 03-映射拆包与字典合并.md (PEP 448, PEP 584)
 
 Run:
   python part-1-data-structures/chapter-03/dict_unpack_merge_demo.py

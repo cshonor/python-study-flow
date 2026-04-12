@@ -115,24 +115,24 @@ python part-1-data-structures/chapter-02/list_sort_vs_sorted_demo.py
 
 ## `chapter-03/` 笔记与脚本
 
-本章目录内另有 **`chapter-03/README.md`**：以 `01-dicts-and-sets-chapter3-overview.md` 为入口。
+本章目录内另有 **`chapter-03/README.md`**：以 `01-第3章字典与集合总览.md` 为入口。
 
 | 编号 | 文件 | 主题简述 |
 |------|------|----------|
-| 01 | `01-dicts-and-sets-chapter3-overview.md` | 第 3 章开篇：dict/set、hashable、常见行为与坑 |
-| 02 | `02-dict-comprehension.md` | 3.2.1 字典推导式、集合推导式、避坑 |
-| 03 | `03-mapping-unpack-and-merge.md` | 3.2.2 `**`（PEP 448）、3.2.3 `|` / `|=`（PEP 584） |
-| 04 | `04-csv-dictreader-pattern-matching.md` | `csv.DictReader` 与映射模式 `match/case` |
-| 05 | `05-mapping-abc-and-hashable.md` | `Mapping`/`MutableMapping`、可哈希、`**rest` 映射模式 |
-| 06 | `06-dict-defaultdict-ordereddict-api.md` | §3.4.2 `dict` / `defaultdict` / `OrderedDict` 方法对照 |
-| 07 | `07-dict-mutable-values-indexing.md` | §3.4.3 可变值与词索引：`get`/`setdefault`/`defaultdict` |
-| 08 | `08-defaultdict-and-missing.md` | §3.5 `defaultdict`、`__missing__` |
-| 09 | `09-str-key-dict-and-dunder-missing.md` | §3.5.2 `StrKeyDict0`、`UserDict`、`__missing__` |
-| 10 | `10-dict-variants-ordered-chain-counter.md` | §3.6 `OrderedDict`、`ChainMap`、`Counter` |
-| 11 | `11-counter-shelve-and-userdict-subclassing.md` | §3.6 续：`Counter`、`shelve`、`UserDict` |
-| 12 | `12-dict-views.md` | §3.8 `keys`/`values`/`items` 视图 |
-| 13 | `13-sets-and-frozenset.md` | §3.10–§3.11 `set` / `frozenset` |
-| 14 | `14-dict-view-set-operations.md` | §3.12 字典视图与 `frozenset` 对照 |
+| 01 | `01-第3章字典与集合总览.md` | 第 3 章开篇：dict/set、hashable、常见行为与坑 |
+| 02 | `02-字典推导式与集合推导式.md` | 3.2.1 字典推导式、集合推导式、避坑 |
+| 03 | `03-映射拆包与字典合并.md` | 3.2.2 `**`（PEP 448）、3.2.3 `|` / `|=`（PEP 584） |
+| 04 | `04-csv-DictReader与match-case.md` | `csv.DictReader` 与映射模式 `match/case` |
+| 05 | `05-Mapping抽象与可哈希.md` | `Mapping`/`MutableMapping`、可哈希、`**rest` 映射模式 |
+| 06 | `06-dict-defaultdict与OrderedDict对照.md` | §3.4.2 `dict` / `defaultdict` / `OrderedDict` 方法对照 |
+| 07 | `07-可变值与词索引.md` | §3.4.3 可变值与词索引：`get`/`setdefault`/`defaultdict` |
+| 08 | `08-defaultdict与missing.md` | §3.5 `defaultdict`、`__missing__` |
+| 09 | `09-字符串键字典与missing.md` | §3.5.2 `StrKeyDict0`、`UserDict`、`__missing__` |
+| 10 | `10-OrderedDict-ChainMap-Counter.md` | §3.6 `OrderedDict`、`ChainMap`、`Counter` |
+| 11 | `11-Counter与shelve及UserDict子类化.md` | §3.6 续：`Counter`、`shelve`、`UserDict` |
+| 12 | `12-字典视图.md` | §3.8 `keys`/`values`/`items` 视图 |
+| 13 | `13-集合与frozenset.md` | §3.10–§3.11 `set` / `frozenset` |
+| 14 | `14-字典视图集合运算.md` | §3.12 字典视图与 `frozenset` 对照 |
 
 | 脚本 | 说明 |
 |------|------|

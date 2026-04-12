@@ -156,7 +156,7 @@ def is_hashable(x: object) -> bool:
 python part-1-data-structures/chapter-03/mapping_abc_hashable_demo.py
 ```
 
-下一篇会把 `dict/defaultdict/OrderedDict` 常用方法差异做成一张更易查的表，并补上“哪些点最容易写错”，见 `06-dict-defaultdict-ordereddict-api.md`。
+下一篇会把 `dict/defaultdict/OrderedDict` 常用方法差异做成一张更易查的表，并补上“哪些点最容易写错”，见 `06-dict-defaultdict与OrderedDict对照.md`。
 
 ---
 

@@ -48,7 +48,7 @@
 - 为**可哈希对象**计数；是 **`dict` 子类**，值为整型计数。  
 - 常用：**`update`** 累加、**`most_common(n)`**、集合式 **`+`/`-`**（见文档）。  
 - 适合词频、频次表、与 **`defaultdict(int)`** 选型相近时，**API 更省事**。  
-- **续**：**`abracadabra`** 式构造、**`&` / `|`**、与 **`shelve` / `UserDict`** 小结见 **`11-counter-shelve-and-userdict-subclassing.md`**。
+- **续**：**`abracadabra`** 式构造、**`&` / `|`**、与 **`shelve` / `UserDict`** 小结见 **`11-Counter与shelve及UserDict子类化.md`**。
 
 ---
 

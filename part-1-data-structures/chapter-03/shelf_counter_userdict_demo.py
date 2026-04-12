@@ -1,5 +1,5 @@
 """
-Demo for 11-counter-shelve-and-userdict-subclassing.md (Fluent Python §3.6 cont.).
+Demo for 11-Counter与shelve及UserDict子类化.md (Fluent Python §3.6 cont.).
 
 Run:
   python part-1-data-structures/chapter-03/shelf_counter_userdict_demo.py

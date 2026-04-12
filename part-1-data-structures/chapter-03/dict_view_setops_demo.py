@@ -1,5 +1,5 @@
 """
-Demo for 14-dict-view-set-operations.md (Fluent Python §3.12).
+Demo for 14-字典视图集合运算.md (Fluent Python §3.12).
 
 Run:
   python part-1-data-structures/chapter-03/dict_view_setops_demo.py

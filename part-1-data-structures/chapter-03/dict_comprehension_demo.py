@@ -1,5 +1,5 @@
 """
-Demo for 02-dict-comprehension.md
+Demo for 02-字典推导式与集合推导式.md
 
 Run:
   python part-1-data-structures/chapter-03/dict_comprehension_demo.py

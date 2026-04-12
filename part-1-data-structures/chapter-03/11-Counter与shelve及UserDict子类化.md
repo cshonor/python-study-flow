@@ -67,13 +67,13 @@
 
 ### 4. 与 `StrKeyDict` 的关系
 
-- **`StrKeyDict`**（示例 3-9）的完整对比（**`StrKeyDict0` 继承 `dict`** vs **`StrKeyDict` 继承 `UserDict`**）与代码见 **`09-str-key-dict-and-dunder-missing.md`** 及 **`str_key_dict_demo.py`**。  
+- **`StrKeyDict`**（示例 3-9）的完整对比（**`StrKeyDict0` 继承 `dict`** vs **`StrKeyDict` 继承 `UserDict`**）与代码见 **`09-字符串键字典与missing.md`** 及 **`str_key_dict_demo.py`**。  
 - 若在 **`UserDict`** 子类中实现 **`__setitem__(self, key, value): self.data[str(key)] = value`**，则从写入路径上**统一键类型**；再配合 **`__missing__`**、**`__contains__`** 与（可选）**`get`**，行为可完整对齐业务预期。
 
 ### 5. 不可变映射（与 §3.7 衔接）
 
 - 标准库没有「内置不可变 **`dict`**」；常见做法是 **`Mapping` + 组合**：内部持有一份映射，对外只暴露只读接口，对 **`__setitem__` / `__delitem__` / `clear`** 等**改写为抛 `TypeError`**。  
-- 接口分类与 **`Mapping`/`MutableMapping`** 见 **`05-mapping-abc-and-hashable.md`**。
+- 接口分类与 **`Mapping`/`MutableMapping`** 见 **`05-Mapping抽象与可哈希.md`**。
 
 ---
 

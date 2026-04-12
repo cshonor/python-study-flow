@@ -1,5 +1,5 @@
 """
-Demo for 09-str-key-dict-and-dunder-missing.md (Fluent Python §3.5.2).
+Demo for 09-字符串键字典与missing.md (Fluent Python §3.5.2).
 
 Run:
   python part-1-data-structures/chapter-03/str_key_dict_demo.py

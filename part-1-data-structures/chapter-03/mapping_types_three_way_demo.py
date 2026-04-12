@@ -1,5 +1,5 @@
 """
-Demo for 06-dict-defaultdict-ordereddict-api.md
+Demo for 06-dict-defaultdict与OrderedDict对照.md
 
 Run:
   python part-1-data-structures/chapter-03/mapping_types_three_way_demo.py

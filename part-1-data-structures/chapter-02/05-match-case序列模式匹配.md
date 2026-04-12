@@ -253,7 +253,7 @@ match payload:
         ...
 ```
 
-`**rest` 须放在映射模式**最后**；`**_` 为非法语法。更细的约定与可哈希背景见 `../chapter-03/05-mapping-abc-and-hashable.md`。
+`**rest` 须放在映射模式**最后**；`**_` 为非法语法。更细的约定与可哈希背景见 `../chapter-03/05-Mapping抽象与可哈希.md`。
 
 ### 10. 兜底与错误处理（解释器/AST 常用）
 
@@ -283,7 +283,7 @@ case ["define", [Symbol() as name, *parms], *body] if body:
 
 ## 八、延伸阅读：`csv.DictReader` 与映射模式
 
-本篇以**序列模式**为主；若处理 **`csv.DictReader` 读出的行（`dict`）**，见 `../chapter-03/04-csv-dictreader-pattern-matching.md`。
+本篇以**序列模式**为主；若处理 **`csv.DictReader` 读出的行（`dict`）**，见 `../chapter-03/04-csv-DictReader与match-case.md`。
 
 ---
 

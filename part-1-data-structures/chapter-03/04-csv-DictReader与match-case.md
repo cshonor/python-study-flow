@@ -121,7 +121,7 @@ for row in reader:
 python part-1-data-structures/chapter-03/csv_dictreader_pattern_matching_demo.py
 ```
 
-下一篇会把“映射的抽象接口（Mapping）”“可哈希”“映射模式里的 `**rest`”讲清楚，见 `05-mapping-abc-and-hashable.md`。
+下一篇会把“映射的抽象接口（Mapping）”“可哈希”“映射模式里的 `**rest`”讲清楚，见 `05-Mapping抽象与可哈希.md`。
 
 ---
 

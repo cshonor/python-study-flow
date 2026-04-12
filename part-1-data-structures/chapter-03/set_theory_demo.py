@@ -1,5 +1,5 @@
 """
-Demo for 13-sets-and-frozenset.md (Fluent Python §3.10–§3.11).
+Demo for 13-集合与frozenset.md (Fluent Python §3.10–§3.11).
 
 Run:
   python part-1-data-structures/chapter-03/set_theory_demo.py

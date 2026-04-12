@@ -1,5 +1,5 @@
 """
-Demo for 10-dict-variants-ordered-chain-counter.md (Fluent Python §3.6).
+Demo for 10-OrderedDict-ChainMap-Counter.md (Fluent Python §3.6).
 
 Run:
   python part-1-data-structures/chapter-03/dict_variants_demo.py

@@ -16,7 +16,7 @@
 
 - 默认实例常**可哈希**（基于 `id`）；若重写 **`__eq__`** 按值比较，须同步定义 **`__hash__`**（或置 `__hash__ = None` 表示不可哈希）。  
 - **`__hash__`** 应只依赖**不可变**参与相等性判断的属性。  
-- 完整讨论与示例见 **`05-mapping-abc-and-hashable.md`**（及其中 `frozen` dataclass 示例）。
+- 完整讨论与示例见 **`05-Mapping抽象与可哈希.md`**（及其中 `frozen` dataclass 示例）。
 
 ---
 
@@ -32,7 +32,7 @@
 
 ## 三、完整方法总表（书表 3-1 合并版）
 
-下列为**能力对照**（✅ / ❌）。**`|*` 运算符**需 **Python 3.9+**（见 `03-mapping-unpack-and-merge.md`）。
+下列为**能力对照**（✅ / ❌）。**`|*` 运算符**需 **Python 3.9+**（见 `03-映射拆包与字典合并.md`）。
 
 > **`__copy__` 一行**：不同 CPython 版本对是否在类型上**暴露** `__copy__` 方法不一致；**实用上**以 **`copy.copy(d)`** 能否得到浅拷贝为准（三者均可；**`defaultdict` 会保留 `default_factory`**）。不必死记某版书上对 `__copy__` 的勾叉。
 
@@ -74,7 +74,7 @@
 ### 3. `|` / `|=`（`__or__` / `__ior__` / `__ror__`）
 
 - **Python 3.9+**：`d1 | d2` 得**新**映射；`d1 |= d2` **原地**更新；`other | d` 走 **`__ror__`**。  
-- **3.8 及以下**：用 **`{**d1, **d2}`** 等，见 `03-mapping-unpack-and-merge.md`。
+- **3.8 及以下**：用 **`{**d1, **d2}`** 等，见 `03-映射拆包与字典合并.md`。
 
 ### 4. `popitem()`
 
@@ -116,4 +116,4 @@
 
 见 `mapping_types_three_way_demo.py`（计数、`get` vs `[]`、`fromkeys`、`move_to_end` / `popitem`、`|` 合并、简易 LRU、可哈希 `User`）。
 
-**下一篇**：词索引与可变值更新见 `07-dict-mutable-values-indexing.md`。**§3.6** `OrderedDict` / `ChainMap` / `Counter` 专题见 `10-dict-variants-ordered-chain-counter.md`；**`Counter` 深化、`shelve`、`UserDict` 子类化**见 `11-counter-shelve-and-userdict-subclassing.md`。**§3.8** `keys()` / `values()` / `items()` **字典视图**见 `12-dict-views.md`。
+**下一篇**：词索引与可变值更新见 `07-可变值与词索引.md`。**§3.6** `OrderedDict` / `ChainMap` / `Counter` 专题见 `10-OrderedDict-ChainMap-Counter.md`；**`Counter` 深化、`shelve`、`UserDict` 子类化**见 `11-Counter与shelve及UserDict子类化.md`。**§3.8** `keys()` / `values()` / `items()` **字典视图**见 `12-字典视图.md`。

@@ -1,5 +1,5 @@
 """
-Demo for 08-defaultdict-and-missing.md (Fluent Python §3.5).
+Demo for 08-defaultdict与missing.md (Fluent Python §3.5).
 
 Run:
   python part-1-data-structures/chapter-03/defaultdict_and_missing_demo.py

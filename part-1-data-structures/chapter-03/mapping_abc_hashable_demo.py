@@ -1,5 +1,5 @@
 """
-Demo for 05-mapping-abc-and-hashable.md
+Demo for 05-Mapping抽象与可哈希.md
 
 Run:
   python part-1-data-structures/chapter-03/mapping_abc_hashable_demo.py

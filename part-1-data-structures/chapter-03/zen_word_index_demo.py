@@ -1,5 +1,5 @@
 """
-Demo for 07-dict-mutable-values-indexing.md (Fluent Python §3.4.3).
+Demo for 07-可变值与词索引.md (Fluent Python §3.4.3).
 
 Uses an in-memory excerpt of "The Zen of Python" — no external zen.txt required.
 Line numbers in locations use enumerate(..., 1) like Fluent Python example 3-5.
