@@ -2,7 +2,7 @@
 粗略对比 list 与 array.array 的 sys.getsizeof（CPython）。
 
 注意：getsizeof(list) 不含每个元素对象；list 存 float 时每个元素常是独立 PyFloat。
-详见：02-container-vs-flat-sequences.md 第 5 节。
+详见：02-容器序列与扁平序列.md 第 5 节。
 
 运行：python part-1-data-structures/chapter-02/container_vs_flat_memory_demo.py
 """

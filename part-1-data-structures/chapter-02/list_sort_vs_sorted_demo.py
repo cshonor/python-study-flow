@@ -1,5 +1,5 @@
 """
-Demo for 08-list-sort-vs-sorted.md
+Demo for 08-sort与sorted及key.md
 
 Run:
   python part-1-data-structures/chapter-02/list_sort_vs_sorted_demo.py

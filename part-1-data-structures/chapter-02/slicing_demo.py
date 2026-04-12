@@ -1,5 +1,5 @@
 """
-Demo for 06-slicing.md
+Demo for 06-切片与slice对象.md
 
 Run:
   python part-1-data-structures/chapter-02/slicing_demo.py

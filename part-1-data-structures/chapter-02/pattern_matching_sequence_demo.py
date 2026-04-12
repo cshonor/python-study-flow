@@ -1,5 +1,5 @@
 """
-Demo for 05-structural-pattern-matching-sequence-patterns.md
+Demo for 05-match-case序列模式匹配.md
 
 Requires:
   Python 3.10+ (match/case)

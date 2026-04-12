@@ -67,4 +67,4 @@ python part-1-data-structures/chapter-03/dict_view_setops_demo.py
 
 ## 与第 2 章
 
-序列、可哈希、`tuple` 作键等前置见 `../chapter-02/02-container-vs-flat-sequences.md`。**序列模式** `match/case` 见 `../chapter-02/05-structural-pattern-matching-sequence-patterns.md`。
+序列、可哈希、`tuple` 作键等前置见 `../chapter-02/02-容器序列与扁平序列.md`。**序列模式** `match/case` 见 `../chapter-02/05-match-case序列模式匹配.md`。
