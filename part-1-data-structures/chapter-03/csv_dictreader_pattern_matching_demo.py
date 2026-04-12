@@ -5,6 +5,9 @@ Requires Python 3.10+ for match/case (PEP 634).
 
 Run:
   python part-1-data-structures/chapter-03/csv_dictreader_pattern_matching_demo.py
+
+脚本说明：
+- 教学演示：请在仓库根目录运行；终端为分步打印，请与 `part-1-data-structures` 下同章 Markdown 笔记对照。
 """
 
 from __future__ import annotations

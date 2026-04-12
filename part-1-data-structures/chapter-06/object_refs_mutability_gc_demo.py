@@ -1,8 +1,13 @@
 """
+第 6 章总览脚本：对象模型、别名与拷贝、参数传递、可变默认值、del 与 GC、弱引用等。
+
 Demo for 01-第6章对象引用可变性与GC总览.md
 
 Run from repo root:
   python part-1-data-structures/chapter-06/object_refs_mutability_gc_demo.py
+
+脚本说明：
+- 教学演示：请在仓库根目录运行；终端为分步打印，请与 `part-1-data-structures` 下同章 Markdown 笔记对照。
 """
 
 from __future__ import annotations
@@ -13,15 +18,40 @@ import sys
 import weakref
 from dataclasses import dataclass, field
 
+# main() 依次调用下列函数；终端里英文小标题便于与原书术语对照，笔记中有中文讲解。
+# demo_names_are_labels — 名称是标签：别名与重新绑定
+# demo_assignment_right_to_left_gizmo — 赋值从右到左，失败时左侧名未绑定
+# demo_aliasing_identity_vs_equality — 字典别名：is 与 ==
+# demo_none_comparison_is_safer — 为何用「is None」
+# demo_tuple_relative_immutability_and_hash — 元组「相对不可变」与 hash
+# demo_is_vs_eq — is 与 == 再举例
+# demo_shallow_copy_three_ways_and_trap — 浅拷贝三种写法与嵌套可变陷阱
+# demo_copy_vs_deepcopy_bus_and_cycles — copy / deepcopy 与环
+# demo_tuple_relative_immutability — 元组与可变项（补充）
+# demo_shallow_vs_deep_copy — 浅/深拷贝对照
+# demo_mutable_default_argument — 可变默认参数反例与写法
+# demo_del_and_gc_basics — del 与 gc 入门
+# demo_weakref_cache_like — 弱引用缓存式用法
+# demo_small_int_and_string_interning_warning — 小整数与字符串驻留
+# demo_dataclass_default_factory_echo — dataclass field(default_factory=...)
+# demo_call_by_sharing_iadd — 共享传参与 +=
+# demo_hauntedbus_mutable_default_and_defaults_evidence — HauntedBus 与 __defaults__
+# demo_twilightbus_defensive_copy — TwilightBus 防御性拷贝
+# demo_del_is_unbinding_not_deleting — del 是解绑不是删对象
+# demo_cycle_and_gc_collect — 循环引用与 gc.collect
+# demo_weakref_finalize_callback — weakref.finalize
+# demo_immutable_type_tricks — 不可变对象「技巧」与边界
+
 
 def section(title: str) -> None:
+    """打印分节标题（等宽分隔线）。"""
     print("\n" + "=" * 78)
     print(title)
     print("=" * 78)
 
 
 def safe(obj: object) -> object:
-    # Windows consoles may use GBK; ascii() prevents UnicodeEncodeError in demos.
+    """窄控制台（如 Windows GBK）下安全打印：字符串用 ascii() 转义，避免演示时编码报错。"""
     return ascii(obj) if isinstance(obj, str) else obj
 
 

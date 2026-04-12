@@ -3,6 +3,9 @@ Demo for 09-字符串键字典与missing.md (Fluent Python §3.5.2).
 
 Run:
   python part-1-data-structures/chapter-03/str_key_dict_demo.py
+
+脚本说明：
+- 教学演示：请在仓库根目录运行；终端为分步打印，请与 `part-1-data-structures` 下同章 Markdown 笔记对照。
 """
 
 from __future__ import annotations

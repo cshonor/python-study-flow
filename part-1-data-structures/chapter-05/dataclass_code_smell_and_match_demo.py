@@ -5,6 +5,9 @@ Requires Python 3.10+ for match/case.
 
 Run from repo root:
   python part-1-data-structures/chapter-05/dataclass_code_smell_and_match_demo.py
+
+脚本说明：
+- 教学演示：请在仓库根目录运行；终端为分步打印，请与 `part-1-data-structures` 下同章 Markdown 笔记对照。
 """
 
 from __future__ import annotations

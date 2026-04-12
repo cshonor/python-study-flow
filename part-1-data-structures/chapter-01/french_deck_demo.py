@@ -1,3 +1,12 @@
+"""法式扑克牌最小示例：`collections.namedtuple` 定义单张牌，普通类 `FrenchDeck` 实现 `__len__` / `__getitem__`。
+
+运行（仓库根目录）：
+  python part-1-data-structures/chapter-01/french_deck_demo.py
+
+脚本说明：
+- 教学演示：请在仓库根目录运行；终端为分步打印，请与 `part-1-data-structures` 下同章 Markdown 笔记对照。
+"""
+
 import collections
 from random import choice
 

@@ -1,3 +1,12 @@
+"""演示 `random.choice` 如何依赖 `__len__` 与 `__getitem__` 从自定义“序列”中取样。
+
+运行（仓库根目录）：
+  python part-1-data-structures/chapter-01/random_choice_special_methods_demo.py
+
+脚本说明：
+- 教学演示：请在仓库根目录运行；终端为分步打印，请与 `part-1-data-structures` 下同章 Markdown 笔记对照。
+"""
+
 from __future__ import annotations
 
 from collections import namedtuple

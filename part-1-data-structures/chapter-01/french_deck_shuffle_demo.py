@@ -2,6 +2,12 @@
 FrenchDeck：组合 + __len__ / __getitem__ / __setitem__，支持 random.shuffle 与自定义排序 key。
 
 对应笔记：10-法式扑克牌组合setitem与洗牌.md
+
+运行（仓库根目录）：
+  python part-1-data-structures/chapter-01/french_deck_shuffle_demo.py
+
+脚本说明：
+- 教学演示：请在仓库根目录运行；终端为分步打印，请与 `part-1-data-structures` 下同章 Markdown 笔记对照。
 """
 
 from __future__ import annotations

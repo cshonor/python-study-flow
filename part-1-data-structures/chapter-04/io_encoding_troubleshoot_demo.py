@@ -6,6 +6,9 @@ Run:
 
 This demo is designed to run on Windows consoles whose stdout encoding may be GBK.
 We therefore use ascii() and hex output to avoid UnicodeEncodeError during printing.
+
+脚本说明：
+- 教学演示：请在仓库根目录运行；终端为分步打印，请与 `part-1-data-structures` 下同章 Markdown 笔记对照。
 """
 
 from __future__ import annotations

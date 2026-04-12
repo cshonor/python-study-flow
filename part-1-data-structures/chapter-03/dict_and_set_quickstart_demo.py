@@ -3,6 +3,9 @@ Demo for 01-第3章字典与集合总览.md
 
 Run:
   python part-1-data-structures/chapter-03/dict_and_set_quickstart_demo.py
+
+脚本说明：
+- 教学演示：请在仓库根目录运行；终端为分步打印，请与 `part-1-data-structures` 下同章 Markdown 笔记对照。
 """
 
 from __future__ import annotations

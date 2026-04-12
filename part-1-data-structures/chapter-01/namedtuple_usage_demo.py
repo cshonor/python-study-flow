@@ -2,6 +2,9 @@
 与 05-namedtuple用法指南与rename参数.md 配套的演示脚本。
 
 运行：python part-1-data-structures/chapter-01/namedtuple_usage_demo.py
+
+脚本说明：
+- 教学演示：请在仓库根目录运行；终端为分步打印，请与 `part-1-data-structures` 下同章 Markdown 笔记对照。
 """
 
 from __future__ import annotations

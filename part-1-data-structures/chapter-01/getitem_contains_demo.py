@@ -7,6 +7,9 @@
 
 对应笔记：09-getitem与contains及成员检测优化.md
 运行：python part-1-data-structures/chapter-01/getitem_contains_demo.py
+
+脚本说明：
+- 教学演示：请在仓库根目录运行；终端为分步打印，请与 `part-1-data-structures` 下同章 Markdown 笔记对照。
 """
 
 from __future__ import annotations
