@@ -1,5 +1,5 @@
 """
-Demo for 02-codepoints-encodings-and-errors.md (Fluent Python ch.4).
+Demo for 02-码点编码与编解码错误.md (Fluent Python ch.4).
 
 Run:
   python part-1-data-structures/chapter-04/codepoints_encoding_demo.py

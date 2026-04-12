@@ -1,5 +1,5 @@
 """
-Demo for 04-bytes-and-bytearray.md
+Demo for 04-bytes与bytearray.md
 
 Run:
   python part-1-data-structures/chapter-04/bytes_bytearray_demo.py

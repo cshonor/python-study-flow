@@ -1,5 +1,5 @@
 """
-Demo for 07-unicode-normalization.md
+Demo for 07-Unicode规范化.md
 
 Run:
   python part-1-data-structures/chapter-04/unicode_normalization_demo.py

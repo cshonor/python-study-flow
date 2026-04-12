@@ -2,7 +2,7 @@
 
 本目录对应《流畅的 Python》**第 4 章**：`str` 与 `bytes`、编解码、Unicode 规范化、排序与双模式 API 等。
 
-建议从这里开始读：[`01-unicode-text-and-bytes-chapter4-overview.md`](01-unicode-text-and-bytes-chapter4-overview.md)（先把 `str`/`bytes` 的边界讲清楚）。
+建议从这里开始读：[`01-第4章Unicode文本与字节总览.md`](01-第4章Unicode文本与字节总览.md)（先把 `str`/`bytes` 的边界讲清楚）。
 
 ---
 
@@ -10,16 +10,16 @@
 
 | 顺序 | 文件 | 说明 |
 |------|------|------|
-| 01 | `01-unicode-text-and-bytes-chapter4-overview.md` | `str`/`bytes` 的整体框架与关键原则 |
-| 02 | `02-codepoints-encodings-and-errors.md` | 字符/码点/编码/字节、`encode`/`decode`、`errors=` |
-| 03 | `03-io-encoding-checklist.md` | I/O 编码排查清单：文件/子进程/控制台 |
-| 04 | `04-bytes-and-bytearray.md` | `bytes`/`bytearray` 详解：索引切片、可变性、`fromhex`、避坑 |
-| 05 | `05-codecs-and-common-encodings.md` | 常见编码与 codec：多编码 bytes 对照表、兼容性与乱码直觉 |
-| 06 | `06-fixing-encoding-decoding-problems.md` | 编解码问题处理：三类异常、BOM、检测与落地模板 |
-| 07 | `07-unicode-normalization.md` | Unicode 规范化：NFC/NFD/NFKC/NFKD、casefold、比较工具函数 |
-| 08 | `08-unicode-text-sorting.md` | Unicode 文本排序：默认码点顺序、locale 局限、pyuca（UCA） |
-| 09 | `09-unicode-database-unicodedata.md` | Unicode 数据库：`unicodedata` 字符识别与数值语义解析 |
-| 10 | `10-dual-mode-apis-str-bytes.md` | 双模式 API：`re` 与 `os` 的 str/bytes 行为差异与最佳实践 |
+| 01 | `01-第4章Unicode文本与字节总览.md` | `str`/`bytes` 的整体框架与关键原则 |
+| 02 | `02-码点编码与编解码错误.md` | 字符/码点/编码/字节、`encode`/`decode`、`errors=` |
+| 03 | `03-IO编码排查清单.md` | I/O 编码排查清单：文件/子进程/控制台 |
+| 04 | `04-bytes与bytearray.md` | `bytes`/`bytearray` 详解：索引切片、可变性、`fromhex`、避坑 |
+| 05 | `05-常见编码与codecs.md` | 常见编码与 codec：多编码 bytes 对照表、兼容性与乱码直觉 |
+| 06 | `06-编解码问题排查与修复.md` | 编解码问题处理：三类异常、BOM、检测与落地模板 |
+| 07 | `07-Unicode规范化.md` | Unicode 规范化：NFC/NFD/NFKC/NFKD、casefold、比较工具函数 |
+| 08 | `08-Unicode文本排序.md` | Unicode 文本排序：默认码点顺序、locale 局限、pyuca（UCA） |
+| 09 | `09-Unicode数据库与unicodedata.md` | Unicode 数据库：`unicodedata` 字符识别与数值语义解析 |
+| 10 | `10-双模式API-str与bytes.md` | 双模式 API：`re` 与 `os` 的 str/bytes 行为差异与最佳实践 |
 
 ---
 

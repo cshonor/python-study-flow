@@ -1,5 +1,5 @@
 """
-Demo for 03-io-encoding-checklist.md (Fluent Python ch.4).
+Demo for 03-IO编码排查清单.md (Fluent Python ch.4).
 
 Run:
   python part-1-data-structures/chapter-04/io_encoding_troubleshoot_demo.py

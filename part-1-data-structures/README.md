@@ -172,24 +172,46 @@ python part-1-data-structures/chapter-03/dict_view_setops_demo.py
 
 ## `chapter-04/` 笔记与脚本
 
-本章目录内另有 **`chapter-04/README.md`**：以 `01-unicode-text-and-bytes-chapter4-overview.md` 为入口。
+本章目录内另有 **`chapter-04/README.md`**：以 `01-第4章Unicode文本与字节总览.md` 为入口。
 
 | 编号 | 文件 | 主题简述 |
 |------|------|----------|
-| 01 | `01-unicode-text-and-bytes-chapter4-overview.md` | 第 4 章开篇：`str`/`bytes`、Unicode、编解码边界 |
-| 02 | `02-codepoints-encodings-and-errors.md` | 字符/码点/编码/字节，编解码异常与 `errors=` |
-| 03 | `03-io-encoding-checklist.md` | I/O 编码排查清单：文件/子进程/控制台 |
+| 01 | `01-第4章Unicode文本与字节总览.md` | 第 4 章开篇：`str`/`bytes`、Unicode、编解码边界 |
+| 02 | `02-码点编码与编解码错误.md` | 字符/码点/编码/字节，编解码异常与 `errors=` |
+| 03 | `03-IO编码排查清单.md` | I/O 编码排查清单：文件/子进程/控制台 |
+| 04 | `04-bytes与bytearray.md` | `bytes`/`bytearray`：索引切片、可变性、`fromhex` |
+| 05 | `05-常见编码与codecs.md` | 常见编码与 codec、多编码 bytes 对照 |
+| 06 | `06-编解码问题排查与修复.md` | 三类异常、BOM、检测与修复模板 |
+| 07 | `07-Unicode规范化.md` | NFC/NFD/NFKC、casefold、比较工具函数 |
+| 08 | `08-Unicode文本排序.md` | 码点序、locale、UCA（pyuca） |
+| 09 | `09-Unicode数据库与unicodedata.md` | `unicodedata`、数值语义 |
+| 10 | `10-双模式API-str与bytes.md` | `re` / `os` 等 str 与 bytes 双模式 |
 
 | 脚本 | 说明 |
 |------|------|
 | `unicode_bytes_quickstart_demo.py` | 与 `01` 配套：`encode`/`decode`、`errors=` |
 | `codepoints_encoding_demo.py` | 与 `02` 配套：码点、UTF-8 字节与解码差异、`errors=` |
 | `io_encoding_troubleshoot_demo.py` | 与 `03` 配套：I/O 编码排查 demo |
+| `bytes_bytearray_demo.py` | 与 `04` 配套 |
+| `codecs_encodings_table_demo.py` | 与 `05` 配套 |
+| `encoding_decoding_fixes_demo.py` | 与 `06` 配套 |
+| `unicode_normalization_demo.py` | 与 `07` 配套 |
+| `unicode_sorting_demo.py` | 与 `08` 配套 |
+| `unicode_numeric_demo.py` / `unicode_char_finder.py` | 与 `09` 配套 |
+| `dual_mode_api_demo.py` | 与 `10` 配套 |
 
 ```bash
 python part-1-data-structures/chapter-04/unicode_bytes_quickstart_demo.py
 python part-1-data-structures/chapter-04/codepoints_encoding_demo.py
 python part-1-data-structures/chapter-04/io_encoding_troubleshoot_demo.py
+python part-1-data-structures/chapter-04/bytes_bytearray_demo.py
+python part-1-data-structures/chapter-04/codecs_encodings_table_demo.py
+python part-1-data-structures/chapter-04/encoding_decoding_fixes_demo.py
+python part-1-data-structures/chapter-04/unicode_normalization_demo.py
+python part-1-data-structures/chapter-04/unicode_sorting_demo.py
+python part-1-data-structures/chapter-04/unicode_numeric_demo.py
+python part-1-data-structures/chapter-04/unicode_char_finder.py CAT EYES --limit 20
+python part-1-data-structures/chapter-04/dual_mode_api_demo.py
 ```
 
 ---

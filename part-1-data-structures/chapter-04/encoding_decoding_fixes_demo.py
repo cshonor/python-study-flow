@@ -1,5 +1,5 @@
 """
-Demo for 06-fixing-encoding-decoding-problems.md
+Demo for 06-编解码问题排查与修复.md
 
 Run:
   python part-1-data-structures/chapter-04/encoding_decoding_fixes_demo.py

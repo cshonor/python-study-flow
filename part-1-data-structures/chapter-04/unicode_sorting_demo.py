@@ -1,5 +1,5 @@
 """
-Demo for 08-unicode-text-sorting.md
+Demo for 08-Unicode文本排序.md
 
 Run:
   python part-1-data-structures/chapter-04/unicode_sorting_demo.py

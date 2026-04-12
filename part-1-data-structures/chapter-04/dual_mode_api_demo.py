@@ -1,5 +1,5 @@
 """
-Demo for 10-dual-mode-apis-str-bytes.md
+Demo for 10-双模式API-str与bytes.md
 
 Run:
   python part-1-data-structures/chapter-04/dual_mode_api_demo.py

@@ -1,5 +1,5 @@
 """
-Demo for 01-unicode-text-and-bytes-chapter4-overview.md (Fluent Python ch.4).
+Demo for 01-第4章Unicode文本与字节总览.md (Fluent Python ch.4).
 
 Run:
   python part-1-data-structures/chapter-04/unicode_bytes_quickstart_demo.py
