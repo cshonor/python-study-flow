@@ -87,12 +87,11 @@ Python内置函数，将可迭代对象（字符串、元组、range对象等）
 针对扑克牌代码中的完整语句：
  
 
-```python
+python
   
 ranks = [str(n) for n in range(2, 11)] + list('JQKA')
 
 
-``` 
  
 - 拼接逻辑：数字牌字符串列表 + 花牌列表
 - 最终 ranks 结果： ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'] 
@@ -102,11 +101,10 @@ ranks = [str(n) for n in range(2, 11)] + list('JQKA')
 此前学习的扑克牌牌面生成语句：
  
 
-```python
+
   
 ranks = [str(n) for n in range(2, 11)] + list('JQKA')
- 
-```
+
  
 完整执行流程：
  
