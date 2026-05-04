@@ -1,309 +1,367 @@
 # 序列模式匹配：`match/case`（Python 3.10+，§2.6）
 
-`match/case` 最有价值的地方，不是“少写几行 if/elif”，而是能把“数据的形状”写进分支里。
+下面先读 **§零 超级人话版**（不搞术语，先建立直觉），再读 **§核心定位** 及后文（规则、速查、练习与附录）。
 
-当你处理的是序列（长度固定/可变、可能嵌套）时，序列模式非常好用：它能在匹配成功的同时把对应位置绑定成变量，让你的代码更像在“解构数据”，而不是在“手搓索引 + 判断”。
-
----
-
-## 一、一句话理解：它不是 `switch` 的语法糖
-
-`match/case` 不只是匹配常量，还能：
-
-- **匹配结构**（例如序列长度、嵌套结构）
-- **绑定变量**（匹配成功后把对应位置的值赋给变量）
-- **加守卫条件**（`case ... if ...` 做额外过滤）
-
-它最适合把“协议/指令/数据结构分支”写得清晰、可维护。
+配套脚本：`05_pattern_matching_sequence_demo.py`（需 Python 3.10+）。
 
 ---
 
-## 二、经典例子：机器人指令（序列模式匹配）
+## 零、超级人话版（不讲术语，一眼懂）
 
-目标：处理形如 `["BEEPER", 440, 3]`、`["NECK", 90]` 的指令序列。
+### 1. 一句话
+
+以前你要写一堆：**先瞅第一个元素像啥，再数长度，再取下标**。
+
+`match/case` 干的事更简单：**直接看这一条数据「长得是不是某个模板」**；长得像，`case` 里写的名字就**自动对应到槽位**，不用 `msg[0]`、`msg[1]`。
+
+### 2. 最土的例子：指令就两种格式
+
+消息格式固定：`["开灯", 亮度]` 或 `["左转", 角度]`。
+
+**用 if（啰嗦）**：
 
 ```python
-def handle_command(self, message):
-    match message:
-        case ["BEEPER", frequency, times]:
-            self.beep(times, frequency)
-        case ["NECK", angle]:
-            self.rotate_neck(angle)
-        case ["LED", ident, intensity]:
-            self.leds[ident].set_brightness(ident, intensity)
-        case ["LED", ident, red, green, blue]:
-            self.leds[ident].set_color(ident, red, green, blue)
-        case _:
-            raise InvalidCommand(message)
+msg = ["左转", 90]
+
+if msg[0] == "左转" and len(msg) == 2:
+    jiaodu = msg[1]
+    print("转", jiaodu)
+
+elif msg[0] == "开灯" and len(msg) == 2:
+    liangdu = msg[1]
+    print("亮度", liangdu)
 ```
 
-### 你需要记住的 4 条规则
+麻烦在哪：自己管长度、自己写下标，分支多了就乱。
 
-- **结构先匹配**：例如 `["NECK", angle]` 只匹配 **长度为 2** 的序列。
-- **变量自动绑定**：`frequency/times/angle/...` 在该 `case` 内可直接使用。
-- **从上到下**依次尝试：命中第一个就结束，不会继续往下匹配。
-- `case _` 是**兜底**，类似 `default`，应放最后。
-
----
-
-## 三、顺序很重要：更具体的模式必须放在更通用的模式之前
-
-例如两种 LED 指令（3 项 vs 5 项）都以 `"LED"` 开头：
-
-- 如果你先写 `case ["LED", ident, intensity]:`，它不会匹配 5 项（长度不符），因此这里**不存在“被提前截胡”**的问题。
-- 但在其他场景（例如用 `*rest` 做“通用兜底”）就会被截胡：
+**用 match/case（干净）**：
 
 ```python
-match message:
-    case ["LED", ident, *rest]:
-        ...  # 这个太宽泛，会把后续所有 LED 分支都吃掉
-    case ["LED", ident, red, green, blue]:
-        ...  # 永远到不了
-```
+msg = ["左转", 90]
 
-经验法则：**越具体的 `case` 越靠前**；`*rest` 和 `case _` 这类“广谱匹配”放最后。
-
----
-
-## 四、进阶但高频：守卫（guard）、嵌套、`*rest`
-
-### 1. 守卫：额外过滤条件
-
-```python
-match message:
-    case ["BEEPER", f, t] if f > 0 and t > 0:
-        self.beep(t, f)
+match msg:
+    case ["左转", jiaodu]:
+        print("转", jiaodu)
+    case ["开灯", liangdu]:
+        print("亮度", liangdu)
     case _:
-        raise InvalidCommand(message)
+        print("看不懂你发的啥")
 ```
 
-### 2. 嵌套结构：直接匹配嵌套的序列/元组
+新手记三句就够：
+
+1. **长得和模板一模一样才算匹配**（几个元素、各是什么位置，都要对）。  
+   例如 `["左转", 90]` 一共两项 → **从上到下**找，**第一个能对上的**就是 `case ["左转", jiaodu]:`，于是 `jiaodu` 自动是 `90`。  
+2. **`jiaodu`、`liangdu` 这些名字**是你在模板里起的；匹配成功就带上**对应槽位**的值，不用下标。  
+3. **`case _`** = 上面谁都不像 → 兜底。
+
+### 3. 顺序：越「死板、挑剔」的越靠前
+
+两种开灯：简单 `["开灯", 50]`；调 RGB `["开灯", 10, 20, 30]`。
+
+**别这样写**（带 `*` 的太宽，后面白写）：
 
 ```python
-match message:
-    case ["LED", ident, (r, g, b)]:
-        self.leds[ident].set_color(ident, r, g, b)
+match msg:
+    case ["开灯", *rest]:
+        pass  # 很多「开灯」消息都会先进这里
+    case ["开灯", r, g, b]:
+        pass  # 往往永远轮不到
 ```
 
-#### 2.1 嵌套 + 守卫：用结构匹配 + 条件筛选数据
+**人话规则**：**越具体、越长、越挑形状的 `case`，越往上放；越大而化之的放最后。**
 
-下面用 `match/case` 重写一次“城市经纬度筛选”的典型循环：先用嵌套模式拆出 `(lat, lon)`，再用 guard 过滤西半球（`lon <= 0`）。
+### 4. 守卫：「长得像」之后再多卡一道
+
+**先看像不像**（例如是不是三个槽的 `["除法", 谁, 谁]`），**像了再算后面的 `if`**。
+
+```python
+match cmd:
+    case ["除法", a, b] if b != 0:
+        print(a / b)
+```
+
+### 5. 啥时候用 match？啥时候老实 if？
+
+| 用 `match/case` 更爽 | 继续 `if/elif` 就行 |
+| --- | --- |
+| 消息、指令、格式相对固定；列表或嵌套、一堆形状分支 | 纯比大小、几个简单布尔 |
+
+### 6. 四句口诀（背熟够用）
+
+1. `match` 看**长得像什么结构**。  
+2. `case` 写**模板**，对上就自动拆变量。  
+3. **具体在前，笼统在后**。  
+4. **`case _` 兜底**（或故意不写兜底，用 `MatchError` 逼人写全分支，见 **§九 附录**）。
+
+---
+
+## 核心定位
+
+**不是 `if/elif` 语法糖，也不是简单 `switch`。**
+
+核心价值：**把数据形状、结构、长度、嵌套直接写进分支，边匹配边解构绑定变量**，特别适合**协议解析、指令分发、AST/DSL 语法校验、结构化数据分支**。本篇正文以**序列模式**（`list` / `tuple` 等线性形状）为主；**字典行、`csv.DictReader` 与映射模式**见 **§九 附录**。下面各节在用人话打底子之上，把规则写细（含英文标识，方便你对照官方文档）。
+
+---
+
+## 一、核心本质
+
+1. 匹配**结构**：序列长度、嵌套层级、固定前缀标签。  
+2. 自动**绑定变量**：匹配成功即解构赋值，不必手写索引。  
+3. 支持**守卫条件**：`case ... if 额外判断`（**先模式匹配成功，再求值 `if`**）。  
+4. **从上到下**尝试，命中第一个即终止；兜底分支放最后。
+
+---
+
+## 二、基础序列匹配（机器人指令经典示例）
+
+```python
+def handle_command(message):
+    match message:
+        # 严格匹配长度 2：标签 + 角度
+        case ["NECK", angle]:
+            print(f"转动颈部：{angle}°")
+        # 严格匹配长度 3：标签 + 频率 + 次数
+        case ["BEEPER", freq, times]:
+            print(f"蜂鸣 {times} 次，频率：{freq}")
+        # 兜底：非法指令
+        case _:
+            raise ValueError("无效指令")
+```
+
+### 四条铁律
+
+1. **结构严格匹配**：长度不对则跳过当前 `case`，不会模糊匹配或自动补位。  
+2. **位置自动绑定**：模式里的名字在该 `case` 块内直接可用。  
+3. **顺序优先**：更具体的分支必须写在更宽泛的分支**上面**。  
+4. **`case _`**：万能兜底，习惯上放**末尾**（见附录：未命中时的 `MatchError`）。
+
+---
+
+## 三、关键避坑：分支顺序与 `*rest` 广谱匹配
+
+### 错误写法（被 `*rest` 截胡，后续分支永远走不到）
+
+```python
+match msg:
+    case ["LED", ident, *rest]:  # 太宽泛，吃掉所有以 LED 开头、长度 ≥ 3 的序列
+        pass
+    case ["LED", ident, r, g, b]:  # 永远无法命中（若上面已能匹配）
+        pass
+```
+
+### 正确原则
+
+**越具体 → 越靠前；带 `*rest`、通配兜底 → 放最后。**
+
+---
+
+## 四、高频进阶用法
+
+### 1. 守卫 Guard：结构对了再附加条件
+
+只匹配合法数值时：**先结构匹配成功，才会执行 `if` 守卫**。
+
+```python
+match msg:
+    case ["BEEPER", f, t] if f > 0 and t > 0:
+        print("合法蜂鸣指令")
+    case _:
+        raise ValueError("参数非法")
+```
+
+### 2. 嵌套序列匹配：一键解构嵌套数据
 
 ```python
 metro_areas = [
     ("Tokyo", "JP", 36.933, (35.689722, 139.691667)),
-    ("Delhi NCR", "IN", 21.935, (28.613889, 77.208889)),
     ("Mexico City", "MX", 20.142, (19.433333, -99.133333)),
-    ("New York-Newark", "US", 20.104, (40.808611, -74.020386)),
-    ("São Paulo", "BR", 19.649, (-23.547778, -46.635833)),
 ]
 
-print(f"{'':15} | {'latitude':>9} | {'longitude':>9}")
-for record in metro_areas:
-    match record:
+for rec in metro_areas:
+    match rec:
         case [name, _, _, (lat, lon)] if lon <= 0:
-            print(f"{name:15} | {lat:9.4f} | {lon:9.4f}")
+            print(name, lat, lon)
 ```
 
-要点：
+**小知识点**：序列模式写成 `[...]` 或 `(...)`，匹配时**不区分** `list` / `tuple`（都是“序列形状”）；括号风格多为书写习惯（与“正在新建一个 list 字面量”无关）。
 
-- **先匹配、再守卫**：只有模式匹配成功，才会计算 `if lon <= 0`。
-- `[]` 与 `()` 在序列模式里语义等价：这里用 `[]` 只是为了强调“这是序列模式”，不是在创建 list。
-- 这段代码的“数据提取能力”与嵌套拆包类似，但 `match` 更适合“多分支协议解析”；单分支筛选时，普通拆包循环仍然很干净（见 `04`）。
+### 3. `*rest`：可变长度与协议扩展字段
 
-### 3. `*rest`：可变长度匹配（像“协议扩展字段”）
+捕获尾部剩余项；在**同一层**序列模式里，带名字的 `*` **最多一个**（内层、外层各有一层序列模式时，可以各有一个 `*`，见附录）。
 
 ```python
-match message:
-    case ["LED", ident, *rest]:
-        ...  # rest 是 list
+match cmd:
+    case ["LOG", level, *msg_args]:
+        print(f"[{level}] 日志内容：{msg_args}")
 ```
 
----
+### 4. `as`：绑定“整个 subject”
 
-## 五、与 `if/elif/else` 的取舍
-
-- 当你要做的是**结构分支**（长度、嵌套形状、固定 tag + 参数）：`match/case` 通常更清晰。
-- 当分支只是少量布尔条件，或需要复杂副作用：`if/elif/else` 仍然很合适。
-
----
-
-## 六、避坑清单（实战向）
-
-- **版本要求**：Python **3.10+** 才支持 `match/case`。
-- **兜底位置**：`case _` 必须放最后。
-- **通用模式靠后**：尤其是带 `*rest` 的“宽泛匹配”，否则后面的分支到不了。
-- **结构严格**：长度不匹配直接跳过该 `case`，不会“自动补齐”。
-
----
-
-## 七、语法速查表（工程常用）
-
-### 1. 基础结构
-
-- `match subject:` 后面跟多个 `case ...:`
-- **从上到下**依次尝试，命中第一个就结束
-- 建议总是写 `case _:` 做兜底：否则不匹配时会“什么都不做”，调试成本高
-
-### 2. 常量/字面量匹配（value pattern）
+`case 模式 as 名字` 里，`名字` 绑定的是 **`match` 的 subject**（整段被匹配的对象），不是模式中某一截子序列。
 
 ```python
-match x:
-    case 0 | 1:
-        ...
-    case "quote":
-        ...
-    case None:
-        ...
+match form:
+    case ["define", name, val] as full_expr:
+        assert full_expr is form  # 成立 → as 绑定的是 match 的 subject
+        print("变量名：", name)
+        print("完整表达式：", full_expr)
 ```
 
-### 3. 变量绑定（capture pattern）与忽略（`_`）
+### 5. 嵌套校验（DSL / 解释器）
 
-- `name` 会**绑定**（捕获）值，而不是“比较 name 的值”
-- `_` 是通配符：匹配任意值且不绑定
-
-```python
-match msg:
-    case ["NECK", angle]:
-        ...
-    case ["BEEPER", _, times]:
-        ...
-```
-
-### 4. 序列模式（sequence pattern）
-
-- **长度严格匹配**（除非用 `*rest`）
-- 支持**嵌套匹配**
+强制第二层必须是“序列”，避免 `parms` 混进字符串、数字等非列表结构。
 
 ```python
-match exp:
-    case ["if", test, consequence, alternative]:
-        ...
-    case ["quote", value]:
-        ...
-    case ["LED", ident, (r, g, b)]:
-        ...
-```
+# 不够严：parms 可以是任意对象
+case ["lambda", parms, *body]:
+    pass
 
-### 5. `*rest`：可变长度匹配（只能一个）
-
-```python
-match exp:
-    case ["lambda", params, *body] if body:
-        ...
-```
-
-#### 5.1 解释器实战：用嵌套序列模式做“安全校验”
-
-在解释器/DSL 场景中，模式匹配不仅是“分支选择”，也可以顺便完成**语法结构校验**。
-
-例如 Scheme 的 `lambda` 句法要求第二项必须是“参数列表”（即使无参也应是空列表）。下面两种写法的差异在于：是否强制校验 `parms` 的结构。
-
-不够安全（`parms` 可以是任意对象，比如字符串）：
-
-```python
-case ["lambda", parms, *body] if body:
-    ...
-```
-
-更安全：用嵌套序列模式 `[*parms]`，强制 `lambda` 后必须是“序列/列表结构”：
-
-```python
+# 更严：第二项必须是序列，并拆到 parms
 case ["lambda", [*parms], *body] if body:
-    ...
+    pass
 ```
 
-注意：**每个序列模式内只能有一个 `*`**；这里的 `*parms` 与 `*body` 分别处于“内层列表模式”和“外层列表模式”，因此是允许的。
+---
 
-### 6. 守卫（guard）：`case ... if ...`
+## 五、`match` 与 `if/elif` 取舍
 
-规则：**先模式匹配成功**，才会计算 `if ...`。
+| 更适合 `match/case` | 更适合 `if/elif` |
+| --- | --- |
+| 结构化数据、固定协议、嵌套分支、边解构边校验 | 纯布尔分支、流程杂、副作用多的业务编排 |
+
+---
+
+## 六、实战避坑清单
+
+1. **版本**：Python **3.10+** 才有 `match/case`。  
+2. **兜底**：需要“吃掉所有剩余情况”时写 `case _:`；若故意不写兜底，未命中会抛 **`MatchError`**（见附录）。  
+3. **广谱后置**：`*rest`、过宽序列模式一律靠后。  
+4. **长度严格**：不会自动补位、不做模糊长度。  
+5. **守卫时机**：先结构匹配，再执行 `if`。
+
+---
+
+## 七、语法速查（工程常用极简版）
+
+| 写法 | 作用 |
+| --- | --- |
+| `case 1 \| 2` | 多常量或匹配 |
+| `case ["TAG", x, y]` | 固定长度序列解构 |
+| `case [_, val]` | 忽略某位置，只取目标值 |
+| `case [a, *rest]` | 可变长度，捕获剩余 |
+| `case pat if cond` | 守卫 |
+| `case Cls(x, y)` | 类实例模式（本篇不展开） |
+| `case _` | 通配兜底 |
+
+---
+
+## 八、课后练习参考答案
+
+### 练习 1：四则基础指令分发
 
 ```python
-match exp:
-    case ["BEEPER", f, t] if f > 0 and t > 0:
-        ...
+def handle(message):
+    match message:
+        case ["ADD", a, b]:
+            return a + b
+        case ["MUL", a, b]:
+            return a * b
+        case ["NEG", x]:
+            return -x
+        case _:
+            raise SyntaxError("未知指令")
+
+
+assert handle(["ADD", 2, 3]) == 5  # 成立 → ADD
+assert handle(["MUL", 2, 3]) == 6  # 成立 → MUL
+assert handle(["NEG", 7]) == -7  # 成立 → NEG
 ```
 
-### 7. `as`：绑定整体
+### 练习 2：带守卫的除法（防除 0）
 
 ```python
-match exp:
-    case ["define", name, value] as form:
-        ...
+def calc_div(message):
+    match message:
+        case ["DIV", a, b] if b != 0:
+            return a / b
+        case ["DIV", _, 0]:
+            raise ZeroDivisionError("除数不能为0")
+        case _:
+            raise ValueError("非法除法指令")
+
+
+assert calc_div(["DIV", 10, 2]) == 5.0  # 成立 → 正常除法
 ```
 
-### 8. 类匹配（class pattern）
+### 练习 3：`*rest` 错误顺序 + 修正版
+
+```python
+# 错误版：被广谱分支截胡
+def bad_led(msg):
+    match msg:
+        case ["LED", idx, *rest]:
+            return "generic"
+        case ["LED", idx, r, g, b]:
+            return "rgb"
+
+
+# 正确版：具体在前，广谱在后
+def good_led(msg):
+    match msg:
+        case ["LED", idx, r, g, b]:
+            return "rgb"
+        case ["LED", idx, *rest]:
+            return "generic"
+        case _:
+            return "other"
+
+
+assert bad_led(["LED", 0, 1, 2, 3]) == "generic"  # 成立 → 第一个分支已吃掉
+assert good_led(["LED", 0, 1, 2, 3]) == "rgb"  # 成立 → 五元组走 RGB 分支
+```
+
+---
+
+## 九、附录（与仓库其余笔记对齐）
+
+### 1. 未命中任何 `case` 时会发生什么？
+
+若不存在能匹配的分支，且**没有**能兜住的 `case _:`，Python 会抛出 **`MatchError`**。因此：
+
+- 想**显式**处理“其余所有情况”→ 写 `case _:`。  
+- 想**强制穷尽**（漏了分支就让程序炸）→ 故意不写 `case _:`，靠 `MatchError` 暴露不完整的协议。
+
+### 2. 映射模式与 `csv.DictReader`
+
+本篇以**序列模式**为主。若处理 **`csv.DictReader` 读出的 `dict` 行**，见：`../chapter-03/04-csv-DictReader与match-case.md`。
+
+### 3. 类模式（极简）
 
 ```python
 match token:
-    case Token(kind="NAME", value=v):
-        ...
     case Point(x, y):
         ...
 ```
 
-### 9. 映射/字典匹配（mapping pattern）
+更系统的数据类与 `match` 结合见第 5 章、第 7 章相关笔记。
 
-```python
-match payload:
-    case {"op": "add", "args": [a, b]}:
-        ...
-    case {"type": t, **rest}:
-        ...
-```
+### 4. `*` 在嵌套模式里的计数
 
-`**rest` 须放在映射模式**最后**；`**_` 为非法语法。更细的约定与可哈希背景见 `../chapter-03/05-Mapping抽象与可哈希.md`。
+外层序列模式与**内层**子模式各自遵守“**同一层最多一个**带捕获的 `*`”的规则；例如 `case ["lambda", [*parms], *body]` 中，`*parms` 在内层列表模式，`*body` 在外层，**合法**。
 
-### 10. 兜底与错误处理（解释器/AST 常用）
-
-```python
-match exp:
-    case _:
-        raise SyntaxError(f"bad form: {exp!r}")
-```
-
-### 11. Scheme 风格 `define` 的“函数快捷句法”（多模式匹配）
-
-Scheme 常见两种 `define`：
-
-- `(define name exp)`：绑定变量
-- `(define (name parm...) body...)`：快捷定义具名函数
-
-用模式匹配写成“声明式”分支会非常贴近语法本身：
-
-```python
-case ["define", Symbol() as name, exp]:
-    ...
-case ["define", [Symbol() as name, *parms], *body] if body:
-    ...
-```
-
----
-
-## 八、延伸阅读：`csv.DictReader` 与映射模式
-
-本篇以**序列模式**为主；若处理 **`csv.DictReader` 读出的行（`dict`）**，见 `../chapter-03/04-csv-DictReader与match-case.md`。
-
----
-
-## 九、配套 demo（建议边看边跑）
-
-脚本：`part-1-data-structures/chapter-02/05_pattern_matching_sequence_demo.py`
+### 5. 配套 demo（建议边看边跑）
 
 ```bash
 python part-1-data-structures/chapter-02/05_pattern_matching_sequence_demo.py
 ```
 
-你会看到 4 组输出：
-
-- 机器人指令的多分支解析（最典型的“协议分支”用法）
-- 嵌套模式 + guard 的筛选
-- `*rest` 吞分支的顺序坑（bad vs good）
-- evaluator/DSL 风格的“匹配 + 校验”
+脚本中含：机器人指令多分支、嵌套 + guard、`*rest` 顺序正反例、 evaluator / DSL 风格示例。
 
 ---
 
-## 十、小练习（写完再看 demo 输出）
+## 十、小练习（先手写再对照 §八）
 
-1. 写一个 `handle(message)`：支持 `["ADD", a, b]`、`["MUL", a, b]`、`["NEG", x]` 三种指令，并用 `case _` 兜底报错。\n2. 写一个带 guard 的分支：只接受 `["DIV", a, b]` 且 `b != 0`。\n3. 写一个会被 `*rest` 吞掉的错误版本，并改成正确的顺序版本。\n
+1. 实现练习 1 的 `handle`，覆盖 `ADD` / `MUL` / `NEG`，`case _` 兜底。  
+2. 实现练习 2 的 `calc_div`（守卫 + 除零分支）。  
+3. 实现练习 3 的 `bad_led` / `good_led`，体会顺序差异。  
