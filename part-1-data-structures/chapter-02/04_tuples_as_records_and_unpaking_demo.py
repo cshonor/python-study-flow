@@ -47,23 +47,23 @@ def demo_starred_unpacking() -> None:
     section("2) starred unpacking: capture the rest")
     a, b, *rest = range(5)
     print("a, b, rest:", a, b, rest)
-    assert (a, b, rest) == (0, 1, [2, 3, 4])
+    assert (a, b, rest) == (0, 1, [2, 3, 4])  # 成立 → a=0,b=1,rest=[2,3,4]
 
     a, b, *rest = range(2)
     print("a, b, rest (empty):", a, b, rest)
-    assert rest == []
+    assert rest == []  # 成立 → 无余项时 rest 为 []
 
     a, *body, c, d = range(5)
     print("a, body, c, d:", a, body, c, d)
-    assert (a, body, c, d) == (0, [1, 2], 3, 4)
+    assert (a, body, c, d) == (0, [1, 2], 3, 4)  # 成立 → body 收中间
 
     *head, b, c, d = range(5)
     print("head, b, c, d:", head, b, c, d)
-    assert (head, b, c, d) == ([0, 1], 2, 3, 4)
+    assert (head, b, c, d) == ([0, 1], 2, 3, 4)  # 成立 → head 收前段
 
     first, *_, last = range(6)
     print("first, last:", first, last)
-    assert (first, last) == (0, 5)
+    assert (first, last) == (0, 5)  # 成立 → first=0,last=5
 
 
 def demo_nested_unpacking() -> None:
@@ -88,8 +88,10 @@ def demo_immutability_is_reference_level() -> None:
     a = (10, "alpha", [1, 2])
     b = (10, "alpha", [1, 2])
     print("a == b:", a == b)
+    assert a == b  # 成立 → 结构相同、值相等
     b[-1].append(99)
     print("a == b after inner list change:", a == b)
+    assert a != b  # 成立 → 共享槽位内 list 被改，相等性破坏
     print("b:", b)
 
 
@@ -108,8 +110,8 @@ def demo_hashable_check() -> None:
 
     print("fixed(tf):", fixed(tf))
     print("fixed(tm):", fixed(tm))
-    assert fixed(tf) is True
-    assert fixed(tm) is False
+    assert fixed(tf) is True  # 成立 → 全不可变，可 hash
+    assert fixed(tm) is False  # 成立 → 含 list，不可 hash
 
 
 def demo_iadd_list_vs_tuple() -> None:
@@ -118,11 +120,15 @@ def demo_iadd_list_vs_tuple() -> None:
     id_a_before = id(a)
     a += [4, 5]
     print("list id unchanged?", id(a) == id_a_before, "->", a)
+    assert id(a) == id_a_before  # 成立 → list += 原地，id 不变
+    assert a == [1, 2, 3, 4, 5]  # 成立 → 内容扩展为五元
 
     t = (1, 2)
     id_t_before = id(t)
     t += (30, 40)
     print("tuple id changed?", id(t) != id_t_before, "->", t)
+    assert id(t) != id_t_before  # 成立 → tuple += 建新对象
+    assert t == (1, 2, 30, 40)  # 成立 → 绑定到新元组
 
 
 def demo_tuple_slot_iadd_puzzle() -> None:
@@ -134,7 +140,7 @@ def demo_tuple_slot_iadd_puzzle() -> None:
     except TypeError as e:
         print("TypeError (expected):", e)
     print("after :", t)
-    assert t == (1, 2, [30, 40, 50, 60])
+    assert t == (1, 2, [30, 40, 50, 60])  # 成立 → 槽内 list 已在 += 第一步被拉长
 
 
 def main() -> None:

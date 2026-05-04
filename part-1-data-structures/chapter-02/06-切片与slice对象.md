@@ -15,8 +15,8 @@ Python 切片遵循 **左闭右开**：`seq[start:stop)`，核心收益：
 
 ```python
 l = [10, 20, 30, 40, 50, 60]
-assert l[:2] == [10, 20]
-assert l[2:] == [30, 40, 50, 60]
+assert l[:2] == [10, 20]  # 成立 → 左闭右开，前两项
+assert l[2:] == [30, 40, 50, 60]  # 成立 → 从下标 2 到末尾
 ```
 
 这套约定也与 `range(n)` 这类“长度等于 `n`”的直觉一致。
@@ -29,9 +29,9 @@ assert l[2:] == [30, 40, 50, 60]
 
 ```python
 s = "bicycle"
-assert s[::3] == "bye"
-assert s[::-1] == "elcycib"
-assert s[::-2] == "eccb"
+assert s[::3] == "bye"  # 成立 → 步长 3 取 b,y,e
+assert s[::-1] == "elcycib"  # 成立 → 逆序整串
+assert s[::-2] == "eccb"  # 成立 → 逆序且步长 2
 ```
 
 实践建议：当你写出 `s[a:b:c]` 且逻辑稍复杂时，优先考虑把它做成命名 `slice`（下一节）。
@@ -52,9 +52,9 @@ DESCRIPTION = slice(6, 40)
 UNIT_PRICE = slice(40, 52)
 
 line = "123456" + "BANANA".ljust(34) + f"{12.50:>12.2f}"
-assert line[SKU] == "123456"
-assert line[DESCRIPTION].rstrip() == "BANANA"
-assert float(line[UNIT_PRICE]) == 12.50
+assert line[SKU] == "123456"  # 成立 → 命名切片取 SKU 字段
+assert line[DESCRIPTION].rstrip() == "BANANA"  # 成立 → 描述区去空白后为 BANANA
+assert float(line[UNIT_PRICE]) == 12.50  # 成立 → 单价字段解析为 12.5
 ```
 
 ---
@@ -93,10 +93,10 @@ l[2:5] = [100]     # ✅
 ```python
 l = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 l[2:5] = [20, 30]
-assert l == [0, 1, 20, 30, 5, 6, 7, 8, 9]
+assert l == [0, 1, 20, 30, 5, 6, 7, 8, 9]  # 成立 → [2:5) 被替换为两元素
 
 del l[5:7]
-assert l == [0, 1, 20, 30, 5, 8, 9]
+assert l == [0, 1, 20, 30, 5, 8, 9]  # 成立 → del [5:7) 删掉 6、7 两槽
 ```
 
 ### 3. 带步距的切片赋值：长度必须匹配
@@ -106,7 +106,7 @@ assert l == [0, 1, 20, 30, 5, 8, 9]
 ```python
 l = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 l[3::2] = [11, 22, 33, 44]  # 目标槽位数为 4
-assert l == [0, 1, 2, 11, 4, 22, 6, 33, 8, 44]
+assert l == [0, 1, 2, 11, 4, 22, 6, 33, 8, 44]  # 成立 → 带步长切片逐槽写入
 ```
 
 ---

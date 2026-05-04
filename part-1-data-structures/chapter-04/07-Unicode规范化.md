@@ -24,7 +24,7 @@ Unicode 支持 **组合字符（combining characters）**。例如“é”可以
 ```python
 s1 = "café"       # 预合成 é
 s2 = "cafe\u0301" # e + 组合重音
-assert s1 != s2
+assert s1 != s2  # 成立 → 码点序列不同，值不相等
 ```
 
 这不是“编码问题”，而是**同一个字符的不同码点序列**。所以：
@@ -60,8 +60,8 @@ from unicodedata import normalize
 s1 = "café"
 s2 = "cafe\u0301"
 
-assert normalize("NFC", s1) == normalize("NFC", s2)
-assert normalize("NFD", s1) == normalize("NFD", s2)
+assert normalize("NFC", s1) == normalize("NFC", s2)  # 成立 → NFC 后两者规范等价
+assert normalize("NFD", s1) == normalize("NFD", s2)  # 成立 → NFD 后两者规范等价
 ```
 
 并且你能观察到长度变化：
@@ -100,7 +100,7 @@ NFKC/NFKD 会把这类兼容字符折叠成更基础的表示，这在 **搜索/
 - `µ`（micro sign）在 casefold 后会对齐成希腊字母 `μ`
 
 ```python
-assert "Straße".casefold() == "strasse".casefold()
+assert "Straße".casefold() == "strasse".casefold()  # 成立 → casefold 把 ß 对齐为 ss
 ```
 
 经验法则：
