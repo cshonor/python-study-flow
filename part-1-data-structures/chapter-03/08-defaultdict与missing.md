@@ -6,7 +6,8 @@
 
 这一篇会把两件事讲透：
 
-1. **`defaultdict` 的行为规则**：什么时候会调用 `default_factory`？什么时候不会？\n2. **`__missing__` 的本质**：为什么 `defaultdict` 能做到自动补默认值？（它其实就是在缺键时用到了 `__missing__` 钩子）
+1. **`defaultdict` 的行为规则**：什么时候会调用 `default_factory`？什么时候不会？
+2. **`__missing__` 的本质**：为什么 `defaultdict` 能做到自动补默认值？（它其实就是在缺键时用到了 `__missing__` 钩子）
 
 ---
 
