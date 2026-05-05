@@ -9,11 +9,14 @@ Run:
 
 脚本说明：
 - 教学演示：请在仓库根目录运行；终端为分步打印，请与 `part-1-data-structures` 下同章 Markdown 笔记对照。
+- 第 **2b)** 节：键已存在时，打印「造空列表」次数（`get` / `setdefault` vs `defaultdict`）。  
+- 第 **4)** 节：键已存在时，`get`/`setdefault` 每次仍对 `[]` 求值 vs `defaultdict` 热循环粗计时（见笔记 **§四**）。
 """
 
 from __future__ import annotations
 
 import re
+import time
 from collections import defaultdict
 from io import StringIO
 
@@ -98,6 +101,51 @@ def demo_default_arg_evaluated() -> None:
     print("setdefault existing key: fresh_list() called", calls, "times")
 
 
+def demo_list_ctor_counts_when_key_exists() -> None:
+    section("2b) key exists: count empty-list constructions (get vs setdefault vs defaultdict)")
+    loops = 5
+    key = "x"
+
+    built = 0
+
+    def tracked_empty() -> list[int]:
+        nonlocal built
+        built += 1
+        return []
+
+    d1: dict[str, list[int]] = {key: [41]}
+    built = 0
+    for _ in range(loops):
+        lst = d1.get(key, tracked_empty())
+        lst.append(0)
+        d1[key] = lst
+    print(f"get + writeback: tracked_empty() -> {built} (expect {loops} dead lists)")
+
+    d2: dict[str, list[int]] = {key: [41]}
+    built = 0
+    for _ in range(loops):
+        d2.setdefault(key, tracked_empty()).append(0)
+    print(f"setdefault:        tracked_empty() -> {built} (expect {loops})")
+
+    factory_calls = 0
+
+    def track_factory() -> list[int]:
+        nonlocal factory_calls
+        factory_calls += 1
+        return []
+
+    dd: defaultdict[str, list[int]] = defaultdict(track_factory)
+    dd[key].append(41)  # miss -> one list
+    before = factory_calls
+    for _ in range(loops):
+        dd[key].append(0)
+    during_loop = factory_calls - before
+    print(
+        f"defaultdict:       factory calls total={factory_calls}; "
+        f"during {loops} appends on existing key = {during_loop} (expect 0)"
+    )
+
+
 def demo_defaultdict_factory_only_on_miss() -> None:
     section("3) defaultdict: factory only when key missing")
     factory_calls = 0
@@ -114,10 +162,44 @@ def demo_defaultdict_factory_only_on_miss() -> None:
     print("factory_calls (expect 2 for keys a,b):", factory_calls)
 
 
+def demo_hot_loop_empty_list_overhead() -> None:
+    section("4) hot loop: key exists, N appends (rough perf; see 07 md section 4)")
+    n = 250_000
+    key = "k"
+
+    d_get: dict[str, list[int]] = {key: []}
+    t0 = time.perf_counter()
+    for _ in range(n):
+        lst = d_get.get(key, [])
+        lst.append(0)
+        d_get[key] = lst
+    t_get = time.perf_counter() - t0
+
+    d_sd: dict[str, list[int]] = {key: []}
+    t0 = time.perf_counter()
+    for _ in range(n):
+        d_sd.setdefault(key, []).append(0)
+    t_sd = time.perf_counter() - t0
+
+    d_dd: defaultdict[str, list[int]] = defaultdict(list)
+    _ = d_dd[key]  # one miss -> factory once
+    t0 = time.perf_counter()
+    for _ in range(n):
+        d_dd[key].append(0)
+    t_dd = time.perf_counter() - t0
+
+    print(f"N={n} appends (key already in dict before loop)")
+    print(f"  get + writeback:  {t_get:.3f}s")
+    print(f"  setdefault:       {t_sd:.3f}s")
+    print(f"  defaultdict[k]:   {t_dd:.3f}s  (no [] literal per iteration)")
+
+
 def main() -> None:
     demo_three_builders()
     demo_default_arg_evaluated()
+    demo_list_ctor_counts_when_key_exists()
     demo_defaultdict_factory_only_on_miss()
+    demo_hot_loop_empty_list_overhead()
 
 
 if __name__ == "__main__":
