@@ -9,7 +9,84 @@
 
 你会看到两种写法：
 
-- Python 3.10+：用 `match/case` 的**映射模式**写分支（更像“声明式规则”）\n- 任何 Python 3.x：用 `if/elif`（等价逻辑，便于兼容）
+- Python 3.10+：用 `match/case` 的**映射模式**写分支（更像“声明式规则”）
+- 任何 Python 3.x：用 `if/elif`（等价逻辑，便于兼容）
+
+---
+
+## 零、大白话一步步拆开（先读这段再往下看）
+
+### 总括一句话
+
+**`csv.DictReader`：CSV 每一行，自动变成「表头当键、单元格当值」的 `dict`。**  
+好处：**不用数第几列**，按列名取值，读起来像在读表。
+
+---
+
+### 1. 普通 `reader` 和 `DictReader` 差在哪？
+
+假设文件头是：
+
+```text
+type,id,note
+user,42,alice
+order,101,food
+```
+
+- **`csv.reader`**：一行是一个 **`list`**，例如 `["user", "42", "alice"]`。取值靠 **`row[0]`、`row[1]`**——表头一改顺序，下标全乱。  
+- **`csv.DictReader`**：一行是一个 **`dict`**，例如 `{"type": "user", "id": "42", "note": "alice"}`。取值写 **`row["type"]`、`row["id"]`**——**跟列顺序无关**，语义清楚。
+
+---
+
+### 2. 第一大坑：值**全是字符串**
+
+哪怕格子里写的是数字 `42`、`101`，读进来也是 **`"42"`、`"101"`**（`str`）。不能直接：
+
+```python
+# row["id"] > 100  # ❌ 字符串和整数比，类型不对
+```
+
+要先转：
+
+```python
+int(row["id"]) > 100  # ✅
+```
+
+在 **`match/case`** 里做数值判断，用 **`if` 守卫**（见 **§四**），因为模式里不能乱塞 `int(...)` 表达式。
+
+---
+
+### 3. 为啥要「分支」？两种写法
+
+同一 CSV 里常有不同 `type`（`user` / `order` / `admin` …），不同类型走不同逻辑 → **分支**。
+
+| 写法 | 适合 |
+| :--- | :--- |
+| **`match/case`（3.10+）** | 像写规则：字典**至少包含**这些键且值对上，还能顺便绑定 `case {"id": sid}` |
+| **`if/elif`** | 全版本；逻辑一样，条件容易越堆越长 |
+
+映射模式是**包含式**匹配：多出来的键一般不妨碍命中；**更具体的 `case` 必须写在更宽泛的上面**，否则后面的分支永远进不去（见 **§二** 与下面第 7 条）。
+
+---
+
+### 4. 第二个大坑：分支顺序
+
+```text
+❌ 宽泛在前、具体在后 → 具体分支永远走不到
+✅ 具体在前、宽泛在后，最后 case _ 兜底
+```
+
+---
+
+### 5. 七条极简背诵
+
+1. `DictReader` 每行是 **`dict`**：键 = 表头，值 = **字符串**。  
+2. 优点：按**列名**取值，不背下标。  
+3. 数字比较前先 **`int()` / `float()`**。  
+4. 不同类型用分支：`match` 或 `if/elif`。  
+5. 映射模式是**包含式**匹配，可 **`case {"id": sid}`** 绑定变量。  
+6. 数值条件写在 **`if` 守卫**里。  
+7. **顺序：具体在上，宽泛在下**。
 
 ---
 
@@ -86,7 +163,9 @@ match row:
 
 这里有一个非常关键的“为什么”：
 
-- CSV 读出来的值几乎都是字符串。\n- 你要做数值判断（比如 `id > 100`）时，必须在 guard 里显式 `int(...)`。\n- 这不是 `match/case` 的限制，而是 CSV 本身的数据类型就是文本。
+- CSV 读出来的值几乎都是字符串。
+- 你要做数值判断（比如 `id > 100`）时，必须在 guard 里显式 `int(...)`。
+- 这不是 `match/case` 的限制，而是 CSV 本身的数据类型就是文本。
 
 ---
 
@@ -107,7 +186,8 @@ for row in reader:
 
 这段 `if/elif` 的写法和 `match/case` 在逻辑上完全等价。区别是：
 
-- `match/case` 更像“写规则”：你更容易看出每个分支到底需要哪些字段。\n- `if/elif` 更像“写过程”：写久了容易堆条件，看起来更乱。
+- `match/case` 更像“写规则”：你更容易看出每个分支到底需要哪些字段。
+- `if/elif` 更像“写过程”：写久了容易堆条件，看起来更乱。
 
 ---
 
@@ -127,4 +207,35 @@ python part-1-data-structures/chapter-03/04_csv_dictreader_pattern_matching_demo
 
 ## 七、小练习（把 if/elif 改写成 match/case）
 
-1. 给 `type == "user"` 增加一个分支：当 `note` 为空字符串时，输出 `"anonymous"`。\n2. 新增一种行：`type == "admin"`，要求必须同时有 `id` 与 `note`，否则走兜底。\n3. 尝试写一个“太宽泛的 case”放到前面（例如只判断 `{"type": "user"}`），观察它会不会让后面的更具体分支到不了。\n
+1. 给 `type == "user"` 增加一个分支：当 `note` 为空字符串时，输出 `"anonymous"`。  
+2. 新增一种行：`type == "admin"`，要求必须同时有 `id` 与 `note`，否则走兜底。  
+3. 尝试写一个“太宽泛的 case”放到前面（例如只判断 `{"type": "user"}`），观察它会不会让后面的更具体分支到不了。  
+
+---
+
+## 八、最简可运行 demo（复制即跑，无需 CSV 文件）
+
+用内存里的 CSV 字符串 + `io.StringIO`，和仓库脚本 **`04_csv_dictreader_pattern_matching_demo.py`** 同一思路：
+
+```python
+import csv
+from io import StringIO
+
+csv_text = """type,id,note
+user,42,alice
+order,101,food
+"""
+
+f = StringIO(csv_text)
+for row in csv.DictReader(f):
+    assert isinstance(row, dict)  # 成立 → 每行是 dict
+    assert row["id"] == str(row["id"])  # 成立 → 读到的 id 是字符串
+    print(row)
+```
+
+若要连 **`match/case`** 一起看输出，在项目根目录运行：
+
+```bash
+python part-1-data-structures/chapter-03/04_csv_dictreader_pattern_matching_demo.py
+```
+
