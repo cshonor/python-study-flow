@@ -40,7 +40,7 @@
 | `d[k]` 缺键 | `KeyError` | **自动造默认并写入** | `KeyError` |
 | `d.get(k)` 缺键 | `None` / 你给的默认，**不写回** | 同上，**绝不触发工厂** | 同 `dict` |
 
-**② `popitem()`**
+**② `popitem()`**（细则、可复制示例与**速查表**见 **§四** 从 **`popitem()` 行为对比** 到 **速查表** 一段。）
 
 - **`dict`（3.7+）**：**LIFO**（弹「最后插入」的那一项）。  
 - **`OrderedDict`**：**`popitem(last=False)`** 可 **FIFO**（从最老键弹），也可 LIFO。  
@@ -140,10 +140,110 @@
 - **Python 3.9+**：`d1 | d2` 得**新**映射；`d1 |= d2` **原地**更新；`other | d` 走 **`__ror__`**。  
 - **3.8 及以下**：用 **`{**d1, **d2}`** 等，见 `03-映射拆包与字典合并.md`。
 
-### 4. `popitem()`
+### 4. `popitem()` 行为对比（`dict` / `OrderedDict` / `defaultdict`）
 
-- **Python 3.7+** 起，内置 **`dict`** 的 `popitem()` 为 **LIFO**（后进先出），与插入顺序一致。  
-- **3.7 之前** `dict.popitem()` 顺序未保证；**`OrderedDict`** 仍可用 **`last`** 控制 FIFO/LIFO。
+**权威口径（记版本边界）**
+
+- **`dict`**：自 **Python 3.7** 起，语言规范保证映射的**插入顺序**；`dict.popitem()` **移出并返回**一对 `(key, value)`，且为 **LIFO**（**最后插入**的先被弹出）。**3.6 及更早**：`dict` 不保证顺序，`popitem()` 的顺序也不应依赖。详见官方库参考 **Built-in Types → `dict.popitem`**。  
+- **`OrderedDict`**：`popitem(last=True)` 与 **`dict`** 同为 **LIFO**；`last=False` 时为 **FIFO**（弹出**最早插入**的项）。参数名与语义见 **`collections.OrderedDict.popitem`**。  
+- **`defaultdict`**：继承自 **`dict`**，**没有**自己的 `popitem` 实现；顺序语义与 **`dict`** 相同（**3.7+ LIFO**）。
+
+**共同边界**：映射为空时调用 **`popitem()`** 均抛出 **`KeyError`**（三者一致）。
+
+#### 4.1 `dict`（Python 3.7+）
+
+- **无参数**：`d.popitem()` → **LIFO**。  
+- **空字典**：`KeyError`。
+
+```python
+d = {"a": 1, "b": 2, "c": 3}
+assert d.popitem() == ("c", 3)
+
+try:
+    {}.popitem()
+except KeyError:
+    pass
+```
+
+#### 4.2 `OrderedDict`
+
+- **签名**：`od.popitem(last=True)`。  
+  - **`last=True`（默认）**：**LIFO**（与 `dict.popitem()` 同向）。  
+  - **`last=False`**：**FIFO**（最老键先出）。
+
+```python
+from collections import OrderedDict
+
+od = OrderedDict([("a", 1), ("b", 2), ("c", 3)])
+assert od.popitem() == ("c", 3)  # LIFO
+assert od.popitem(last=False) == ("a", 1)  # FIFO：剩下 {"b": 2}，最老的是 "a"
+assert dict(od) == {"b": 2}
+```
+
+#### 4.3 `defaultdict`
+
+- **无额外顺序 API**；`popitem()` 与 **`dict`** 一致（**3.7+ LIFO**）。  
+- **`KeyError`**：空映射时同上。
+
+```python
+from collections import defaultdict
+
+dd: defaultdict[str, int] = defaultdict(int, [("a", 1), ("b", 2), ("c", 3)])
+assert dd.popitem() == ("c", 3)
+```
+
+---
+
+### 5. 三者「独有招牌」方法（对照记忆）
+
+| 类型 | 独有 / 特色 | 要点 |
+| :--- | :--- | :--- |
+| **`defaultdict`** | **`default_factory`**、`__missing__(key)` | 仅 **`d[k]`**（`__getitem__`）在**缺键**时走工厂并**写回**；**`get(k)` 不触发**。 |
+| **`OrderedDict`** | **`move_to_end(key, last=True)`**、`popitem(last=...)` | 在「已有插入顺序」上提供**显式重排**与 **FIFO/LIFO** 弹出。 |
+| **`dict`** | 无上述扩展 | 基准映射；**3.7+** 已有插入顺序，但**不能** `move_to_end` / `popitem(last=False)`。 |
+
+**`defaultdict` 示例（缺键自动建容器）**
+
+```python
+from collections import defaultdict
+
+dd = defaultdict(list)
+dd["a"].append(1)  # 缺 "a" → 调 list() → [] 写入 → 再 append
+assert dd == {"a": [1]}
+```
+
+**`OrderedDict` 示例（挪键 + 双端弹出）**
+
+```python
+from collections import OrderedDict
+
+od = OrderedDict([("a", 1), ("b", 2), ("c", 3)])
+od.move_to_end("b")  # 把已有键 "b" 移到队尾
+od.move_to_end("c", last=False)  # 把 "c" 移到队首
+assert list(od.keys()) == ["c", "a", "b"]
+```
+
+---
+
+### 6. 一句话 + 速查表
+
+**一句话**
+
+- **`dict`（3.7+）**：`popitem()` 固定 **LIFO**；无 `move_to_end` / `popitem(last=False)`。  
+- **`OrderedDict`**：`popitem(last=...)` 支持 **FIFO / LIFO**；独有 **`move_to_end`**。  
+- **`defaultdict`**：顺序行为同 **`dict`**；独有 **`default_factory` + `__missing__`** 缺键自动补链路。
+
+**速查表（`popitem` + 谁独有啥）**
+
+| 项目 | `dict`（3.7+） | `OrderedDict` | `defaultdict` |
+| :--- | :--- | :--- | :--- |
+| `popitem()` 默认 | **LIFO** | **LIFO**（`last=True`） | **LIFO**（同左） |
+| **FIFO** 弹出 | ❌ | ✅ `popitem(last=False)` | ❌ |
+| 空映射 `popitem` | `KeyError` | `KeyError` | `KeyError` |
+| **`move_to_end`** | ❌ | ✅ | ❌ |
+| **`default_factory` / 缺键 `d[k]` 自动造值** | ❌ | ❌ | ✅ |
+
+可运行对照见 **`06_mapping_types_three_way_demo.py`** 第 **4)** 节（`popitem` 三者对比）。
 
 ---
 
@@ -180,6 +280,6 @@
 
 ## 八、可运行对照
 
-见 `06_mapping_types_three_way_demo.py`（计数、`get` vs `[]`、`fromkeys`、`move_to_end` / `popitem`、`|` 合并、简易 LRU、可哈希 `User`）。
+见 `06_mapping_types_three_way_demo.py`（计数、`get` vs `[]`、`fromkeys`、**`popitem` 三者对比**、`move_to_end` / `popitem`、`|` 合并、简易 LRU、可哈希 `User`）。
 
 **下一篇**：词索引与可变值更新见 `07-可变值与词索引.md`。**§3.6** `OrderedDict` / `ChainMap` / `Counter` 专题见 `10-OrderedDict-ChainMap-Counter.md`；**`Counter` 深化、`shelve`、`UserDict` 子类化**见 `11-Counter与shelve及UserDict子类化.md`。**§3.8** `keys()` / `values()` / `items()` **字典视图**见 `12-字典视图.md`。

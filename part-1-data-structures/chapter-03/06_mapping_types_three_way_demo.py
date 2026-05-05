@@ -50,8 +50,31 @@ def demo_fromkeys_trap() -> None:
     print("good (independent lists):", good)
 
 
+def demo_popitem_compare() -> None:
+    section("4) popitem(): dict vs OrderedDict vs defaultdict (see 06 md §4)")
+    d = {"a": 1, "b": 2, "c": 3}
+    print("dict popitem (LIFO):", d.popitem(), "->", dict(d))
+
+    od = OrderedDict([("a", 1), ("b", 2), ("c", 3)])
+    print("OrderedDict popitem() (LIFO):", od.popitem())
+    print("OrderedDict popitem(last=False) (FIFO):", od.popitem(last=False), "->", dict(od))
+
+    dd: defaultdict[str, int] = defaultdict(int, [("a", 1), ("b", 2), ("c", 3)])
+    print("defaultdict popitem (same as dict, 3.7+ LIFO):", dd.popitem(), "->", dict(dd))
+
+    for name, empty in (
+        ("dict", dict),
+        ("OrderedDict", OrderedDict),
+        ("defaultdict(int)", lambda: defaultdict(int)),
+    ):
+        try:
+            empty().popitem()
+        except KeyError:
+            print(f"empty {name}: KeyError")
+
+
 def demo_ordered_move_to_end() -> None:
-    section("4) OrderedDict.move_to_end")
+    section("5) OrderedDict.move_to_end")
     od = OrderedDict([("a", 1), ("b", 2), ("c", 3)])
     od.move_to_end("a", last=False)
     print(list(od.keys()))
@@ -76,7 +99,7 @@ class User:
 
 
 def demo_hashable_user() -> None:
-    section("5) custom __eq__ + __hash__ for dict key")
+    section("6) custom __eq__ + __hash__ for dict key")
     u1 = User(1, "Ann")
     u2 = User(1, "Ann")
     registry: dict[User, str] = {u1: "ok"}
@@ -85,7 +108,7 @@ def demo_hashable_user() -> None:
 
 
 def demo_merge_or() -> None:
-    section("6) dict | and |= (PEP 584, 3.9+)")
+    section("7) dict | and |= (PEP 584, 3.9+)")
     if sys.version_info < (3, 9):
         print("skip: need Python 3.9+")
         return
@@ -98,7 +121,7 @@ def demo_merge_or() -> None:
 
 
 def demo_lru_ordered() -> None:
-    section("7) OrderedDict: access moves to end, evict oldest (capacity 2)")
+    section("8) OrderedDict: access moves to end, evict oldest (capacity 2)")
     cap = 2
     od: OrderedDict[str, int] = OrderedDict()
     for key in ("a", "b", "c"):
@@ -114,6 +137,7 @@ def main() -> None:
     demo_defaultdict_count()
     demo_get_vs_getitem()
     demo_fromkeys_trap()
+    demo_popitem_compare()
     demo_ordered_move_to_end()
     demo_hashable_user()
     demo_merge_or()
