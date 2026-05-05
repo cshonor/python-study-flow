@@ -158,34 +158,102 @@ def accepts_mapping(m: Mapping) -> None:
 
 ## 三、3.4.1 可哈希（hashable）
 
+（与 **§零.2** 人话版呼应；这里是**工程口径**展开 + 类型表 + CPython 注意点。）
+
 ### 1. 定义（工程口径）
 
-对象 **可哈希** 当且仅当：
+一个对象是 **可哈希（hashable）** 的，当且仅当满足下面三条：
 
-1. 生命周期内 **`hash(obj)` 稳定**（或该类型不可哈希，`hash` 抛 `TypeError`）。  
-2. 可与同类对象比较 **`==`**。  
-3. 若 **`a == b`**，则 **`hash(a) == hash(b)`**（否则破坏哈希表约定）。
+1. **生命周期内 `hash(obj)` 稳定**  
+   用作 `dict` 的 key 或放进 `set` 时，哈希表靠 `hash` 定位；若与 `==` 不一致或中途“语义上变了 hash”，会 **`TypeError`** 或出现**查不到 / 查错位**的诡异现象。  
+   （类型本身不可哈希时，`hash(obj)` 直接 **`TypeError`**。）
 
-把它翻译成“好记版”就是：
+2. **可与同类对象用 `==` 比较**  
+   即实现了可用的相等语义（通常 `__eq__`）。
 
-- 你把它当作 key 后，它的“定位信息（hash）”不能变。
-- 否则 dict/set 就会找不到它，或者找错位置。
+3. **一致性规则**  
+   若 **`a == b`**，则必须 **`hash(a) == hash(b)`**，否则破坏哈希表不变式。
 
-这也是为什么“可变对象通常不可哈希”：你一改内容，hash 就可能变。
+**好记版：**
 
-### 2. 常见类型
+- 你把它当 key 后，它的“定位信息（hash）”在逻辑上必须跟 `==` **对齐**、不能乱变。  
+- 一旦对不上，`dict` / `set` 就找不到它，或者找错位置。  
+- 所以：**可变对象通常不可哈希**（内容一改，`==` / `hash` 关系就容易炸）。
 
-| 类型 | 可哈希 |
-| :--- | :--- |
-| `None`、数字、`str`、`bytes`、`frozenset` | 是 |
-| `tuple` | 当且仅当**每个元素**都可哈希 |
-| `list`、`dict`、`set` | 否（可变） |
-| 自定义类实例 | 默认常基于 `id`；若定义 **`__eq__` 且未妥善定义 `__hash__`**，可能变为不可哈希 |
+---
+
+### 2. 常见类型一览
+
+| 类型 | 是否可哈希 | 说明 |
+| :--- | :---: | :--- |
+| `None`、数字（`int` / `float` / `bool`）、`str`、`bytes`、`frozenset` | ✅ | 不可变，天生安全 |
+| `tuple` | ✅（有条件） | **所有元素都可哈希**时，`tuple` 才可哈希；如 `(1, [2])` ❌ |
+| `list`、`dict`、`set` | ❌ | 可变容器，内容可改 |
+| 自定义类实例 | 默认：✅ | 默认 `hash` 常基于 `id`；**一旦重写 `__eq__` 却没同步 `__hash__`**，会变成不可哈希或行为异常（见下节） |
+
+---
 
 ### 3. 实现细节与 CPython
 
-- **哈希随机化**（`PYTHONHASHSEED`）：**进程之间**或不同运行间，字符串等对象的 `hash` 可能不同；**同一进程内**稳定。  
-- 重写 **`__eq__`** 时：应同步 **`__hash__`**（或显式 `__hash__ = None` 表示不可哈希），否则 `dict`/`set` 行为不可靠。
+1. **哈希随机化（`PYTHONHASHSEED`）**  
+   字符串等对象的 `hash`：**同一进程内稳定**；**不同进程 / 不同运行**可能不同（缓解哈希碰撞攻击）。比较 `hash` 是否相等请在**同一次运行内**理解。
+
+2. **重写 `__eq__` 时的铁律**  
+   自己写了 **`__eq__`**，就要 **同步写 `__hash__`**，或显式声明不可哈希：
+
+   ```python
+   __hash__ = None  # 明确：此类实例不能当 dict key
+   ```
+
+   否则 `dict` / `set` 可能出现“**明明相等却找不着**”的诡异行为。
+
+3. **自定义类：正确写法示例**
+
+   ```python
+   class A:
+       def __init__(self, x: int) -> None:
+           self.x = x
+
+       def __eq__(self, other: object) -> bool:
+           return isinstance(other, A) and self.x == other.x
+
+       def __hash__(self) -> int:
+           return hash(self.x)  # 只用参与相等判断的不可变信息
+   ```
+
+---
+
+### 4. 小实验（可复制运行：可哈希 vs 不可哈希）
+
+```python
+# list 不能当 key
+try:
+    {[]: 1}
+except TypeError as e:
+    assert "unhashable" in str(e).lower()  # 成立
+
+# tuple 里塞 list → 整体不可哈希
+try:
+    hash((1, [2]))
+except TypeError as e:
+    assert "unhashable" in str(e).lower()  # 成立
+
+# 自定义：__eq__ + __hash__ 对齐后可当 key
+class Point:
+    def __init__(self, x: int, y: int) -> None:
+        self.x = x
+        self.y = y
+
+    def __eq__(self, other: object) -> bool:
+        return isinstance(other, Point) and (self.x, self.y) == (other.x, other.y)
+
+    def __hash__(self) -> int:
+        return hash((self.x, self.y))
+
+
+d = {Point(1, 2): "here"}
+assert d[Point(1, 2)] == "here"  # 成立 → 相等即同槽位
+```
 
 ---
 
