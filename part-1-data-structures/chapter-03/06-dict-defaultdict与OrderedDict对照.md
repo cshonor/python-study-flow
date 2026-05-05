@@ -180,21 +180,51 @@ d["key"].append(1)  # 缺 "key" → list() → 写入 → append
 
 ## 四、核心方法解析
 
-### 1. `__missing__(k)`（实质在 `defaultdict`）
+### 0. 背题用速记（四句）
 
-- 仅在用 **`d[k]`** 访问且键不存在时，由 `defaultdict` 内部与 **`default_factory`** 配合处理。  
-- **`get(k)`** 不会调用 `__missing__`。
+- **`__missing__`**：写在 **`defaultdict`** 这条链路上；**只有 `d[k]` 缺键**才触发；**`get` / `setdefault` 都不走**它（也不走 **`default_factory`**）。  
+- **`move_to_end`**：**`OrderedDict` 独有**；**LRU** 常用「访问 → 挪到末尾；淘汰 → `popitem(last=False)` 从头部弹」。  
+- **`|` / `|=`**：**Python 3.9+**（[PEP 584](https://peps.python.org/pep-0584/)）；**右侧覆盖左侧同名键**；老版本用 **`{**d1, **d2}`**。  
+- **`popitem`**：**`dict` / `defaultdict`** 在 **3.7+** 均为 **LIFO**；**`OrderedDict`** 可用 **`last=False` 做 FIFO**。
 
-### 2. `move_to_end(k, last=True)`（`OrderedDict`）
+（细则、官方链接与可复制示例见 **§四** 下 **`### 1`～`### 4`**；**打印用一页表**见 **`### 7`**。）
 
-- 调整键在**插入顺序**中的位置；典型用途：**LRU**（访问后移到末尾，淘汰时从头部 `popitem(last=False)`）。
+---
 
-### 3. `|` / `|=`（`__or__` / `__ior__` / `__ror__`）
+### 1. `__missing__(k)`（**真正归属：`defaultdict` 核心机制**）
 
-- **Python 3.9+**：`d1 | d2` 得**新**映射；`d1 |= d2` **原地**更新；`other | d` 走 **`__ror__`**。  
-- **3.8 及以下**：用 **`{**d1, **d2}`** 等，见 `03-映射拆包与字典合并.md`。
+- **触发条件**：**仅当**用 **`d[k]`** 访问**不存在**的键时（经映射的 **`__getitem__`**）。  
+- **工作方式**：`defaultdict` 调用 **`default_factory()`**（无参），把返回值**写入**该键并返回。  
+- **重要边界**（背题常考）：  
+  - **`d.get(k)`** **不会**触发 **`__missing__`**，也**不会**插入键。  
+  - **`d.setdefault(k, …)`** **也不会**触发 **`__missing__`** / **`default_factory`**；缺键时插入的是你传入的 **`default`**（`defaultdict` 若只写一个参数则与普通 `dict` 一样，缺省值为 `None`）。想要「按工厂自动补」，请用 **`d[k]`** 或 **§零.3** 的选型。  
+- **本质**：映射子类可用的**缺键钩子**；`defaultdict` 用它把 **`default_factory`** 接到 **`d[k]`** 上。普通 **`dict`** 类型本身**不带**这条自动补逻辑。
 
-### 4. `popitem()` 行为对比（`dict` / `OrderedDict` / `defaultdict`）
+### 2. `move_to_end(k, last=True)`（**归属：`OrderedDict` 独有**）
+
+- **功能**：把**已存在**的键 `k` 挪到当前**插入顺序**的**队尾**或**队首**。  
+- **参数**：  
+  - **`last=True`（默认）** → 移到**末尾**（常表示「最新」）。  
+  - **`last=False`** → 移到**开头**（常表示「最老」）。  
+- **经典用途：LRU**  
+  - **访问命中**：`move_to_end(key)`，把该键标成「最近用过」。  
+  - **容量满要淘汰**：`popitem(last=False)` 从**头部**删掉最久未更新顺序的一端（配合你的「哪端算 LRU」约定）。
+
+### 3. `|` / `|=`（字典合并运算符，**Python 3.9+**）
+
+- **`d1 | d2`**：生成**新** `dict`；**`d2` 里与 `d1` 重复的键**以 **`d2` 的值为准**（右操作数覆盖左操作数）。  
+- **`d1 |= d2`**：**原地**更新 **`d1`**，合并规则同上。  
+- **`other | d`**：当左侧不是 `dict`、右侧是 `dict` 时，可能走映射的 **`__ror__`**，使「非 dict 在左」也能合并。  
+- **向下兼容（≤3.8）**：用 **`{**d1, **d2}`**（或 `update` / 循环），见 **`03-映射拆包与字典合并.md`**。  
+- 规范：[PEP 584 — Add Union Operators To dict](https://peps.python.org/pep-0584/)。
+
+### 4. `popitem()` 行为对比（**`dict` / `OrderedDict` / `defaultdict`，最重要**）
+
+**速读（①②③）**
+
+1. **普通 `dict`（Python 3.7+）**：**LIFO**，弹**最后插入**；空字典 **`KeyError`**。  
+2. **`OrderedDict`**：**`popitem()` 默认 LIFO**；**`popitem(last=False)` → FIFO**（弹**最先插入**）。  
+3. **`defaultdict`**：继承 **`dict`**，**无**额外顺序 API；与 **`dict`** 一样 **3.7+ LIFO**。
 
 **权威口径（记版本边界）**
 
@@ -279,7 +309,7 @@ assert list(od.keys()) == ["c", "a", "b"]
 
 ---
 
-### 6. 一句话 + 速查表
+### 6. 一句话 + 速查表（`popitem` / 独有 API）
 
 **一句话**
 
@@ -297,7 +327,20 @@ assert list(od.keys()) == ["c", "a", "b"]
 | **`move_to_end`** | ❌ | ✅ | ❌ |
 | **`default_factory` / 缺键 `d[k]` 自动造值** | ❌ | ❌ | ✅ |
 
-可运行对照见 **`06_mapping_types_three_way_demo.py`** 第 **4)** 节（`popitem` 三者对比）。
+可运行对照见 **`06_mapping_types_three_way_demo.py`** 第 **4)** 节（`popitem` 三者对比）、第 **8)** 节（简易 LRU）。
+
+---
+
+### 7. 一页纸速查表（`__missing__`、`move_to_end`、字典 `|` / `|=`、`popitem`）
+
+打印或截图时，可与 **§四.0** 四句对照；本表收「**谁 / 何时 / 不触发谁**」。
+
+| 考点 | 归属 / 版本 | 何时 / 行为 | **不**走这条链路的常见写法 |
+| :--- | :--- | :--- | :--- |
+| **`__missing__(k)`** | **`defaultdict`**（及可自定义的 `dict` 子类） | 仅 **`d[k]`** 且键尚不存在 | **`get`**、**`setdefault`** |
+| **`move_to_end(k, last=…)`** | **`OrderedDict`** | 已有键挪到**尾**（`True`）或**首**（`False`） | — |
+| **`|` / `|=`** | 内置 **`dict`** 等，**3.9+**（[PEP 584](https://peps.python.org/pep-0584/)） | **`|`** 新 dict；**`|=`** 原地并；**右操作数覆盖左**同名键 | **≤3.8**：`{**d1, **d2}` 等 |
+| **`popitem()`** | **`dict` / `defaultdict`**：**3.7+ LIFO**；**`OrderedDict`**：可 **FIFO** | 空映射一律 **`KeyError`** | — |
 
 ---
 
