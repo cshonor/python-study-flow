@@ -10,7 +10,74 @@
 
 ---
 
+## 零、总纲（新手先读这段：不堆术语）
+
+这一页就讲 **3 件事**（工作、面试、写类型注解都用得上）：
+
+1. **`Mapping`**：所有「长得像字典、能用 `key` 取 `value`」的东西——**用 `isinstance(x, Mapping)` 判断**，比 `type(x) is dict` **更宽、更稳**。  
+2. **可哈希（hashable）**：能稳定参与 **`dict` 的 key / `set` 的元素`** 的那类对象；**可变容器**以及「**tuple 里塞了可变对象**」通常 **不行**。  
+3. **`match` 映射模式里的 `**rest`**：把**已经点名的键**匹配掉之后，**剩下没写到的键值对**一次性抓进 `rest` 这个「小 dict」里。
+
+---
+
+### 零.1 `Mapping` / `MutableMapping` 是啥？
+
+- **`Mapping`**：抽象上的**只读映射接口**（能读、能迭代、能 `len`）；**不要求**实现方真的不能改，但类型注解里写它表示「我这段代码**只读**」。  
+- **`MutableMapping`**：在 `Mapping` 之上还要求 **`__setitem__` / `__delitem__`** 等——表示「我要**改键值**」。
+
+**为啥用 `isinstance(x, Mapping)`？**  
+`type(x) is dict` **只认**内置 `dict`；而 **`UserDict`、`ChainMap`、你自己实现的映射`** 常常也是 `Mapping` 实例，用 `Mapping` 才**不漏判**。
+
+**练习口径**：函数**只读** `m` → 参数标 **`Mapping`**；必须**原地改**映射 → **`MutableMapping`**。
+
+---
+
+### 零.2 可哈希：人话版
+
+**工程直觉**：放进 `dict` / `set` 的东西，哈希表要靠 **`hash(…)`** 找格子；**内容一变 hash 就变** → 定位全乱，所以 **`list` / `dict` / `set` 不能当 key`**。
+
+**好记版**（有例外补丁，见 **§三** 与 `tuple` 含 `list`）：
+
+- **一般**：不可变标量 / `str` / `bytes` / 元素都可哈希的 `tuple` / `frozenset` → **可哈希**。  
+- **一般不行**：`list`、`dict`、`set`，以及 **`(1, 2, [3])` 这种 tuple**。
+
+```python
+try:
+    a = [1, 2]
+    {a: 123}
+except TypeError as e:
+    assert "unhashable" in str(e).lower()  # 成立 → list 不能当 key
+```
+
+---
+
+### 零.3 `match` 里的 `**rest`
+
+```python
+row = {"type": "user", "id": "1", "note": ""}
+match row:
+    case {"type": "user", **rest}:
+        assert rest == {"id": "1", "note": ""}  # 成立 → 其余键进 rest
+```
+
+**规则**：`**…` 必须写在映射模式的**最后**；`**_` 单独作名字在语法里**不合法**，用 **`**rest`** 或 **`**_rest`**；它**只捕获**，不会给缺了的键**补默认值**（与 `defaultdict` 不同）。更细的约定见 **§一**。
+
+---
+
+### 零.4 六句背诵（够应付大部分场景）
+
+1. **`Mapping` = 类 dict 总接口**，`isinstance(..., Mapping)` 最稳。  
+2. **`MutableMapping` = 要改键值时再收窄**。  
+3. **hashable ≈ 能当 `dict` key / 能进 `set`**（严格定义见 **§三**）。  
+4. **`list` / `dict` / `set` 不当 key**；**`tuple` 里别塞可变货**。  
+5. **`**rest` = 映射模式里抓「剩下字段」**。  
+6. **别写 `**_`**，写成 `**rest` / `**_rest`。
+
+---
+
 ## 一、映射模式补充：`**rest` 捕获其余键
+
+（**§零.3** 已用人话带过；这里是 PEP 634 规则与稍复杂例子。）
 
 在 **`match` / `case`** 的**映射模式**中，可写 `**details`（名字自定），表示「已列出的键值都匹配后，**其余**键值对绑定到 `details`」。
 
@@ -31,7 +98,9 @@ match food:
 
 你可以把它当成“解构”：
 
-- 你先把你关心的键（例如 `category`）匹配掉。\n- 剩下你不想一个个列出来的键，统一塞到 `details` 里。\n
+- 你先把你关心的键（例如 `category`）匹配掉。
+- 剩下你不想一个个列出来的键，统一塞到 `details` 里。
+
 这比你手动写 `details = dict(food); details.pop('category')` 更直接，也更不容易漏字段。
 
 ---
@@ -47,7 +116,10 @@ match food:
 
 因为 Python 里“像 dict 的东西”不只有 `dict`。例如：
 
-- `collections.UserDict`（书里后面会讲，自定义映射时更推荐继承它）\n- `collections.ChainMap`（多个映射的查找视图）\n- 你自己实现的映射类型（实现了 `__getitem__`/`__iter__`/`__len__` 等协议）\n
+- `collections.UserDict`（书里后面会讲，自定义映射时更推荐继承它）
+- `collections.ChainMap`（多个映射的查找视图）
+- 你自己实现的映射类型（实现了 `__getitem__`/`__iter__`/`__len__` 等协议）
+
 如果你只写 `type(x) is dict`，这些都会被排除掉，代码会变得不通用。
 
 更稳的写法是：
@@ -63,7 +135,9 @@ def accepts_mapping(m: Mapping) -> None:
 
 把它们想成“只读版”和“可写版”：
 
-- **`Mapping`**：你能 `m[key]` 取值、能迭代、能 `len`，但不保证你能改。\n- **`MutableMapping`**：在 `Mapping` 基础上，额外要求你能 `m[key] = value`、能删除键等。\n
+- **`Mapping`**：你能 `m[key]` 取值、能迭代、能 `len`，但不保证你能改。
+- **`MutableMapping`**：在 `Mapping` 基础上，额外要求你能 `m[key] = value`、能删除键等。
+
 在类型注解/接口设计里，这个区分非常常见：如果函数只需要读取，就用 `Mapping`（更宽）；如果必须修改，就用 `MutableMapping`（更窄）。
 
 ### 2. 继承关系（简图）
@@ -94,7 +168,9 @@ def accepts_mapping(m: Mapping) -> None:
 
 把它翻译成“好记版”就是：
 
-- 你把它当作 key 后，它的“定位信息（hash）”不能变。\n- 否则 dict/set 就会找不到它，或者找错位置。\n
+- 你把它当作 key 后，它的“定位信息（hash）”不能变。
+- 否则 dict/set 就会找不到它，或者找错位置。
+
 这也是为什么“可变对象通常不可哈希”：你一改内容，hash 就可能变。
 
 ### 2. 常见类型
@@ -162,4 +238,35 @@ python part-1-data-structures/chapter-03/05_mapping_abc_hashable_demo.py
 
 ## 六、小练习（用 `Mapping` 与 hashable 角度回答）
 
-1. 写一个函数 `f(m)`：只读取 `m` 的内容，不修改它。你会给参数标注 `Mapping` 还是 `MutableMapping`？为什么？\n2. 构造一个“外壳不可变但不可哈希”的对象（提示：`tuple` 里塞 `list`）。解释它为什么不能当 dict key。\n3. 用 `match/case` 的映射模式写一个分支：匹配 `{\"type\": \"user\", **rest}`，并把 `rest` 打印出来。\n
+1. 写一个函数 `f(m)`：只读取 `m` 的内容，不修改它。你会给参数标注 `Mapping` 还是 `MutableMapping`？为什么？  
+2. 构造一个“外壳不可变但不可哈希”的对象（提示：`tuple` 里塞 `list`）。解释它为什么不能当 dict key。  
+3. 用 `match/case` 的映射模式写一个分支：匹配 `{"type": "user", **rest}`，并把 `rest` 打印出来。  
+
+---
+
+## 七、小练习参考答案（可复制）
+
+### 题 1
+
+**只读** → 参数用 **`Mapping`**（见 **§零.1**）。
+
+### 题 2
+
+```python
+t = (1, 2, [3, 4])
+try:
+    hash(t)
+except TypeError as e:
+    assert "unhashable" in str(e).lower()  # 成立 → tuple 内有 list，整体不可哈希
+```
+
+### 题 3
+
+```python
+row = {"type": "user", "id": "42", "note": "alice"}
+match row:
+    case {"type": "user", **rest}:
+        assert rest == {"id": "42", "note": "alice"}  # 成立
+        print(rest)
+```
+
