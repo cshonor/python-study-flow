@@ -164,7 +164,7 @@ def demo_defaultdict_factory_only_on_miss() -> None:
 
 
 def demo_fromkeys_one_eval_vs_get_many_evals() -> None:
-    section("5) fromkeys: default arg evaluated once; get: each call evaluates default")
+    section("5) fromkeys: 2nd arg once vs get: default expr each call (see 07 md section 4)")
     keys = ["a", "b", "c"]
     built = 0
 
@@ -224,8 +224,8 @@ def main() -> None:
     demo_default_arg_evaluated()
     demo_list_ctor_counts_when_key_exists()
     demo_defaultdict_factory_only_on_miss()
-    demo_fromkeys_one_eval_vs_get_many_evals()
     demo_hot_loop_empty_list_overhead()
+    demo_fromkeys_one_eval_vs_get_many_evals()
 
 
 if __name__ == "__main__":
