@@ -54,11 +54,65 @@
 
 ### 零.3 `setdefault` 和 `defaultdict` 怎么选？
 
-| 对比点 | `setdefault` | `defaultdict` |
+#### 核心一句话
+
+- **偶尔用、想显式控制 → 用 `dict.setdefault`**  
+- **高频分组 / 计数 / `append` → 用 `defaultdict`**
+
+（与 **`get`** 的边界、可变默认值坑见 **§五**、**§七**。）
+
+---
+
+#### 详细对比表
+
+| 对比点 | `dict.setdefault` | `collections.defaultdict` |
 | :--- | :--- | :--- |
-| 触发 | **只有你调用** `setdefault` 且缺键时才写入 | **每次** `d[k]` 缺键就自动补 |
-| 典型场景 | 偶尔补一个键、写法显式 | 高频分组、计数、`d[k].append(...)` 极简 |
-| 代码量 | 容易重复 `if k not in d` | 工厂一次配置，后面直接下标 |
+| **触发时机** | 只有**主动调用** `setdefault` 且键不存在时，才写入默认值 | 每次用 **`d[key]`** 访问**不存在的键**，就**自动补默认值**（走 **`default_factory`**） |
+| **`d.get(k)`** | 不涉及；缺键不写回 | **同样不触发工厂**、不插入键；只有 **`d[k]`** 才自动造值 |
+| **典型场景** | 偶尔补一个键，代码要**显式、清晰** | 高频分组、计数、`d[k].append(...)`，追求极简 |
+| **代码量** | 容易重复写 `if k not in d` 逻辑 | 工厂函数**一次配置**，后面直接 **`[]` 下标**访问 |
+| **是否改变原字典** | 是，不存在就插入 | 是，自动插入 |
+| **默认值类型** | **每次调用**可传**不同**的 `default` 参数 | 构造时**固定一种** `default_factory`（如 `list` / `int` / `set`） |
+| **可读性** | 新手也能一眼看懂「在缺键时干了啥」 | 读者需知道「缺键会自动造值」这条约定 |
+| **依赖** | 仅内置 **`dict`** | 需 **`from collections import defaultdict`** |
+
+---
+
+#### 代码示例对比
+
+**1. `setdefault`（显式、偶尔用）**
+
+```python
+d: dict[str, list[int]] = {}
+d.setdefault("key", []).append(1)  # 缺 "key" → 插入 [] → 再 append
+```
+
+**2. `defaultdict`（自动、高频用）**
+
+```python
+from collections import defaultdict
+
+d = defaultdict(list)  # 一次定义：缺失键 → 空列表
+d["key"].append(1)  # 缺 "key" → list() → 写入 → append
+```
+
+---
+
+#### 怎么选（最实用口诀）
+
+1. **只处理一两个键** → `setdefault`  
+2. **循环里大量分组 / 统计** → `defaultdict`  
+3. **不想引入 `collections`** → `setdefault`（或普通 `dict` + `get` / 显式分支）  
+4. **代码要极简、少写判断** → `defaultdict`
+
+---
+
+#### 小结
+
+- **`setdefault`**：**手动触发**、**灵活**（每次可给不同默认）、偏**显式**，适合**偶尔**补键。  
+- **`defaultdict`**：**自动触发**、**统一**默认类型，适合**大量**分组 / 计数。
+
+**实战**：「按词分组到列表」的 **`setdefault` vs `defaultdict` 对照**见 **`06_mapping_types_three_way_demo.py`** 第 **9)** 节。
 
 ### 零.4 选型照抄
 
@@ -118,7 +172,7 @@
 | `__or__`、`__ior__`、`__ror__`（并集运算符，见 `03`） | ✅ | ✅ | ✅ | **3.9+** |
 | `pop` / `popitem` | ✅ | ✅ | ✅ | `OrderedDict.popitem(last=...)` **FIFO/LIFO** |
 | `__reversed__` / `reversed(d)` | ✅ | ✅ | ✅ | 逆序迭代键 |
-| `setdefault` | ✅ | ✅ | ✅ | 见 §五、§七 |
+| `setdefault` | ✅ | ✅ | ✅ | 选型见 **§零.3**；坑见 **§五**、**§七** |
 | `__setitem__` / `d[k]=v` | ✅ | ✅ | ✅ | 赋值 |
 | `update` | ✅ | ✅ | ✅ | 原地合并 |
 
@@ -144,9 +198,9 @@
 
 **权威口径（记版本边界）**
 
-- **`dict`**：自 **Python 3.7** 起，语言规范保证映射的**插入顺序**；`dict.popitem()` **移出并返回**一对 `(key, value)`，且为 **LIFO**（**最后插入**的先被弹出）。**3.6 及更早**：`dict` 不保证顺序，`popitem()` 的顺序也不应依赖。详见官方库参考 **Built-in Types → `dict.popitem`**。  
-- **`OrderedDict`**：`popitem(last=True)` 与 **`dict`** 同为 **LIFO**；`last=False` 时为 **FIFO**（弹出**最早插入**的项）。参数名与语义见 **`collections.OrderedDict.popitem`**。  
-- **`defaultdict`**：继承自 **`dict`**，**没有**自己的 `popitem` 实现；顺序语义与 **`dict`** 相同（**3.7+ LIFO**）。
+- **`dict`**：自 **Python 3.7** 起，语言规范保证映射的**插入顺序**；`dict.popitem()` **移出并返回**一对 `(key, value)`，且为 **LIFO**（**最后插入**的先被弹出）。**3.6 及更早**：`dict` 不保证顺序，`popitem()` 的顺序也不应依赖。官方说明：[Built-in Types — `dict.popitem`](https://docs.python.org/3/library/stdtypes.html#dict.popitem)。  
+- **`OrderedDict`**：`popitem(last=True)` 与 **`dict`** 同为 **LIFO**；`last=False` 时为 **FIFO**（弹出**最早插入**的项）。官方说明：[collections — `OrderedDict.popitem`](https://docs.python.org/3/library/collections.html#collections.OrderedDict.popitem)。  
+- **`defaultdict`**：继承自 **`dict`**，**没有**自己的 `popitem` 实现；顺序语义与 **`dict`** 相同（**3.7+ LIFO**）。类说明见 [collections — `defaultdict` 对象](https://docs.python.org/3/library/collections.html#collections.defaultdict)。
 
 **共同边界**：映射为空时调用 **`popitem()`** 均抛出 **`KeyError`**（三者一致）。
 
@@ -247,13 +301,12 @@ assert list(od.keys()) == ["c", "a", "b"]
 
 ---
 
-## 五、`setdefault` vs `defaultdict`
+## 五、`setdefault` / `defaultdict` 补充（边界与坑）
 
-| 维度 | `setdefault(k, default)` | `defaultdict(factory)` |
-| :--- | :--- | :--- |
-| 何时写入 | 调用 `setdefault` 且键缺失时 | 每次 **`d[k]`** 缺键时 |
-| `get` | 不涉及 | 不触发工厂 |
-| 典型用法 | 偶尔补一项 | 高频计数、分组、嵌套累加 |
+（**对比表、口诀、示例**见 **§零.3**；这里只收「容易写错」的边界。）
+
+1. **`get(k)` 与 `defaultdict`**：`get` **不会**调用 **`__missing__` / `default_factory`**，也**不会**插入键；需要「缺键就造并写入」只能用 **`d[k]`** 或自己分支。  
+2. **`setdefault` 与可变默认值**：若事先 `shared = []`，再对多个键反复 `setdefault(k, shared)`，会出现**多键共享同一列表**；`dict.fromkeys(keys, [])` 同理。高频分组优先 **`defaultdict(list)`** 或显式分支里 **`d[k] = []`**。详见 **§七**。
 
 ---
 
@@ -280,6 +333,6 @@ assert list(od.keys()) == ["c", "a", "b"]
 
 ## 八、可运行对照
 
-见 `06_mapping_types_three_way_demo.py`（计数、`get` vs `[]`、`fromkeys`、**`popitem` 三者对比**、`move_to_end` / `popitem`、`|` 合并、简易 LRU、可哈希 `User`）。
+见 `06_mapping_types_three_way_demo.py`（计数、`get` vs `[]`、`fromkeys`、**`popitem` 三者对比**、`move_to_end` / `popitem`、`|` 合并、简易 LRU、可哈希 `User`、**`setdefault` vs `defaultdict` 分组**）。
 
 **下一篇**：词索引与可变值更新见 `07-可变值与词索引.md`。**§3.6** `OrderedDict` / `ChainMap` / `Counter` 专题见 `10-OrderedDict-ChainMap-Counter.md`；**`Counter` 深化、`shelve`、`UserDict` 子类化**见 `11-Counter与shelve及UserDict子类化.md`。**§3.8** `keys()` / `values()` / `items()` **字典视图**见 `12-字典视图.md`。

@@ -6,6 +6,7 @@ Run:
 
 脚本说明：
 - 教学演示：请在仓库根目录运行；终端为分步打印，请与 `part-1-data-structures` 下同章 Markdown 笔记对照。
+- 含 **9)** `setdefault` 与 `defaultdict` 分组对照（对应笔记 **§零.3**）。
 """
 
 from __future__ import annotations
@@ -51,7 +52,7 @@ def demo_fromkeys_trap() -> None:
 
 
 def demo_popitem_compare() -> None:
-    section("4) popitem(): dict vs OrderedDict vs defaultdict (see 06 md §4)")
+    section("4) popitem(): dict vs OrderedDict vs defaultdict (see 06-...md, section 4)")
     d = {"a": 1, "b": 2, "c": 3}
     print("dict popitem (LIFO):", d.popitem(), "->", dict(d))
 
@@ -133,6 +134,23 @@ def demo_lru_ordered() -> None:
     print("final keys (FIFO evict):", list(od.keys()))
 
 
+def demo_setdefault_vs_defaultdict_grouping() -> None:
+    section("9) setdefault vs defaultdict: word grouping (06 md section 0.3)")
+    words = "to be or not to be".split()
+
+    by_sd: dict[str, list[str]] = {}
+    for w in words:
+        by_sd.setdefault(w, []).append(w)
+
+    by_dd: defaultdict[str, list[str]] = defaultdict(list)
+    for w in words:
+        by_dd[w].append(w)
+
+    assert dict(by_dd) == by_sd
+    print("setdefault grouping:", by_sd)
+    print("defaultdict grouping:", dict(by_dd))
+
+
 def main() -> None:
     demo_defaultdict_count()
     demo_get_vs_getitem()
@@ -142,6 +160,7 @@ def main() -> None:
     demo_hashable_user()
     demo_merge_or()
     demo_lru_ordered()
+    demo_setdefault_vs_defaultdict_grouping()
 
 
 if __name__ == "__main__":
