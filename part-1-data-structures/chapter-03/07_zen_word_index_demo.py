@@ -10,7 +10,8 @@ Run:
 脚本说明：
 - 教学演示：请在仓库根目录运行；终端为分步打印，请与 `part-1-data-structures` 下同章 Markdown 笔记对照。
 - 第 **2b)** 节：键已存在时，打印「造空列表」次数（`get` / `setdefault` vs `defaultdict`）。  
-- 第 **4)** 节：键已存在时，`get`/`setdefault` 每次仍对 `[]` 求值 vs `defaultdict` 热循环粗计时（见笔记 **§四**）。
+- 第 **4)** 节：键已存在时，`get`/`setdefault` 每次仍对 `[]` 求值 vs `defaultdict` 热循环粗计时（见笔记 **§四**）。  
+- 第 **5)** 节：`dict.fromkeys` 第二个实参**只求值一次** vs 多次 `get(..., 工厂())`（见笔记 **§四** `fromkeys`）。
 """
 
 from __future__ import annotations
@@ -162,6 +163,30 @@ def demo_defaultdict_factory_only_on_miss() -> None:
     print("factory_calls (expect 2 for keys a,b):", factory_calls)
 
 
+def demo_fromkeys_one_eval_vs_get_many_evals() -> None:
+    section("5) fromkeys: default arg evaluated once; get: each call evaluates default")
+    keys = ["a", "b", "c"]
+    built = 0
+
+    def tracked() -> list[int]:
+        nonlocal built
+        built += 1
+        return []
+
+    built = 0
+    d_from = dict.fromkeys(keys, tracked())
+    print(f"dict.fromkeys(..., tracked()): tracked() called {built} time(s) (expect 1)")
+    d_from["a"].append(1)
+    print("  after d_from['a'].append(1):", dict(d_from), "-> all keys share one list")
+
+    built = 0
+    d_get: dict[str, list[int]] = {}
+    for k in keys:
+        lst = d_get.get(k, tracked())
+        d_get[k] = lst
+    print(f"loop get(k, tracked()) fill keys: tracked() called {built} times (expect {len(keys)})")
+
+
 def demo_hot_loop_empty_list_overhead() -> None:
     section("4) hot loop: key exists, N appends (rough perf; see 07 md section 4)")
     n = 250_000
@@ -199,6 +224,7 @@ def main() -> None:
     demo_default_arg_evaluated()
     demo_list_ctor_counts_when_key_exists()
     demo_defaultdict_factory_only_on_miss()
+    demo_fromkeys_one_eval_vs_get_many_evals()
     demo_hot_loop_empty_list_overhead()
 
 
