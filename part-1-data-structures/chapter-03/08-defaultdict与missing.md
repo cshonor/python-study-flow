@@ -11,6 +11,45 @@
 
 ---
 
+## 零、一行看懂：`defaultdict(list)` 在干嘛
+
+下面这段**可直接运行**：
+
+```python
+from collections import defaultdict
+
+dd = defaultdict(list)
+dd["new-key"].append(1)
+print(dd)  # defaultdict(list, {'new-key': [1]})
+```
+
+**和普通 `dict` 的对比**：普通映射用 **`d[k]`** 取不存在的键会 **`KeyError`**，更不能对「不存在的值」直接 **`append`**。
+
+```python
+d: dict[str, list[int]] = {}
+# d["new-key"].append(1)  # KeyError: 'new-key'
+```
+
+**`defaultdict(list)` 在缺键时做的事**（走 **`dd[k]`** 这一条路时）：
+
+1. 发现 **`k` 尚不存在**  
+2. 调用工厂 **`list()`** → 得到 **`[]`**，**写入** `dd[k]`，再把这个列表引用交给你  
+3. 于是可以立刻 **`.append(...)`**，无需先写 **`if k not in dd: dd[k] = []`**
+
+**常见用途**：分组、多值列表、词索引式累加（与 **`07-可变值与词索引.md`**、**`06-dict-defaultdict与OrderedDict对照.md`** 同一脉络；按标的/因子做多条时间序列，也是「**键 → 列表**」同一种结构）。
+
+```python
+dd = defaultdict(list)
+dd["a"].append(1)
+dd["a"].append(2)
+dd["b"].append(99)
+assert dict(dd) == {"a": [1, 2], "b": [99]}
+```
+
+**一句话**：**`defaultdict(list)` ≈ 缺键时自动给你空列表的映射**；量化/数据处理里高频写法就是 **`d[key].append(row)`**。
+
+---
+
 ## 一、为什么需要专门机制？
 
 在 `dict` 里存**可变值**时，若缺键要初始化，手写 `if`、`get`、`setdefault` 都能做，但 **`defaultdict`** 把「缺键 → 建默认值」固化进类型本身：**`d[k]` 一条路径完成**，见示例 3-6。
@@ -54,14 +93,144 @@ with open(sys.argv[1], encoding="utf-8") as fp:
 
 ---
 
-## 四、常见 `default_factory`
+## 四、`default_factory` 能传什么？（类型 / 工厂大全）
 
-| 工厂 | 默认值 | 用途 |
+**核心规则**：`defaultdict(X)` 里的 **`X` 必须是「无参可调用」**（callable，且 **`X()`** 合法）。缺键时会执行 **`value = X()`**，把 **`value`** 写入该键再返回。  
+因此：**内置类型名**（如 **`list`、`int`**）本质是「一调就出一个默认实例」的工厂；**自定义类**也要求 **`__init__(self)` 无额外必填参数**（否则第一次缺键就会 **`TypeError`**）。
+
+```python
+from collections import defaultdict
+```
+
+### 1. 常用内置「工厂」
+
+#### 1）`list` → `[]`
+
+分组、多值、索引；**`dd[k].append(...)`**。
+
+#### 2）`int` → `0`
+
+计数、累加：**`dd["a"] += 1`** 在缺键时等价于先 **`0`** 再 **`+ 1`**。
+
+```python
+dd = defaultdict(int)
+dd["a"] += 1
+assert dd == {"a": 1}
+```
+
+#### 3）`float` → `0.0`
+
+浮点累加、缺键当 **`0.0`**。
+
+```python
+dd = defaultdict(float)
+assert dd["x"] == 0.0
+```
+
+#### 4）`str` → `""`
+
+缺键当空串，再 **`+=`** 拼接（注意与 **`list`** 一样，**高频**时仍要留意拼接效率；大文本常用 **`list` + `join`**）。
+
+```python
+dd = defaultdict(str)
+dd["name"] += "hello"
+assert dd == {"name": "hello"}
+```
+
+#### 5）`set` → `set()`
+
+去重、标签集合：**`.add(...)`**。
+
+```python
+dd = defaultdict(set)
+dd["tags"].add("quant")
+dd["tags"].add("python")
+assert dd["tags"] == {"quant", "python"}
+```
+
+#### 6）`dict` → `{}`
+
+嵌套一层映射：**`dd["user"]["name"] = "Alice"`**（外层缺键时先 **`{}`**，再写内层）。
+
+```python
+dd = defaultdict(dict)
+dd["stock"]["price"] = 123
+assert dd == {"stock": {"price": 123}}
+```
+
+#### 7）`tuple` → `()`
+
+缺键得到**空元组**；元组不可变，后续往往整体**替换**为新元组，或配合其它结构使用。
+
+```python
+dd = defaultdict(tuple)
+assert dd["k"] == () and isinstance(dd["k"], tuple)
+```
+
+---
+
+### 2. 自定义工厂（函数 / `lambda` / 类）
+
+**固定默认值**：
+
+```python
+def default_val() -> int:
+    return 999
+
+
+dd = defaultdict(default_val)
+assert dd["x"] == 999
+```
+
+**嵌套 `defaultdict`（量化里多层分组常见）**：
+
+```python
+# 外层键 -> 内层键 -> 列表
+nested: defaultdict[str, defaultdict[str, list[int]]] = defaultdict(lambda: defaultdict(list))
+nested["A股"]["贵州茅台"].append(1800)
+assert dict(nested)["A股"]["贵州茅台"] == [1800]
+```
+
+**缺键时新建自定义对象**（类须**无参** `__init__` 或仅有默认参数）：
+
+```python
+class Stock:
+    def __init__(self) -> None:
+        self.price = 0.0
+        self.vol = 0
+
+
+dd = defaultdict(Stock)
+dd["600000"].price = 12.5
+assert dd["600000"].price == 12.5
+```
+
+---
+
+### 3. 不能直接用的情况
+
+- **`default_factory` 不能是「已经造好的实例」**（例如 **`defaultdict([1, 2, 3])`**）：`[1, 2, 3]` **不是**可调用对象，缺键时无法 **`()`** 一下生成新值。  
+- **需要带参构造**、或默认值要是**可变字面量副本**时，用 **`lambda` 包一层**：
+
+```python
+dd = defaultdict(lambda: [1, 2, 3])
+assert dd["k"] == [1, 2, 3]
+```
+
+---
+
+### 4. 速记表（日常分组 / 量化常用）
+
+| 写法 | `default_factory()` 结果 | 典型用途 |
 | :--- | :--- | :--- |
-| `list` | `[]` | 索引、分组、多值 |
-| `int` | `0` | 计数、`+= 1` |
-| `set` | `set()` | 去重分组 |
-| `dict` | `{}` | 嵌套一层（更深常配合 **`lambda`/`lambda: defaultdict(...)`**） |
+| **`defaultdict(list)`** | **`[]`** | 追加、分组、多值 |
+| **`defaultdict(set)`** | **`set()`** | 去重、标签 |
+| **`defaultdict(int)`** | **`0`** | 计数、**`+=`** |
+| **`defaultdict(float)`** | **`0.0`** | 浮点累加 |
+| **`defaultdict(str)`** | **`""`** | 缺键当空串再拼接 |
+| **`defaultdict(dict)`** | **`{}`** | 嵌套一层 dict |
+| **`defaultdict(tuple)`** | **`()`** | 缺键空元组（较少改原地） |
+| **`lambda: …`** | 自定义 | 非无参构造、固定非空默认、**嵌套 `defaultdict`** |
 
 ---
 
