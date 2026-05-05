@@ -114,19 +114,28 @@ d["key"].append(1)  # 缺 "key" → list() → 写入 → append
 
 **实战**：「按词分组到列表」的 **`setdefault` vs `defaultdict` 对照**见 **`06_mapping_types_three_way_demo.py`** 第 **9)** 节。
 
-### 零.4 选型照抄
+### 零.4 选型照抄（可直接背）
 
-1. **绝大多数** → **`dict`**（含「只要插入顺序」）。  
-2. **`d[k]` 缺键就要默认容器/默认数** → **`defaultdict`**。  
-3. **要挪键顺序、FIFO 弹、`move_to_end`** → **`OrderedDict`**。
+1. **绝大多数场景**、只需要保留**插入顺序** → 直接用**普通 `dict`**（**Python 3.7+** 语言规范保证插入顺序）。  
+2. 下标 **`d[k]`** 访问缺键，要自动给**列表 / 集合 / 计数**等初始值 → 用 **`defaultdict`**。  
+3. 需要**手动挪动键位置**、**FIFO 弹出**、**`move_to_end`**、**LRU 缓存**等「顺序当 API 用」→ 用 **`OrderedDict`**。
 
-### 零.5 必记避坑 + 一句话
+### 零.5 必记避坑 + 核心一句话
 
-1. **`defaultdict`**：只有 **`[]`** 会触发工厂，**`get` 不会**——别混用语义。  
-2. **`dict.fromkeys(keys, [])`**：所有键**共享同一个 list**；用 **`{k: [] for k in keys}`**。  
-3. **3.7+** 没有顺序操控需求就**别上 `OrderedDict`**，原生 **`dict`** 更简单。
+#### 1. `defaultdict` 避坑
 
-**一句话**：`dict` 管通用存储；`defaultdict` 管 **`[]` 缺键自动兜底**；`OrderedDict` 管 **顺序 API**；各干各的，按「缺键要不要自动造」「要不要手挪顺序」选。
+只有**方括号下标 `d[k]`** 在缺键时才触发 **`default_factory`**（经 **`__missing__`** 那条链）；**`.get(k)`**、**`.setdefault(...)`** **都不会触发工厂**，别混用语义。（细则见 **§五**、**§七**；与 `setdefault` 选型对照见 **§零.3**。）
+
+#### 2. `dict.fromkeys` 经典大坑
+
+**`dict.fromkeys(keys, [])`**：所有键**共享同一个列表对象**；改一个键下的列表，别的键**跟着变**。  
+✅ **正确写法**：字典推导式 **`{k: [] for k in keys}`**，每个键各自**一个新** `list`。
+
+#### 3. `OrderedDict` 选型避坑
+
+**Python 3.7+** 原生 **`dict` 已保留插入顺序**；**没有**手动调序、**`move_to_end`**、**FIFO 弹出**等需求时，**坚决不用 `OrderedDict`**——原生 **`dict` 更轻、更简单**。
+
+**核心一句话**：`dict` 管通用存储；`defaultdict` 管 **`d[k]` 缺键自动兜底**；`OrderedDict` 管**顺序 API**；各干各的，按「缺键要不要自动造」「要不要手挪顺序」选。
 
 ---
 
