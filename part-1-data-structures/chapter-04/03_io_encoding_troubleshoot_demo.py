@@ -37,8 +37,24 @@ def demo_types_boundary() -> None:
     print("type(b):", type(b), "hexdump(b):", hexdump(b))
 
 
+def demo_typeerror_concat() -> None:
+    section("2) TypeError: str + bytes (md section II.1)")
+    try:
+        _ = "prefix: " + b"tail"
+    except TypeError as e:
+        print("str + bytes -> TypeError:", e)
+
+
+def demo_mojibake_no_exception() -> None:
+    section("3) Mojibake: wrong decode often raises nothing (md II.2)")
+    raw = "北京".encode("utf-8")
+    print("hex utf-8:", hexdump(raw))
+    print("decode utf-8 ascii:", ascii(raw.decode("utf-8")))
+    print("decode gbk ascii (wrong):", ascii(raw.decode("gbk")))
+
+
 def demo_file_io_encoding() -> None:
-    section("2) File I/O: explicit encoding beats defaults")
+    section("4) File I/O: explicit encoding beats defaults")
     text = "café 北京"
 
     with tempfile.TemporaryDirectory() as tmp:
@@ -58,7 +74,7 @@ def demo_file_io_encoding() -> None:
 
 
 def demo_errors_policy_decode() -> None:
-    section("3) errors= strict / replace / ignore (decode)")
+    section("5) errors= strict / replace / ignore (decode)")
     bad = b"\xff\xfe\x00"
     for policy in ("strict", "replace", "ignore"):
         try:
@@ -69,7 +85,7 @@ def demo_errors_policy_decode() -> None:
 
 
 def demo_subprocess_text() -> None:
-    section("4) Subprocess: text=True + encoding= avoids manual decode")
+    section("6) Subprocess: text=True + encoding= avoids manual decode")
     # Force the child Python process to emit UTF-8, regardless of Windows console code page.
     cp = subprocess.run(
         [sys.executable, "-X", "utf8", "-c", "print('北京')"],
@@ -82,7 +98,7 @@ def demo_subprocess_text() -> None:
 
 
 def demo_console_boundary() -> None:
-    section("5) Console boundary (stdout encoding)")
+    section("7) Console boundary (stdout encoding)")
     print("sys.getdefaultencoding():", sys.getdefaultencoding())
     print("sys.stdout.encoding:", sys.stdout.encoding)
     print("sys.stdout.errors:", sys.stdout.errors)
@@ -90,9 +106,21 @@ def demo_console_boundary() -> None:
     print("safe via ascii(s):", ascii(s))
     # Avoid printing s directly: it may show mojibake or raise UnicodeEncodeError.
 
+    try:
+        "北京".encode("ascii")
+    except UnicodeEncodeError as e:
+        print("encode ascii (CJK) -> UnicodeEncodeError:", e)
+    smile = "\U0001F600"
+    try:
+        smile.encode("gbk")
+    except UnicodeEncodeError as e:
+        print("encode gbk (emoji) -> UnicodeEncodeError:", e)
+
 
 def main() -> None:
     demo_types_boundary()
+    demo_typeerror_concat()
+    demo_mojibake_no_exception()
     demo_file_io_encoding()
     demo_errors_policy_decode()
     demo_subprocess_text()
