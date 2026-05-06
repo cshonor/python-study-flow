@@ -74,14 +74,24 @@ def demo_file_io_encoding() -> None:
 
 
 def demo_errors_policy_decode() -> None:
-    section("5) errors= strict / replace / ignore (decode)")
+    section("5) errors= strict / replace / ignore (decode + encode)")
     bad = b"\xff\xfe\x00"
+    print("decode side:")
     for policy in ("strict", "replace", "ignore"):
         try:
             out = bad.decode("utf-8", errors=policy)
-            print(f"errors={policy!r}:", "ascii(out)=", ascii(out))
+            print(f"  decode errors={policy!r}:", "ascii(out)=", ascii(out))
         except UnicodeDecodeError as e:
-            print(f"errors={policy!r}: UnicodeDecodeError:", e)
+            print(f"  decode errors={policy!r}: UnicodeDecodeError:", e)
+
+    s = "北京"
+    print("encode side (target ascii):")
+    for policy in ("strict", "replace", "ignore"):
+        try:
+            out = s.encode("ascii", errors=policy)
+            print(f"  encode errors={policy!r}: out=", out)
+        except UnicodeEncodeError as e:
+            print(f"  encode errors={policy!r}: UnicodeEncodeError:", e)
 
 
 def demo_subprocess_text() -> None:
