@@ -63,8 +63,8 @@ def demo_frozenset_nested() -> None:
 
 
 def demo_one_liners() -> None:
-    """与 13-集合与frozenset.md §零 口诀一一对应的一行一例。"""
-    section("6) One-liners for §零 mnemonics")
+    """与 13-集合与frozenset.md「零、总览」口诀一一对应的一行一例。"""
+    section("6) Cheat sheet: one line per mnemonic (md intro)")
 
     # 1) 哈希 + 可哈希元素 + O(1) 成员测试
     s = frozenset((1, 2, 3))
