@@ -222,6 +222,46 @@ with open(sys.argv[1], encoding="utf-8") as fp:
 from collections import defaultdict
 ```
 
+### `lambda`：匿名函数（在 `defaultdict` 里当「零参工厂」）
+
+在 Python 里，**`lambda`** 用来写**匿名函数**，固定形状是：
+
+```text
+lambda 参数1, 参数2, … : 返回值表达式
+```
+
+- **`lambda`**：关键字。  
+- **冒号左边**：形参列表；**没有参数**就什么都不写，但**冒号必须有**，例如 **`lambda:`**。  
+- **冒号右边**：**一个表达式**，其值就是调用时的返回值（不能写多条语句，除非用海象号等技巧，教学里不展开）。
+
+**无参、返回内层 `defaultdict`（你现在常见的嵌套写法）**：
+
+```python
+lambda: defaultdict(list)
+```
+
+人话：**没有参数**；被 **`()`** 调用时，**直接返回** `defaultdict(list)` 这个新对象。它等价于：
+
+```python
+def inner_factory():
+    return defaultdict(list)
+
+
+dd = defaultdict(inner_factory)  # 与 defaultdict(lambda: defaultdict(list)) 同一角色
+```
+
+因此：
+
+```python
+defaultdict(lambda: defaultdict(list))
+```
+
+**外层**缺键时，会 **`()`** 调用这个匿名函数，得到**一层新的** `defaultdict(list)`，专门当**内层**映射用——**不必**为这种一次性工厂再起函数名。
+
+**一句记**：**`lambda … : …` 就是匿名函数语法**；在 **`defaultdict`** 里常用来**就地**写一个**零参**小工厂。
+
+---
+
 ### 1. 常用内置「工厂」
 
 #### 1）`list` → `[]`
