@@ -113,8 +113,26 @@ def demo_errors_policy() -> None:
             print(f"  encode errors={policy!r}: UnicodeEncodeError:", e)
 
 
+def demo_hex_roundtrip() -> None:
+    section("6) hex <-> bytes: fromhex, hex(' '), packet style")
+    raw = bytes.fromhex("1B 48 CE AB")
+    print("fromhex('1B 48 CE AB'):", raw, "==", b"\x1b\x48\xce\xab", raw == b"\x1b\x48\xce\xab")
+
+    packet = bytes.fromhex("01 02 03 04 68 65 6c 6c 6f")
+    print("fromhex packet:", packet)
+    print("packet.hex(' '):", packet.hex(" "))
+    print("compact:", packet.hex())
+
+    try:
+        bytes.fromhex("1")  # odd length
+    except ValueError as e:
+        print("fromhex odd length -> ValueError:", e)
+
+    print("ascii(CJK + emoji):", ascii("\u5317\u4eac\N{GRINNING FACE}"))
+
+
 def demo_stdout_encoding_trap() -> None:
-    section("6) Console boundary: sys.stdout.encoding & why ascii() helps")
+    section("7) Console boundary: sys.stdout.encoding & why ascii() helps")
     print("sys.getdefaultencoding():", sys.getdefaultencoding())
     print("sys.stdout.encoding:", sys.stdout.encoding)
     print("sys.stdout.errors:", sys.stdout.errors)
@@ -129,6 +147,7 @@ def main() -> None:
     demo_decode_wrong_codec()
     demo_unicode_encode_error()
     demo_errors_policy()
+    demo_hex_roundtrip()
     demo_stdout_encoding_trap()
 
 
