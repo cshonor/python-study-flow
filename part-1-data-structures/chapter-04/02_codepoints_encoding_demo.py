@@ -35,11 +35,25 @@ def demo_codepoints() -> None:
 
 
 def demo_utf8_bytes_length() -> None:
-    section("2) len(str) vs len(str.encode('utf-8'))")
-    s = "café"
-    raw = s.encode("utf-8")
-    print("s:", ascii(s), "len(s):", len(s))
-    print("utf-8 bytes:", raw, "len(bytes):", len(raw), "byte values:", list(raw))
+    section("2) len(str) vs len(str.encode('utf-8')) (UTF-8 widths)")
+    samples = [
+        ("ASCII", "a"),
+        ("Latin-1-ish", "café"),
+        ("CJK", "\u4e2d"),
+        ("emoji", "\U0001f600"),
+    ]
+    for label, s in samples:
+        raw = s.encode("utf-8")
+        print(
+            f"{label}:",
+            ascii(s),
+            "len(str):",
+            len(s),
+            "len(utf-8):",
+            len(raw),
+            "bytes:",
+            list(raw),
+        )
 
 
 def demo_decode_wrong_codec() -> None:
