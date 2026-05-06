@@ -50,9 +50,25 @@
 - **`Counter`** 是 **`dict` 子类**，值为**非负整数计数**（实现上可暂为负，见文档）；适合**可哈希对象**的频次统计。  
 - 可视为**多重集（multiset）**：键为元素，值为出现次数。
 
+```python
+from collections import Counter
+
+Counter("abracadabra")  # Counter({'a': 5, 'b': 2, 'r': 2, 'c': 1, 'd': 1})
+```
+
 ### 2. 构造与累加
 
 - 可从**可迭代对象**、**映射**或**关键字参数**构造；**`update`** 为**累加**计数，而非覆盖整条记录（与「普通 `dict.update` 覆盖同键」的直觉略有不同，需注意）。
+
+```python
+c = Counter("aaab")
+c.update("ab")   # a: 3→4，b: 1→2（同键相加，不是整条覆盖）
+
+# 对比普通 dict：update 同键会覆盖
+plain = {"a": 3}
+plain.update({"a": 1})
+plain  # {'a': 1}
+```
 
 ### 3. 集合式运算（计数视角）
 
@@ -60,10 +76,28 @@
 - **`&` / `|`**：分别取各键计数的 **min** / **max**。  
 - 具体边界以当前 CPython 文档为准；见 `11_shelf_counter_userdict_demo.py`。
 
+```python
+c1 = Counter(a=3, b=1)
+c2 = Counter(a=1, b=2, c=1)
+
+c1 + c2  # Counter({'a': 4, 'b': 3, 'c': 1})
+c1 - c2  # Counter({'a': 2})，b 差为 -1 被去掉
+c1 & c2  # Counter({'a': 1, 'b': 1})，各键取 min
+c1 | c2  # Counter({'a': 3, 'b': 2, 'c': 1})，各键取 max
+```
+
 ### 4. 常用 API
 
 - **`most_common(n)`**：返回计数最高的若干项（**`n=None`** 时全部排序列出）。  
 - 其余与 **`dict`** 兼容；缺省访问不存在的键返回 **0**（与普通 **`dict`** 不同）。
+
+```python
+c = Counter("aabbbcc")
+c["x"]             # 0，不 KeyError
+c.most_common(2)   # [('b', 3), ('a', 2)]
+```
+
+完整分步打印见 **`11_shelf_counter_userdict_demo.py`** 第 **1)** 节。
 
 ---
 
