@@ -62,12 +62,37 @@ def demo_frozenset_nested() -> None:
     print(outer)
 
 
+def demo_one_liners() -> None:
+    """与 13-集合与frozenset.md §零 口诀一一对应的一行一例。"""
+    section("6) One-liners for §零 mnemonics")
+
+    # 1) 哈希 + 可哈希元素 + O(1) 成员测试
+    s = frozenset((1, 2, 3))
+    print("1 hashable + membership:", 2 in s, "| type:", type(s))
+
+    # 2) set 不可作 dict 键；frozenset 可作 dict 键且可嵌套进 set
+    d = {frozenset({1, 2}): "ok"}
+    nested = {frozenset({1})}
+    print("2 frozenset as dict key:", d[frozenset({1, 2})], "| set of frozenset:", nested)
+
+    # 3) 去重：set 不保序 vs dict.fromkeys 保首次序（3.7+）
+    seq = ["b", "a", "b", "c", "a"]
+    print("3 set dedupe (order not guaranteed):", list(set(seq)))
+    print("3 ordered dedupe:", list(dict.fromkeys(seq)))
+
+    # 4) 运算符要集合型；方法吃可迭代
+    a, lst = {1, 2}, [2, 3]
+    print("4 method + list:", a.intersection(lst))
+    print("4 set & frozenset OK:", a & frozenset(lst))
+
+
 def main() -> None:
     demo_empty_literal()
     demo_dedupe_ordered()
     demo_membership_and_intersection()
     demo_set_comp_unichar()
     demo_frozenset_nested()
+    demo_one_liners()
 
 
 if __name__ == "__main__":
