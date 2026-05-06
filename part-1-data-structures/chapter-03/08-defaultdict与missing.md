@@ -13,7 +13,8 @@
 
 ## 纲领：`defaultdict(……)` 括号里到底是什么？
 
-**先记一句结论**：`defaultdict(...)` 里填的是 **「造默认值的工厂」**（`default_factory`）——能 **无参 `()` 一下**就吐出一个「空壳默认值」的**类型名或函数**；**不是**塞已经造好的 `[]` / `{}`，**也不是**随便一个变量名。
+**先记一句结论**：`defaultdict(...)` 里填的是 **「造默认值的工厂」**（`default_factory`）——能 **无参 `()` 一下**就吐出一个「空壳默认值」的**类型名或函数**；**不是**塞已经造好的 `[]` / `{}`，**也不是**随便一个变量名。  
+（若见到 **`defaultdict[str, …]`** 这种**方括号**，那是**类型标注**，不是构造参数；见 **§二** 末「圆括号与方括号」。）
 
 ### 和普通 `dict` 对比：为什么缺键会炸？
 
@@ -156,6 +157,39 @@ dd["new-key"].append(1)
 - **`default_factory` 为 `None`**（含 `defaultdict()` 未传参）：行为与 **`dict`** 一致，缺键仍 **`KeyError`**（不会把 `None` 当工厂去调用）。  
 - **`get(k)`** 不触发工厂（与 `07` 一致）。
 
+### 圆括号 `()` 和方括号 `[]`：别混成「要多写一个 `str`」
+
+平时写的是**运行时构造**，只有**圆括号**，里面**恰好一个位置参数**：**`default_factory`**（`list`、`int`、`lambda: …` 等）——**没有**「键类型、值类型」这种运行期参数。
+
+```python
+from collections import defaultdict
+
+dd = defaultdict(list)  # 干净：只塞工厂
+```
+
+笔记里有时会出现：
+
+```python
+nested: defaultdict[str, defaultdict[str, list[int]]] = defaultdict(lambda: defaultdict(list))
+```
+
+这里要分清两套语法：
+
+| 写法 | 括号 | 含义 |
+| :--- | :--- | :--- |
+| **`defaultdict(list)`** | **圆括号 `()`** | **真正创建对象**；`()` 里只有**工厂** |
+| **`defaultdict[str, list[int]]`**（标注） | **方括号 `[]`** | **类型泛型标注**（Python 3.9+ 常见写法），声明「键类型、值类型」；给 **IDE / 类型检查器**用，**不改变运行行为** |
+
+里面的 **`str`**、**`list[int]`** 是**类型表达式**，不是让你再往 `defaultdict(...)` 的圆括号里多传一个字符串参数。
+
+**完全可以不写任何方括号标注**，和以前一样只写：
+
+```python
+nested = defaultdict(lambda: defaultdict(list))
+```
+
+照样运行；标注只是**可选**的文档与静态检查辅助。
+
 ---
 
 ## 三、示例 3-6：词索引（与 `07` 对照）
@@ -271,10 +305,13 @@ assert dd["x"] == 999
 **嵌套 `defaultdict`（量化里多层分组常见）**：
 
 ```python
-# 外层键 -> 内层键 -> 列表
+# 外层键 -> 内层键 -> 列表（下面一行里「变量名: …」是可选类型注解，见 §二「圆括号与方括号」）
 nested: defaultdict[str, defaultdict[str, list[int]]] = defaultdict(lambda: defaultdict(list))
 nested["A股"]["贵州茅台"].append(1800)
 assert dict(nested)["A股"]["贵州茅台"] == [1800]
+
+# 不写注解，行为完全相同：
+nested2 = defaultdict(lambda: defaultdict(list))
 ```
 
 **缺键时新建自定义对象**（类须**无参** `__init__` 或仅有默认参数）：
