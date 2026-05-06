@@ -43,17 +43,23 @@ def demo_utf8_bytes_length() -> None:
 
 
 def demo_decode_wrong_codec() -> None:
-    section("3) Same bytes, different decodings")
+    section("3) UnicodeDecodeError: wrong codec or illegal bytes")
     text = "北京"
     raw_utf8 = text.encode("utf-8")
     print("raw_utf8:", raw_utf8)
     print("decode utf-8:", ascii(raw_utf8.decode("utf-8")))
+    # UTF-8 bytes are often *valid* GBK byte patterns -> mojibake, not always an exception.
+    wrong = raw_utf8.decode("gbk")
+    print("decode gbk (wrong, often mojibake):", ascii(wrong))
     try:
-        # Deliberately wrong: interpret UTF-8 bytes using GBK.
-        wrong = raw_utf8.decode("gbk")
-        print("decode gbk (wrong):", ascii(wrong))
+        raw_utf8.decode("ascii")
     except UnicodeDecodeError as e:
-        print("decode gbk -> UnicodeDecodeError:", e)
+        print("decode ascii (always fails for these bytes) -> UnicodeDecodeError:", e)
+
+    try:
+        b"\xff".decode("utf-8")
+    except UnicodeDecodeError as e:
+        print("invalid utf-8 start byte -> UnicodeDecodeError:", e)
 
 
 def demo_unicode_encode_error() -> None:
