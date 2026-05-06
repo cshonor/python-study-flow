@@ -51,13 +51,18 @@ def demo_chainmap() -> None:
 
 
 def demo_counter() -> None:
-    section("3) Counter: count and most_common")
+    section("3) Counter: count, update, most_common, + / &")
     words = ["a", "b", "a", "c", "b", "a"]
     cnt = Counter(words)
     print(cnt)
     print("most_common(2):", cnt.most_common(2))
     cnt.update(["a", "d"])
     print("after update:", dict(cnt))
+
+    c1 = Counter(a=3, b=1)
+    c2 = Counter(a=1, b=2)
+    print("c1 + c2:", c1 + c2)
+    print("c1 & c2 (min counts):", c1 & c2)
 
 
 def main() -> None:
