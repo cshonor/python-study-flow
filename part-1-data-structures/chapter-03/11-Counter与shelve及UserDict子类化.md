@@ -20,6 +20,17 @@
 - **缺键读取**不会像普通 **`dict`** 那样 **`KeyError`**，计数上常当作 **0**（细节见 **§一**）。  
 - **`most_common(n)`**：一眼挑出前几名；**`+` / `-` / `&` / `|`**：在「出现次数」意义上做并、差、交、扩（边界见 **§一** 与脚本）。
 
+```python
+from collections import Counter
+
+c = Counter("aab")
+c["missing"]       # 0，不 KeyError
+c.update("ab")     # 累加：a→3，b→2
+c.most_common(1)   # [('a', 3)]
+
+Counter(a=1, b=1) + Counter(a=1, b=2)  # Counter({'a': 2, 'b': 3})
+```
+
 ### 二）`shelve`：像 `dict` 一样用的「落盘」映射
 
 **一句话**：**进程结束数据还在**的键值存储，接口贴近 **`dict`**，但吃 **pickle** 这一套规矩。
@@ -28,12 +39,41 @@
 - **值**：必须能被 **`pickle`**（且**不要**对不可信文件反序列化）。  
 - 适合**小到中等**本地持久化；大并发、复杂查询请交给数据库等专业方案（见 **§二**）。
 
+```python
+import shelve
+import tempfile
+from pathlib import Path
+
+with tempfile.TemporaryDirectory() as tmp:
+    path = Path(tmp) / "demo_shelf"
+    with shelve.open(str(path)) as db:
+        db["user"] = {"name": "Ada", "score": 42}  # 键：str；值：须可 pickle
+        db["tags"] = ["python", "mapping"]
+    with shelve.open(str(path)) as db2:  # 仍在同一临时目录内：落盘可读回
+        assert db2["user"]["name"] == "Ada"
+```
+
 ### 三）`UserDict`：自定义映射时**更体面**的父类
 
 **一句话**：**想写「自己的字典语义」→ 优先子类化 `UserDict`，少直接继承内置 `dict`。**
 
 - 内置 **`dict`** 在 CPython 里路径很多是 C 层捷径，子类重写 **`__getitem__` / `__setitem__`** 时，**未必处处走到你的 Python 代码**，易踩坑。  
 - **`UserDict`** 用 **`self.data`** 持有一份真 **`dict`**，读写多经你控制的方法，**`MutableMapping.update`** 等也会落到 **`__setitem__`**，行为更一致（理由与 **`StrKeyDict`** 对照见 **§三**、**`09`**）。
+
+```python
+from collections import UserDict
+
+class UpperKeyDict(UserDict):
+    def __setitem__(self, key, value):
+        self.data[str(key).upper()] = value
+
+m = UpperKeyDict()
+m["a"] = 1
+m.update(b=2, c=3)   # update 内部会调 __setitem__ → 键统一大写
+dict(m)              # {'A': 1, 'B': 2, 'C': 3}
+```
+
+**§零** 上三例与 **`11_shelf_counter_userdict_demo.py`** 第 **1) / 2) / 3)** 节一一对照。
 
 ### 三句口诀（好记）
 
