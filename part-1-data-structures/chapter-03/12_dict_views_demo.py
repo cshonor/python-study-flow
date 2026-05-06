@@ -70,11 +70,44 @@ def demo_abc_and_construct() -> None:
         print("dict_values() ->", e)
 
 
+def demo_one_liners() -> None:
+    """Short prints aligned with 12-字典视图.md section 0 (mnemonics)."""
+    section("5) Cheat sheet: one line per idea (md intro)")
+
+    d = {"a": 1, "b": 2}
+    v = d.values()
+    print("live window:", list(v), end=" -> ")
+    d["c"] = 3
+    print("after d['c']=3:", list(v))
+
+    try:
+        _ = d.keys()[0]
+    except TypeError as e:
+        print("no subscript keys[0]:", e)
+
+    print("snapshot with subscript:", list(d.keys())[0])
+
+    d1, d2 = {"a": 1, "b": 2}, {"b": 2, "c": 3}
+    print("keys intersection:", d1.keys() & d2.keys())
+
+    h1, h2 = {("x", 1): 0}, {("x", 1): 0, ("y", 2): 0}
+    print("items union (hashable pairs):", h1.items() | h2.items())
+
+    try:
+        _ = d1.values() & d2.values()
+    except TypeError as e:
+        print("values & values ->", e)
+
+    od = dict.fromkeys("abc")
+    print("reversed keys:", "".join(reversed(od.keys())))
+
+
 def main() -> None:
     demo_basic()
     demo_live_sync()
     demo_set_ops()
     demo_abc_and_construct()
+    demo_one_liners()
 
 
 if __name__ == "__main__":
