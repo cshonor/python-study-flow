@@ -127,6 +127,8 @@ cfg["host"], cfg["port"]  # 127.0.0.1, 9000 —— 高优先级表盖住默认
 
 ## 三、`collections.Counter`（§3.6.3）
 
+**与 `11` 的分工**：本篇把 **`Counter`** 与 **`OrderedDict` / `ChainMap`** 放在**同一量级**做入门与示例；**更细的 `Counter` 边界、与 `defaultdict` 的对位、实践附录，以及 `shelve` / `UserDict`** 均在 **`11-Counter与shelve及UserDict子类化.md`**。
+
 - 为**可哈希对象**计数；是 **`dict` 子类**，值为整型计数。  
 - 常用：**`update`** 累加、**`most_common(n)`**、集合式 **`+` / `-` / `&` / `|`**（各键取和、差、min、max；细节见文档与 **`11`**）。  
 - 适合词频、频次表、与 **`defaultdict(int)`** 选型相近时，**API 更省事**。  

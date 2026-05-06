@@ -6,6 +6,8 @@
 - **`shelve`**：一个“像 dict 一样用”的持久化键值存储（但有严格边界）
 - **`UserDict`**：为什么很多时候“自定义映射”更推荐继承它，而不是直接继承 `dict`
 
+**与 `10` 的分工**：**`10-OrderedDict-ChainMap-Counter.md`** 已把 **`OrderedDict` / `ChainMap` / `Counter`** 三样**并列**讲完入门；本篇在 **`Counter`** 上**加深**（故会与 **`10`** 的 **`Counter`** 段落有题材重叠），并**单独承担** **`shelve`** 与 **`UserDict`**。
+
 配套脚本：`11_shelf_counter_userdict_demo.py`。
 
 ---
@@ -186,6 +188,67 @@ c.most_common(2)   # [('b', 3), ('a', 2)]
 
 ---
 
+## 附录、`Counter` 实践速记（词频 / 列表频次 / 票池类场景）
+
+（**仅**谈 **`Counter`**；**`shelve` / `UserDict`** 仍以 **§二–§三** 为准。与 **§零 / §一** 互补，便于「拿起来就用」。）
+
+### 一句话
+
+**`Counter` = 专门做频次的 `dict` 子类**：**键**为可哈希元素，**值**为 **`int`** 计数；缺键读取常为 **0**（见 **§一·4**）。
+
+### 四个最常用的动作（覆盖多数日常用法）
+
+```python
+from collections import Counter
+
+cnt = Counter("abracadabra")
+# Counter({'a': 5, 'b': 2, 'r': 2, 'c': 1, 'd': 1})
+
+cnt.update("aaaa")       # 累加：a 变为 9
+cnt.most_common(3)       # [('a', 9), ('b', 2), ('r', 2)]
+
+cnt["a"]                 # 取次数；缺键则为 0（见上文）
+```
+
+### 集合式运算：`+` `-` `&` `|`
+
+在「出现次数」意义上做和、差、逐键 **min** / **max**；比自己手写多层 **`if` / `get(..., 0)`** 更短、更不易漏分支（是否更快取决于数据规模与实现，不作数量级承诺）。
+
+```python
+a = Counter(a=1, b=2)
+b = Counter(b=3, c=4)
+
+a + b  # Counter({'a': 1, 'b': 5, 'c': 4})
+a - b  # Counter({'a': 1})，非正计数会消失
+a & b  # Counter({'b': 2})，各键取 min
+a | b  # Counter({'a': 1, 'b': 3, 'c': 4})，各键取 max
+```
+
+**常见用途（思路级）**：两个集合里元素**共现次数**的交（**`&`**）、并（**`|`**）、或计数相加（**`+`**）——例如持仓/票池、信号列表、日志里的符号共现等（具体业务仍以你的数据结构为准）。
+
+### 与 `defaultdict(int)` 怎么选？
+
+- **`defaultdict(int)`**：通用「键 → 默认值 **0** 的映射」；计数时要自己写 **`d[k] += 1`** 等。  
+- **`Counter`**：语义就是**频次表**，自带 **`update` 累加**、**`most_common`**、**`+ - & |`**。
+
+**结论（实用向）**：纯计数、排行、多重集式合并时优先用 **`Counter`**；若映射里还要挂**非计数**状态或复杂结构，再考虑 **`defaultdict`** 或普通 **`dict`**（与 **`06`** 选型表对照）。
+
+### 票池 / 代码列表类「直接可抄」骨架
+
+```python
+from collections import Counter
+
+codes = ["000001", "600000", "000001", "600000", "000001"]
+cnt = Counter(codes)
+cnt.most_common(1)
+
+pool1 = Counter(["000001", "600000"])
+pool2 = Counter(["000001", "000002"])
+common = pool1 & pool2   # 共现：两池里都出现的键，计数取 min
+```
+
+---
+
 ## 四、小结
 
 （与 **§零** 三句口诀同一脉络，这里是「查表版」。）
@@ -200,4 +263,4 @@ c.most_common(2)   # [('b', 3), ('a', 2)]
 
 ## 五、可运行对照
 
-见 **`11_shelf_counter_userdict_demo.py`**（`Counter` 字符串与运算、`shelve` 临时文件、**`UserDict` + `update`** 走 **`__setitem__`**）。
+见 **`11_shelf_counter_userdict_demo.py`**（`Counter` 字符串与运算、`shelve` 临时文件、**`UserDict` + `update`** 走 **`__setitem__`**）。**附录** 中的 **`Counter`** 片段亦可在此脚本第 **1)** 节对照运行。
