@@ -5,7 +5,8 @@ Run:
   python part-1-data-structures/chapter-06/03_identity_equality_aliasing_demo.py
 
 脚本说明：
-- 教学演示：`is`/`==`、别名、None 判断、元组相对不可变与 hash；请与笔记对照。
+- 教学演示：`is`/`==`、别名、None 判断、元组相对不可变与 hash；请与笔记对照。  
+- 第 **8)** 节：`id()` 看 list `append`（同对象）vs `str` 拼接（新对象），对应 **`01-第6章对象引用可变性与GC总览.md` §2.6**。
 """
 
 from __future__ import annotations
@@ -82,12 +83,28 @@ def demo_tuple_relative_immutability() -> None:
         print("t[1] = ... ->", type(e).__name__ + ":", e)
 
 
+def demo_id_mutable_append_vs_immutable_rebind() -> None:
+    section("8) id: list append keeps object; str += builds new str (see ch6 01 md section 2.6)")
+    lst = [1, 2, 3]
+    before = id(lst)
+    lst.append(4)
+    after = id(lst)
+    print("list: id before append == after:", before == after, "(same object)")
+
+    s = "hello"
+    id_s = id(s)
+    s = s + "!"
+    id_s2 = id(s)
+    print("str: id after s = s + '!':", id_s, "->", id_s2, "(different object)")
+
+
 def main() -> None:
     demo_aliasing_identity_vs_equality()
     demo_none_comparison_is_safer()
     demo_tuple_relative_immutability_and_hash()
     demo_is_vs_eq()
     demo_tuple_relative_immutability()
+    demo_id_mutable_append_vs_immutable_rebind()
 
 
 if __name__ == "__main__":
