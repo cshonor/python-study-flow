@@ -56,8 +56,24 @@ def demo_decode_wrong_codec() -> None:
         print("decode gbk -> UnicodeDecodeError:", e)
 
 
+def demo_unicode_encode_error() -> None:
+    section("4) UnicodeEncodeError: str -> bytes (codec too small)")
+    smile = "\U0001F600"
+    print("emoji as ascii(s):", ascii(smile))
+    print("encode utf-8 ok:", smile.encode("utf-8"))
+    try:
+        smile.encode("gbk")
+    except UnicodeEncodeError as e:
+        print("encode gbk -> UnicodeEncodeError:", e)
+
+    try:
+        "北京".encode("ascii")
+    except UnicodeEncodeError as e:
+        print("encode ascii (CJK) -> UnicodeEncodeError:", e)
+
+
 def demo_errors_policy() -> None:
-    section("4) errors= strict / replace / ignore (decode)")
+    section("5) errors= strict / replace / ignore (decode)")
     bad = b"\xff\xfe\x00"
     for policy in ("strict", "replace", "ignore"):
         try:
@@ -68,7 +84,7 @@ def demo_errors_policy() -> None:
 
 
 def demo_stdout_encoding_trap() -> None:
-    section("5) Console boundary: sys.stdout.encoding & why ascii() helps")
+    section("6) Console boundary: sys.stdout.encoding & why ascii() helps")
     print("sys.getdefaultencoding():", sys.getdefaultencoding())
     print("sys.stdout.encoding:", sys.stdout.encoding)
     print("sys.stdout.errors:", sys.stdout.errors)
@@ -81,6 +97,7 @@ def main() -> None:
     demo_codepoints()
     demo_utf8_bytes_length()
     demo_decode_wrong_codec()
+    demo_unicode_encode_error()
     demo_errors_policy()
     demo_stdout_encoding_trap()
 
