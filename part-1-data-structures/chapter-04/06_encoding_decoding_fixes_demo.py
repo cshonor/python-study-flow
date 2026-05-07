@@ -56,7 +56,7 @@ def demo_decode_error_vs_mojibake() -> None:
 
 
 def demo_bom_utf8_sig_and_utf16() -> None:
-    section("3) BOM: utf-8-sig and utf-16 bytes evidence")
+    section("3) BOM: utf-8-sig, utf-16, utf-32 head bytes")
     text = "hello"
     b_utf8 = text.encode("utf-8")
     b_sig = text.encode("utf-8-sig")
@@ -64,6 +64,9 @@ def demo_bom_utf8_sig_and_utf16() -> None:
     print("utf-8     hex:", b_utf8.hex(" "))
     print("utf-8-sig hex:", b_sig.hex(" "), "(starts with EF BB BF)")
     print("utf-16    hex:", b_u16.hex(" "), "(starts with FF FE or FE FF)")
+
+    b_u32 = text.encode("utf-32")
+    print("utf-32    hex:", b_u32.hex(" "), "(starts with FF FE 00 00 LE or 00 00 FE FF BE)")
 
     # Demonstrate how utf-8-sig strips BOM on decode
     decoded_sig = b_sig.decode("utf-8-sig")
@@ -73,8 +76,29 @@ def demo_bom_utf8_sig_and_utf16() -> None:
     assert decoded_sig == text
 
 
+def demo_optional_encoding_detection() -> None:
+    section("4) Optional: chardet / charset-normalizer (pip install chardet)")
+    sample = "你好，世界。这是一段用来测试编码检测的中文。".encode("gbk")
+    print("sample hex head:", sample[:16].hex(" "), "...")
+
+    try:
+        import chardet
+    except ImportError:
+        print("chardet: not installed (python -m pip install chardet)")
+    else:
+        d = chardet.detect(sample)
+        print("chardet.detect:", ascii(d))
+
+    try:
+        import charset_normalizer as cn
+    except ImportError:
+        print("charset-normalizer: not installed (python -m pip install charset-normalizer)")
+    else:
+        print("charset_normalizer.detect:", ascii(cn.detect(sample)))
+
+
 def demo_source_file_syntaxerror_non_utf8() -> None:
-    section("4) SyntaxError: running a non-UTF-8 .py without coding cookie")
+    section("5) SyntaxError: running a non-UTF-8 .py without coding cookie")
     # Write a Python file in cp1252 that contains a non-ASCII literal, but without coding declaration.
     code = "print('Olá, Mundo!')\n"
     raw_cp1252 = code.encode("cp1252")  # contains 0xE1 for á
@@ -99,6 +123,7 @@ def main() -> None:
     demo_encode_error_and_errors_param()
     demo_decode_error_vs_mojibake()
     demo_bom_utf8_sig_and_utf16()
+    demo_optional_encoding_detection()
     demo_source_file_syntaxerror_non_utf8()
 
 
