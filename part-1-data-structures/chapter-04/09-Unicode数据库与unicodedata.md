@@ -12,6 +12,84 @@
 
 ---
 
+## 零、新手清爽版（只记这些）
+
+### 本节在讲什么？
+
+**`unicodedata` 是标准库里的「字符身份证查询口」**：官方全名、类别、组合性、**数字/分数/罗马数字的数值语义**等，都能按规则查出来。
+
+典型困惑它帮你落地：
+
+- **`µ`** 是微符号还是希腊 **`μ`**？（配合 **`name()`**、码点、**`NFKC`** 对照 **`07`**）  
+- **`½`** 怎么变成 **`0.5`**？（**`numeric()`**）  
+- 某个生僻符号到底叫什么？（**`name()`** + **`09_unicode_char_finder.py`**）
+
+### 功能 1：查官方名字 — `unicodedata.name(ch)`
+
+```python
+import unicodedata
+
+unicodedata.name("A")   # LATIN CAPITAL LETTER A
+unicodedata.name("♛")   # BLACK CHESS QUEEN
+```
+
+**没有名字的字符**（不少控制符如 **`"\n"`**）会 **`ValueError`**，不是返回 `None`：
+
+```python
+try:
+    name = unicodedata.name(ch)
+except ValueError:
+    name = None
+```
+
+详见 **§二·2.1**。
+
+### 功能 2：按名字关键词搜字符 — `09_unicode_char_finder.py`
+
+在仓库根目录：
+
+```bash
+python part-1-data-structures/chapter-04/09_unicode_char_finder.py CAT EYES
+```
+
+输出示例：`U+1F638 … GRINNING CAT FACE WITH SMILING EYES`（与 **§二·2.2** 一致）。
+
+### 功能 3：判断「像数字的字符」— **`str` 上三个方法**
+
+**`isdecimal()`** ⊂ **`isdigit()`** ⊂ **`isnumeric()`**（真子集关系，单字符上记忆即可）。
+
+| 方法 | 严格度 | 直觉 |
+| :--- | :--- | :--- |
+| **`isdecimal()`** | 最严 | 主要是「十进制数字」形态（如 **`0`–`9`** 及同类 Nd） |
+| **`isdigit()`** | 居中 | 含圈码 **`①`** 等更多「数字字形」 |
+| **`isnumeric()`** | 最宽 | 分数 **`½`**、罗马 **`Ⅳ`**、中文 **`一`** 等「有数值语义」的常在此为 True |
+
+它们是 **`str`** 的方法，不是 **`unicodedata`** 模块下的三个函数——别记混。完整例子见 **`09_unicode_numeric_demo.py`**、**§三**。
+
+### 功能 4：转成真正的数 — `digit()` vs `numeric()`
+
+- **`unicodedata.digit(ch)`**：偏「整数数字字符」→ **`int`**；否则 **`ValueError`**。  
+- **`unicodedata.numeric(ch)`**：更宽，**`½` → 0.5**、**`Ⅳ` → 4.0**、**`③` → 3.0** 等 → **`float`**。
+
+解析流水线：**先试 `digit`，再 `numeric`**，失败再按业务报错或跳过（**§三·3.3**）。
+
+### 常用落地
+
+- **数据清洗**：控制符、不可见字符、奇怪符号（**`name` / `category` / `combining`** 等，**§四**）  
+- **用户输入标准化**：圈码、罗马、分数 → 数值  
+- **小工具**：按名搜 emoji / 数学符号（**`09_unicode_char_finder.py`**）
+
+### 四句口诀
+
+1. **`unicodedata`：查字符身份与数值语义的官方入口**  
+2. **`name()`：有则返回全名，无则抛错，要 `try`**  
+3. **数字判断：`isdecimal` < `isdigit` < `isnumeric`（在 `str` 上）**  
+4. **转数值：`digit` 偏整，`numeric` 更宽（含分数）**
+
+下文 **§一～§四** 为展开与误区；**§五** 为脚本命令。
+
+---
+
 ## 一、为什么需要 `unicodedata`？
 
 Unicode 字符非常多（十几万），很多字符你肉眼看不出“它到底是什么”，例如：
@@ -139,6 +217,8 @@ Unicode 的 `U+D800..U+DFFF` 是 UTF-16 代理项范围，不是独立字符。
 ---
 
 ## 五、可运行对照
+
+与 **§零** 口诀对照：先跑 **`09_unicode_numeric_demo.py`** 看 **`isdecimal`/`isdigit`/`isnumeric`** 与 **`digit`/`numeric`** 并排输出。
 
 运行字符搜索工具：
 
