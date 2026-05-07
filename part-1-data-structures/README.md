@@ -181,7 +181,7 @@ python part-1-data-structures/chapter-03/14_dict_view_setops_demo.py
 
 | 编号 | 文件 | 主题简述 |
 |------|------|----------|
-| 01 | `01-第4章Unicode文本与字节总览.md` | 第 4 章开篇：`str`/`bytes`、Unicode、编解码边界 |
+| 01 | `01-第4章Unicode文本与字节总览.md` | 第 4 章开篇：`str`/`bytes`、ASCII·Unicode·UTF-8 分层、编解码边界 |
 | 02 | `02-码点编码与编解码错误.md` | 字符/码点/编码/字节，编解码异常、`errors=`、`fromhex`/`hex` |
 | 03 | `03-IO编码排查清单.md` | I/O 编码排查清单：文件/子进程/控制台 |
 | 04 | `04-bytes与bytearray.md` | `bytes`/`bytearray`：索引切片、可变性、`fromhex` |

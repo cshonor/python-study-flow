@@ -10,7 +10,7 @@
 
 | 顺序 | 文件 | 说明 |
 |------|------|------|
-| 01 | `01-第4章Unicode文本与字节总览.md` | `str`/`bytes` 的整体框架与关键原则 |
+| 01 | `01-第4章Unicode文本与字节总览.md` | `str`/`bytes` 框架；**ASCII / Unicode / UTF-8** 分层大白话 |
 | 02 | `02-码点编码与编解码错误.md` | 字符/码点/编码/字节、`encode`/`decode`、`errors=`、**`fromhex`/`hex`**（抓包样式） |
 | 03 | `03-IO编码排查清单.md` | I/O 编码排查清单：文件/子进程/控制台 |
 | 04 | `04-bytes与bytearray.md` | `bytes`/`bytearray` 详解：索引切片、可变性、`fromhex`、避坑 |
