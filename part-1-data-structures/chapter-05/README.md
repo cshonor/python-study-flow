@@ -10,7 +10,7 @@
 
 | 顺序 | 文件 | 说明 |
 |---|---|---|
-| 01 | `01-第5章数据类构建器笔记.md` | 第 5 章学习笔记（围绕“怎么选、差异在哪、坑在哪里”写） |
+| 01 | `01-第5章数据类构建器笔记.md` | **超清爽新手笔记**：怎么选、`namedtuple`/`NamedTuple`/`dataclass`/`TypedDict` |
 | 02 | `02-Coordinate与三种构建器功能矩阵.md` | 5.2 入门：用 Coordinate 对比手写类与三种构建器 + 功能总表 |
 | 03 | `03-典型具名元组namedtuple.md` | 5.3 典型具名元组：namedtuple 的核心语法、API 与进阶技巧 |
 | 04 | `04-typing-NamedTuple详解.md` | 5.4 带类型的具名元组：`typing.NamedTuple` 深度解析 |
