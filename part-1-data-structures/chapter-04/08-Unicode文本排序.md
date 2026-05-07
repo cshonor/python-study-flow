@@ -10,6 +10,74 @@
 
 ---
 
+## 零、新手清爽版（只记这些）
+
+### 本节解决什么问题？
+
+**用 Python 默认 `sorted()` 排中文、法文、西文、带重音的词 → 顺序往往「怪」，不像人脑里的词典顺序。**
+
+原因：**默认比较 = 按 Unicode 码点从小到大比**，不是按某种「语言排序规则（collation）」。
+
+### 默认 `sorted()` 为什么「不行」？
+
+它不是算错，只是**目标不同**。例如 **`açaí`、`cajá`、`caju`**：机器逐码点比，**不会**自动按葡萄牙语里「重音字母跟基础字母一家」的习惯排。详见 **§一** 示例。
+
+### 方案 1：`locale` + `strxfrm`（跟系统走）
+
+**原理**：`locale.setlocale(LC_COLLATE, ...)` 后，`locale.strxfrm(s)` 生成**可按语言规则比较的键**。
+
+```python
+import locale
+
+locale.setlocale(locale.LC_COLLATE, "pt_BR.UTF-8")  # 名字随系统而变
+sorted(data, key=locale.strxfrm)
+```
+
+**硬伤（正式项目要警惕）**：
+
+1. **跨平台**：同一 locale 名在 Windows / Linux / macOS **常对不上**，CI/服务器易挂。  
+2. **全局**：`setlocale` 影响**整个进程**，多线程/库混用风险大。  
+3. **运维**：容器里缺语言包时直接不可用。
+
+**结论**：单机脚本、单语言、环境可控时可以玩；**不要**当跨平台多语言产品的唯一依赖。细节见 **§二**。
+
+### 方案 2：`pyuca`（UCA，工程上常作首选）
+
+**是什么**：实现 Unicode 标准里的 **UCA（Unicode Collation Algorithm）**，**不绑系统 locale**，**同版本数据下**各平台结果可对齐（比「纯码点序」更接近通用语言习惯）。
+
+```bash
+python -m pip install pyuca
+```
+
+```python
+import pyuca
+
+coll = pyuca.Collator()
+sorted(data, key=coll.sort_key)
+```
+
+（与 **`from pyuca import Collator; Collator()`** 等价，与 **`08_unicode_sorting_demo.py`** 一致。）
+
+**仍非魔法**：极个别地区/行业有**电话簿序**等定制规则，UCA 也覆盖不全——那是再下一层定制。见 **§三·3.3**。
+
+### 三种方案怎么选？
+
+| 场景 | 用 |
+| :--- | :--- |
+| 纯英文或**不在乎**语言序 | 默认 **`sorted()`** |
+| 本地一次性脚本、单语言、环境你说了算 | **`locale.strxfrm`**（**§二**） |
+| **多语言、要可重复、跨平台、生产** | **`pyuca.Collator`**（**§三**） |
+
+### 三句口诀
+
+1. **默认排序按码点，不是按「语言习惯」**。  
+2. **`locale` 排序吃系统、吃全局，别当唯一方案**。  
+3. **多语言稳定排序 → 优先 `pyuca`（UCA）**。
+
+下文 **§一～§四** 为展开、对比表与脚本说明。
+
+---
+
 ## 一、核心问题：默认排序按码点，不按语言习惯
 
 ### 1.1 默认排序是“码点顺序”
@@ -107,6 +175,8 @@ sorted_fruits = sorted(fruits, key=coll.sort_key)
 ```bash
 python part-1-data-structures/chapter-04/08_unicode_sorting_demo.py
 ```
+
+与 **§零** 三方案对照；输出用 **`ascii()`** 包一层，避免 Windows 控制台编码影响阅读。
 
 脚本会：
 

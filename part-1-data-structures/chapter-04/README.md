@@ -17,7 +17,7 @@
 | 05 | `05-常见编码与codecs.md` | 常见编码与 codec：多编码 bytes 对照表、兼容性与乱码直觉 |
 | 06 | `06-编解码问题排查与修复.md` | 编解码问题处理：三类异常、BOM、检测与落地模板 |
 | 07 | `07-Unicode规范化.md` | Unicode 规范化：**§零 新手速记**、NFC/NFD/NFKC/NFKD、casefold、工具函数 |
-| 08 | `08-Unicode文本排序.md` | Unicode 文本排序：默认码点顺序、locale 局限、pyuca（UCA） |
+| 08 | `08-Unicode文本排序.md` | Unicode 排序：**§零 新手速记**、码点序、locale、pyuca（UCA） |
 | 09 | `09-Unicode数据库与unicodedata.md` | Unicode 数据库：`unicodedata` 字符识别与数值语义解析 |
 | 10 | `10-双模式API-str与bytes.md` | 双模式 API：`re` 与 `os` 的 str/bytes 行为差异与最佳实践 |
 

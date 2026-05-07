@@ -188,7 +188,7 @@ python part-1-data-structures/chapter-03/14_dict_view_setops_demo.py
 | 05 | `05-常见编码与codecs.md` | 常见编码与 codec、多编码 bytes 对照 |
 | 06 | `06-编解码问题排查与修复.md` | 三类异常、BOM、检测与修复模板 |
 | 07 | `07-Unicode规范化.md` | 新手 §零 速记、NFC/NFD/NFKC、casefold、比较工具函数 |
-| 08 | `08-Unicode文本排序.md` | 码点序、locale、UCA（pyuca） |
+| 08 | `08-Unicode文本排序.md` | 新手 §零、码点序、locale、UCA（pyuca） |
 | 09 | `09-Unicode数据库与unicodedata.md` | `unicodedata`、数值语义 |
 | 10 | `10-双模式API-str与bytes.md` | `re` / `os` 等 str 与 bytes 双模式 |
 
