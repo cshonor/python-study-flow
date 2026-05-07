@@ -190,7 +190,7 @@ python part-1-data-structures/chapter-03/14_dict_view_setops_demo.py
 | 07 | `07-Unicode规范化.md` | 新手 §零 速记、NFC/NFD/NFKC、casefold、比较工具函数 |
 | 08 | `08-Unicode文本排序.md` | 新手 §零、码点序、locale、UCA（pyuca） |
 | 09 | `09-Unicode数据库与unicodedata.md` | 新手 §零、`unicodedata`、`name`、`digit`/`numeric` |
-| 10 | `10-双模式API-str与bytes.md` | `re` / `os` 等 str 与 bytes 双模式 |
+| 10 | `10-双模式API-str与bytes.md` | **新手清爽版**：`re` / `os` 等 str 与 bytes 双模式 |
 
 | 脚本 | 说明 |
 |------|------|

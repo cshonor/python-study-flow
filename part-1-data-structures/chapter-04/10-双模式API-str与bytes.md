@@ -1,127 +1,131 @@
-# 4.10 支持 `str` 和 `bytes` 的双模式 API：`re` 与 `os` 的坑一次讲透
+# 4.10 支持 str 和 bytes 的双模式 API【新手清爽排版版】
 
-这一节要解决的核心问题是：**同一个标准库 API，传 `str` 和传 `bytes`，行为可能完全不同**。  
-如果你没意识到这一点，很容易写出“看起来没错、但匹配不到/找不到文件/跨平台翻车”的代码。
+（结构清晰、重点加粗、新手能一眼抓住规则）
 
-最典型的两类双模式 API：
-
-- `re`：正则表达式（`str` 模式是 Unicode-aware，`bytes` 模式几乎是 ASCII-aware）
-- `os`：文件系统（很多系统把文件名当 bytes；Python 用 `str` 做抽象，但仍保留 bytes 入口）
-
-配套脚本：`10_dual_mode_api_demo.py`。
+配套脚本：`10_dual_mode_api_demo.py`（与本节对照阅读）。
 
 ---
 
-## 一、什么叫“双模式 API”？
+## 一、本节核心问题
 
-所谓“双模式”就是：**同一个函数/模块同时支持 `str` 与 `bytes`**，并且：
+**同一个函数，你传 `str` 和传 `bytes`，行为完全不一样。**
 
-- 你传入 `str` → 它以“Unicode 文本”的语义运行，返回也通常是 `str`
-- 你传入 `bytes` → 它以“原始字节”的语义运行，返回也通常是 `bytes`
+最容易踩坑的两个模块：
 
-关键点：**类型决定语义**。  
-你不能“把 bytes 当文本用”又期待它按 Unicode 规则做事；也不能“把 str 当 bytes 用”又期待它保持原始字节不变。
+1. **`re`**（正则表达式）
+2. **`os`**（文件操作）
+
+不懂这个，你会写出：
+
+- 正则明明写对，却匹配不到
+- 文件名明明存在，却找不到
+- 跨平台直接翻车
 
 ---
 
-## 二、4.10.1 `re`：`str` 正则 vs `bytes` 正则（差异巨大）
+## 二、什么是双模式 API？
 
-### 2.1 一条铁律：pattern 与 text 类型必须一致
+**同一个函数，同时支持 `str` 和 `bytes`。**
 
-- `re.compile(r"...")`（`str` pattern）只能匹配 `str` 文本  
-- `re.compile(rb"...")`（`bytes` pattern）只能匹配 `bytes` 文本  
+规则：
 
-类型不一致会直接抛 `TypeError`，这点反而不容易踩坑。
+- 传 **`str`** → 按**文本 / Unicode** 处理  
+- 传 **`bytes`** → 按**原始字节**处理  
 
-真正容易踩坑的是：**元字符在 bytes 模式下“变窄了”**。
+**类型决定行为。** 不能把 `bytes` 当 Unicode 文本用，又期待 `\d` 按“全世界数字”匹配；也不能在需要原始文件名字节时，只用 `str` 硬编码猜测编码。
 
-### 2.2 元字符差异：`\d` / `\w` / `\s`
+---
 
-| 元字符 | `str` 模式（Unicode 正则） | `bytes` 模式（近似 ASCII 正则） |
-|---|---|---|
-| `\d` | 匹配 Unicode 数字（多语言数字） | 只匹配 ASCII `0-9` |
-| `\w` | 匹配 Unicode 字母/数字/下划线 | 只匹配 ASCII 字母/数字/下划线 |
+## 三、`re` 正则：`str` 模式 vs `bytes` 模式（差异巨大）
+
+### 铁律 1：类型必须一致
+
+**正则类型必须和待匹配文本类型一致。**
+
+- `str` 正则 → 只能匹配 `str`
+- `bytes` 正则 → 只能匹配 `bytes`
+
+类型不匹配会直接 `TypeError`。
+
+### 铁律 2：元字符完全不一样（超级重要）
+
+| 符号 | `str` 模式（文本模式） | `bytes` 模式（字节模式） |
+|------|------------------------|--------------------------|
+| `\d` | 匹配 Unicode 数字（多语言数字） | 只匹配 `0-9` |
+| `\w` | 匹配 Unicode 字母 / 数字 / 下划线等 | 只匹配 ASCII 字母 / 数字 / 下划线 |
 | `\s` | 匹配 Unicode 空白 | 只匹配 ASCII 空白 |
 
-### 2.3 关键示例（Ramanujan）：泰米尔数字在 bytes 模式下会“消失”
+**示例直觉（脚本里也有）：** 同一段含**泰米尔数字**的文本，在 `str` 下 `\d+` 能匹配到泰米尔数字和 ASCII 数字；换成 `bytes` 后，UTF-8 字节序列不会被 `rb"\d"` 当成“数字”，往往只剩 ASCII 数字能匹配。**这不是 bug，是语义不同。**
 
-脚本里会构造这段文本（包含泰米尔数字）：
+### 结论
 
-- `str` 模式下 `\d+` 会匹配到泰米尔数字与 ASCII 数字
-- `bytes` 模式下 `\d+` 只会匹配 ASCII 数字（泰米尔数字的 UTF-8 字节序列根本不可能被 `rb"\d"` 命中）
+- **处理文字 → 永远用 `str` 正则**
+- **处理字节协议 / 明确只要 ASCII 字节流 → 才用 `bytes` 正则**
 
-结论（务实版）：
+### 想只匹配英文数字？
 
-- **处理“文本”就用 `str` 正则**（Unicode-aware）  
-- 只有在你明确要处理“字节协议/ASCII 字节流”时才用 `bytes` 正则  
-
-### 2.4 想在 `str` 模式下“只按 ASCII”匹配？用 `re.ASCII`
-
-你不必切换到 bytes 模式，可以写：
+**不要用 `bytes` 取巧**，在 `str` 上收窄即可：
 
 ```python
 re.compile(r"\d+", re.ASCII)
 ```
 
-这会把 `\d/\w/\s` 的语义收窄到 ASCII 范围，但仍保持输入/输出是 `str`。
+输入输出仍是 `str`，只是把 `\d/\w/\s` 的语义限制在 ASCII。
 
 ---
 
-## 三、4.10.2 `os`：文件系统 API 的 `str` / `bytes` 双入口
+## 四、`os` 文件模块：`str` 文件名 vs `bytes` 文件名
 
-### 3.1 先理解：很多系统里“文件名本质是 bytes”
+### 系统真相
 
-尤其在类 Unix 系统里，内核不理解 Unicode；文件名就是 bytes 序列。  
-Python 提供 `str` 形式的文件名是为了开发体验，但仍然保留 bytes 入口，以便处理“无法正确解码”的文件名。
+- **类 Unix：文件名本质是 bytes**（内核不替你“懂 Unicode”）
+- Python 给你 `str` 路径，是为了日常好用；**`bytes` 入口还在，就是为了边界情况**
 
-### 3.2 `os.listdir('.')` vs `os.listdir(b'.')`
+### 两个用法
 
-- `os.listdir(".")` → 返回 `list[str]`
-- `os.listdir(b".")` → 返回 `list[bytes]`
+1. `os.listdir(".")` → 返回 **`list[str]`**（正常开发用这个）
+2. `os.listdir(b".")` → 返回 **`list[bytes]`**（乱码名、无法可靠 decode 的名字、要保留原始字节时）
 
-它们的区别不是“好坏”，而是：
+### 正确转换方式（不要自己乱 `encode` / `decode`）
 
-- `str` 版本会按文件系统编码做 decode/encode（更适合绝大多数正常场景）
-- `bytes` 版本会保留原始 bytes（适合处理“鬼符文件名”、跨系统传输原始名字等）
+- `str` → `bytes`：**`os.fsencode(path)`**
+- `bytes` → `str`：**`os.fsdecode(path)`**
 
-### 3.3 正确的转换工具：`os.fsencode` / `os.fsdecode`
-
-不要手写 `path.encode(...)` / `path.decode(...)` 去猜文件系统编码。  
-用标准库给你的工具：
-
-- `os.fsencode(pathlike_or_str)` → `bytes`
-- `os.fsdecode(pathlike_or_bytes)` → `str`
-
-它们遵循 `sys.getfilesystemencoding()` / `surrogateescape` 等约定，专门用于文件系统边界。
+这是标准库为**文件系统边界**准备的转换（配合 `sys.getfilesystemencoding()`、`surrogateescape` 等约定），比手写编码名更安全。
 
 ---
 
-## 四、落地建议（你写项目时照这个做就很稳）
+## 五、新手最稳最佳实践（背这一段就够）
 
-### 4.1 正则最佳实践
+### 正则怎么写？
 
-1. **文本处理：统一用 `str` + `re` 的 Unicode 语义**  
-2. **需要 ASCII-only：在 `str` 正则上加 `re.ASCII`**  
-3. bytes 正则只用于“字节协议/ASCII 字节流”这类明确需求  
+1. **99% 场景：用 `str` 正则**
+2. 要限制成英文数字等：加 **`re.ASCII`**
+3. **`bytes` 正则只用来处理二进制协议**，别拿来当“全文搜索捷径”
 
-### 4.2 文件系统最佳实践（Unicode 三明治）
+### 文件操作怎么写？
 
-1. **尽早解码成 `str`，尽量在业务逻辑里只用 `str`**  
-2. **遇到无法解码的文件名，再用 bytes 入口兜底**（`os.listdir(b".")` 等）  
-3. `str` ↔ `bytes` 在文件系统边界用 `os.fsencode/fsdecode`  
+1. **业务里尽量全程 `str` 路径**
+2. **遇到鬼畜文件名**：再用 `os.listdir(b"...")` 等 **bytes** 入口兜底
+3. **`str` ↔ `bytes` 在文件系统边界：只用 `os.fsencode` / `os.fsdecode`**
 
 ---
 
-## 五、可运行对照
+## 六、新手必背 4 句总结
 
-运行：
+1. **双模式 API：传 `str` 按文本，传 `bytes` 按字节**
+2. **`\d` `\w` `\s` 在 `str` 和 `bytes` 下完全不同**
+3. **文字永远用 `str` 正则；别用 `bytes` 正则冒充“只匹配英文”**
+4. **文件名在系统边界转换：用 `os.fsencode` / `os.fsdecode`**
+
+---
+
+## 七、可运行对照
+
+在仓库根目录执行：
 
 ```bash
 python part-1-data-structures/chapter-04/10_dual_mode_api_demo.py
 ```
 
-脚本会展示：
-
-- `re`：`str` vs `bytes` 模式下 `\d/\w` 的差异（含 `re.ASCII`）
-- `os`：`listdir(str)` vs `listdir(bytes)`、文件系统编码、`fsencode/fsdecode` 的效果
-
+脚本会演示：`re` 在 `str` / `bytes` / `re.ASCII` 下的差异，以及 `os.listdir(str)` vs `listdir(bytes)`、`fsencode` / `fsdecode` 的效果。
