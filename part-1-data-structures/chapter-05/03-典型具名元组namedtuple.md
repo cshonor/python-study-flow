@@ -103,11 +103,43 @@ name, country, pop, coord = tokyo
 
 ## 三、5.3.2 核心 API（你需要真正会用的 4 个）
 
+假定已有 `City` 与 `tokyo`（见 **§〇** 或 **§二**）。四个 API 的用途可以记成：**列字段、从序列造、转 dict、带替换拷贝**。
+
+### 3.0 四个 API 一口气跑完（复制即用）
+
+```python
+from collections import namedtuple
+
+City = namedtuple("City", "name country population coordinates")
+tokyo = City("Tokyo", "JP", 36.933, (35.689722, 139.691667))
+
+# ① _fields：类属性，拿到字段名元组
+print(City._fields)           # ('name', 'country', 'population', 'coordinates')
+print(list(zip(City._fields, tokyo)))  # [('name', 'Tokyo'), ('country', 'JP'), ...]
+
+# ② _make：长度必须与字段数一致，顺序对应 _fields
+row = ("Delhi NCR", "IN", 21.935, (28.613889, 77.208889))
+delhi = City._make(row)
+assert delhi == City(*row)    # 与解包构造等价；_make 强调「来自一整行数据」
+
+# ③ _asdict：浅层映射（值仍是原对象，不递归「拆成基本类型」）
+d = delhi._asdict()
+print(d["name"], type(d["coordinates"]))  # Delhi NCR <class 'tuple'>
+
+# ④ _replace：只改你传入的字段，其余从旧实例拷贝；得到新实例，旧的不变
+tokyo2 = tokyo._replace(population=37.0)
+assert tokyo is not tokyo2 and tokyo.population == 36.933 and tokyo2.population == 37.0
+```
+
 ### 3.1 `_fields`：字段名元组（自省/反射常用）
 
 ```python
 City._fields
 # ('name', 'country', 'population', 'coordinates')
+
+# 和某一行 zip 成「列名 → 值」，写 CSV / 日志很方便：
+dict(zip(City._fields, tokyo))
+# {'name': 'Tokyo', 'country': 'JP', 'population': 36.933, 'coordinates': (...)}
 ```
 
 它让你能“写泛型工具”：
@@ -120,16 +152,26 @@ City._fields
 ```python
 delhi_data = ("Delhi NCR", "IN", 21.935, (28.613889, 77.208889))
 delhi = City._make(delhi_data)
+
+# 与下面等价；从数据库行、CSV 一行、split 后的列表构造时，_make 读起来更直观
+assert delhi == City(*delhi_data)
 ```
 
 你可以把它理解成：
 
 - `City(*delhi_data)` 的等价写法，但语义更明确（“从序列构造”）
 
+**注意**：可迭代对象**长度必须等于字段个数**；否则 `TypeError`。
+
 ### 3.3 `_asdict()`：转 dict（便于序列化/展示）
 
 ```python
 delhi._asdict()
+# {'name': 'Delhi NCR', 'country': 'IN', 'population': 21.935, 'coordinates': (28.613889, 77.208889)}
+
+# 若要给 json.dumps：嵌套仍是 Python 对象，一般可直接序列化 tuple
+import json
+json.dumps(delhi._asdict())   # coordinates 会变成 JSON 数组
 ```
 
 注意：
@@ -137,7 +179,7 @@ delhi._asdict()
 - 老书/老版本常说返回 `OrderedDict`  
 - 现代 Python（3.7+）里普通 `dict` 也保序，所以你通常会看到它打印出来像普通 dict  
 
-你要记住的是：**它返回的是“键值映射”**，非常适合交给 JSON/日志/模板系统。
+你要记住的是：**它返回的是“键值映射”**，非常适合交给 JSON/日志/模板系统；**只做一层**，不会把里面的 tuple 再拆成更细的字典。
 
 ### 3.4 `_replace(**kwargs)`：不可变对象的“修改”
 
@@ -145,6 +187,10 @@ delhi._asdict()
 
 ```python
 tokyo2 = tokyo._replace(population=37.0)
+# tokyo 仍是 36.933；tokyo2 是新实例
+
+# 可同时改多个字段（仍是一次拷贝出一个新实例）
+tokyo3 = tokyo._replace(name="東京", country="JP")
 ```
 
 你会在很多不可变数据结构里见到这种模式：**copy-with**。
