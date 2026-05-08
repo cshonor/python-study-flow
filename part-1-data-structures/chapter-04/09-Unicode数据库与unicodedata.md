@@ -100,6 +100,14 @@ print(" isnumeric:", c4.isnumeric())  # True
 - **`unicodedata.digit(ch)`**：偏「整数数字字符」→ **`int`**；否则 **`ValueError`**。  
 - **`unicodedata.numeric(ch)`**：更宽，**`½` → 0.5**、**`Ⅳ` → 4.0**、**`③` → 3.0** 等 → **`float`**。
 
+```python
+import unicodedata
+
+print(unicodedata.digit("5"))   # 5（int）
+print(unicodedata.digit("③"))  # 3（int）
+print(unicodedata.digit("²"))   # 2（int）
+# print(unicodedata.digit("½")) # 报错：ValueError
+```
 解析流水线：**先试 `digit`，再 `numeric`**，失败再按业务报错或跳过（**§三·3.3**）。
 
 ### 常用落地
