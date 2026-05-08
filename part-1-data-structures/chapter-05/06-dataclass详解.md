@@ -263,7 +263,25 @@ class ClubMember:
 
 dataclass 的规则很简单：**凡是带注解的名字，默认都当作字段处理**。
 
-但你有时确实想写“带类型的类属性”，例如：全局计数器、类级缓存、全局集合。
+dataclass 的默认规则：
+
+- 只要写了类型注解 → 就当成实例字段
+
+- 自动加入：__init__、__repr__、__eq__、fields()
+
+但你有时需要类级别的共享变量（全局计数器、缓存、注册表、常量），不是每个实例都有一份。
+
+```python
+@dataclass
+class ClubMember:
+    all_handles: set[str] = set()   # ❌ 被当成实例字段
+    name: str
+```
+- all_handles 进了 __init__，每个实例都要传
+- 每个实例单独一份，没法全局共享、计数、去重
+- repr、eq 都会带上它，完全不是你想要的
+
+ClassVar 用来在 dataclass 里声明 “这是类属性，不是实例字段”，让 dataclass 不要把它当成实例字段处理Python。
 
 这时必须写：
 
