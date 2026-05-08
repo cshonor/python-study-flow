@@ -163,6 +163,14 @@ class ClubMember:
 - 每次构造实例，dataclass 都会调用它来创建一个新对象
 - 因此每个实例都有自己的 `guests`
 
+```python
+a = ClubMember("Tom")
+b = ClubMember("Jerry")
+a.guests.append("Alice")
+print(a.guests)  # ['Alice']
+print(b.guests)  # []  干净！
+
+```
 ### 2.3 `field()` 常用参数你该怎么理解
 
 你可以把 `field()` 当成“对单个字段的开关面板”：
