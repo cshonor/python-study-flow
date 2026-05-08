@@ -127,7 +127,7 @@ sorted_fruits = sorted(fruits, key=locale.strxfrm)
 - pt_BR.UTF-8：巴西葡萄牙语（带重音的字母按葡语习惯排）。
 
 - locale.strxfrm(s)：把字符串 s 转换成符合当前 locale 规则的排序键，用于 sorted 的 key=。
-- 
+  
 ### 2.2 三个致命问题（你写项目时必须知道）
 
 1. **平台依赖**：同一个 locale 名字在 Windows/Linux/macOS 可能完全不可用（尤其 Windows）。  
