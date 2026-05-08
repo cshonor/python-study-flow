@@ -50,10 +50,16 @@ python -m pip install pyuca
 ```
 
 ```python
-import pyuca
+chinese = ["张三", "李四", "王五", "赵六"]
 
+# Python 默认排序（按字符编码，非拼音）
+print(sorted(chinese))  
+# 输出：['张三', '李四', '王五', '赵六']（巧合正确，复杂列表常乱）
+
+# pyuca 排序（严格拼音）
 coll = pyuca.Collator()
-sorted(data, key=coll.sort_key)
+print(sorted(chinese, key=coll.sort_key))  
+# 输出：['李四', '王五', '张三', '赵六']（标准拼音）
 ```
 
 （与 **`from pyuca import Collator; Collator()`** 等价，与 **`08_unicode_sorting_demo.py`** 一致。）
