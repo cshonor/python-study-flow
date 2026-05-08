@@ -307,7 +307,7 @@ all_handles: ClassVar[set[str]] = set()
 - 传一个数据库连接/配置对象
 - 传一个原始字典/原始字符串
 
-用完之后不希望它留在实例上（不希望 `obj.database` 存在），那就用 `InitVar`。
+用完之后不希望它留在实例上（不希望 `obj.database` 存在，用普通字段会导致：obj.database、obj.raw_pwd 一直存在，污染命名空间、泄露敏感数据），那就用 `InitVar`。
 
 ### 5.2 运行机制（理解这一句就够了）
 
@@ -322,6 +322,32 @@ all_handles: ClassVar[set[str]] = set()
 
 - Python 的属性查找顺序是“先找实例，再找类”。所以即便 `InitVar` 不在实例里，**你用 `hasattr(obj, "database")` 也可能得到 `True`**（因为类上可能有同名属性）。判断“是不是实例真正保存了这个值”，请用 `vars(obj)` 或检查 `"name" in obj.__dict__`。
 
+```python
+
+from dataclasses import dataclass, InitVar
+
+@dataclass
+class User:
+    name: str
+    # InitVar：初始化用，不保存
+    raw_age: InitVar[str]
+    # 真实字段，由 raw_age 计算
+    age: int = 0
+
+    # InitVar 必须作为 __post_init__ 的参数
+    def __post_init__(self, raw_age: str):
+        self.age = int(raw_age)  # 用临时参数算真实字段
+
+# 调用：必须传 raw_age
+u = User("Tom", raw_age="25")
+
+print(u.name)   # Tom
+print(u.age)    # 25
+
+print(hasattr(u, "raw_age"))  # False（不在实例上）
+print(vars(u))  # {'name': 'Tom', 'age': 25}
+
+```
 ---
 
 ## 六、综合实战：Dublin Core 风格的 `Resource`（把所有要点串起来）
