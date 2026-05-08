@@ -107,6 +107,15 @@ print(unicodedata.digit("5"))   # 5（int）
 print(unicodedata.digit("③"))  # 3（int）
 print(unicodedata.digit("²"))   # 2（int）
 # print(unicodedata.digit("½")) # 报错：ValueError
+
+import unicodedata
+
+print(unicodedata.numeric("5"))   # 5.0
+print(unicodedata.numeric("③"))  # 3.0
+print(unicodedata.numeric("½"))   # 0.5
+print(unicodedata.numeric("Ⅳ"))  # 4.0
+print(unicodedata.numeric("一"))  # 1.0
+print(unicodedata.numeric("贰"))  # 2.0
 ```
 解析流水线：**先试 `digit`，再 `numeric`**，失败再按业务报错或跳过（**§三·3.3**）。
 
