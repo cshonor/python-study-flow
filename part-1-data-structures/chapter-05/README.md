@@ -15,7 +15,7 @@
 | 03 | `03-典型具名元组namedtuple.md` | 5.3 典型具名元组：**§〇 一段跑通** + API/默认值/Card/`NamedTuple` 示例（对齐 `03_*.py`） |
 | 04 | `04-typing-NamedTuple详解.md` | 5.4 带类型的具名元组：`typing.NamedTuple` 深度解析 |
 | 05 | `05-类型提示入门.md` | 5.5 类型提示入门：注解的本质、运行时行为、三类类结构对比 |
-| 06 | `06-dataclass详解.md` | 5.6 `@dataclass` 详解：参数、field、`__post_init__`、`ClassVar`、`InitVar`、实战建模 |
+| 06 | `06-dataclass详解.md` | 5.6 `@dataclass`：**§零 装饰器参数背诵版** + field / `__post_init__` / `ClassVar` / `InitVar` |
 | 07 | `07-08-数据类异味与match-case.md` | 5.7 & 5.8 数据类代码异味与模式匹配：设计原则 + `match/case` 类模式 |
 
 | 脚本 | 说明 |

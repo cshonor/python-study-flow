@@ -232,7 +232,7 @@ python part-1-data-structures/chapter-04/10_dual_mode_api_demo.py
 | 03 | `03-典型具名元组namedtuple.md` | `namedtuple`：§〇 一段跑通 + API/示例（对齐 `03_namedtuple_typical_demo.py`） |
 | 04 | `04-typing-NamedTuple详解.md` | `typing.NamedTuple` 与类型注解 |
 | 05 | `05-类型提示入门.md` | 类型提示基础与运行时行为 |
-| 06 | `06-dataclass详解.md` | `@dataclass` 参数、`field`、`__post_init__` 等 |
+| 06 | `06-dataclass详解.md` | `@dataclass`：**§零 参数背诵版**；`field`、`__post_init__` 等 |
 | 07 | `07-08-数据类异味与match-case.md` | 数据类反模式与 `match/case` 类模式 |
 
 ```bash
