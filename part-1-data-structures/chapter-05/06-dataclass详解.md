@@ -228,6 +228,33 @@ class User:
 
 配套脚本会把重复 handle 的异常跑出来，帮助你理解执行顺序。
 
+```python
+from dataclasses import dataclass, field
+import uuid
+
+@dataclass
+class ClubMember:
+    # 类级别：全局所有 handle
+    all_handles = set()
+
+    name: str
+    # handle 可选，不传自动生成；init=False 表示不在 __init__ 赋值
+    handle: str = field(default=None, init=False)
+
+    def __post_init__(self):
+        # 1. 没给 handle → 自动生成（短uuid）
+        if self.handle is None:
+            self.handle = f"user_{uuid.uuid4().hex[:8]}"
+
+        # 2. 唯一性校验
+        if self.handle in ClubMember.all_handles:
+            raise ValueError(f"handle '{self.handle}' 重复了！")
+
+        # 3. 加入全局集合
+        ClubMember.all_handles.add(self.handle)
+
+
+```
 ---
 
 ## 四、类属性 vs 实例字段：用 `ClassVar` 明确“这不是字段”
