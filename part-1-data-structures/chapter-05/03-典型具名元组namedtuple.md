@@ -168,16 +168,28 @@ assert delhi == City(*delhi_data)
 - 把整个 NamedTuple 实例，一键转成普通 dict（字段名 → 值）Python
 
 - Python 3.8+ 返回 普通 dict（有序）Python
-- 
+
 - Python 3.1–3.7 返回 OrderedDictPython
 
 ```python
-delhi._asdict()
-# {'name': 'Delhi NCR', 'country': 'IN', 'population': 21.935, 'coordinates': (28.613889, 77.208889)}
+from typing import NamedTuple
 
-# 若要给 json.dumps：嵌套仍是 Python 对象，一般可直接序列化 tuple
-import json
-json.dumps(delhi._asdict())   # coordinates 会变成 JSON 数组
+class City(NamedTuple):
+    name: str
+    country: str
+    population: float
+    coordinates: tuple[float, float]
+
+delhi = City(
+    name="Delhi NCR",
+    country="IN",
+    population=21.935,
+    coordinates=(28.613889, 77.208889)
+)
+
+# 调用 _asdict()
+print(delhi._asdict())
+# {'name': 'Delhi NCR', 'country': 'IN', 'population': 21.935, 'coordinates': (28.613889, 77.208889)}
 ```
 
 注意：
