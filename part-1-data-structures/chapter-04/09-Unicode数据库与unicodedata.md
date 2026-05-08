@@ -50,6 +50,7 @@ except ValueError:
 
 ```bash
 python part-1-data-structures/chapter-04/09_unicode_char_finder.py CAT EYES
+
 ```
 
 输出示例：`U+1F638 … GRINNING CAT FACE WITH SMILING EYES`（与 **§二·2.2** 一致）。
@@ -65,6 +66,34 @@ python part-1-data-structures/chapter-04/09_unicode_char_finder.py CAT EYES
 | **`isnumeric()`** | 最宽 | 所有有数值语义的字符（0-9、①、½、Ⅳ、一、贰 等）|
 
 它们是 **`str`** 的方法，不是 **`unicodedata`** 模块下的三个函数——别记混。完整例子见 **`09_unicode_numeric_demo.py`**、**§三**。
+
+```python
+# 测试字符
+c1 = "5"    # 普通数字
+c2 = "⑤"   # 圈码数字
+c3 = "½"    # 分数
+c4 = "一"   # 中文数字
+
+print("普通数字 5：")
+print(" isdecimal:", c1.isdecimal())  # True
+print(" isdigit:  ", c1.isdigit())    # True
+print(" isnumeric:", c1.isnumeric())  # True
+
+print("\n圈码 ⑤：")
+print(" isdecimal:", c2.isdecimal())  # False
+print(" isdigit:  ", c2.isdigit())    # True
+print(" isnumeric:", c2.isnumeric())  # True
+
+print("\n分数 ½：")
+print(" isdecimal:", c3.isdecimal())  # False
+print(" isdigit:  ", c3.isdigit())    # False
+print(" isnumeric:", c3.isnumeric())  # True
+
+print("\n中文 一：")
+print(" isdecimal:", c4.isdecimal())  # False
+print(" isdigit:  ", c4.isdigit())    # False
+print(" isnumeric:", c4.isnumeric())  # True
+```
 
 ### 功能 4：转成真正的数 — `digit()` vs `numeric()`
 
