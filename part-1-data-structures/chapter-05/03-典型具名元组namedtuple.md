@@ -165,6 +165,12 @@ assert delhi == City(*delhi_data)
 
 ### 3.3 `_asdict()`：转 dict（便于序列化/展示）
 
+- 把整个 NamedTuple 实例，一键转成普通 dict（字段名 → 值）Python
+
+- Python 3.8+ 返回 普通 dict（有序）Python
+- 
+- Python 3.1–3.7 返回 OrderedDictPython
+
 ```python
 delhi._asdict()
 # {'name': 'Delhi NCR', 'country': 'IN', 'population': 21.935, 'coordinates': (28.613889, 77.208889)}
