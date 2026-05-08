@@ -129,7 +129,12 @@ class C:
 ```
 
 这会导致所有实例共享同一个 `guests` 列表，属于“隐蔽且致命”的 bug。
-
+```python
+a = C()
+b = C()
+a.guests.append("Alice")
+print(b.guests)  # ['Alice']，被污染了！
+```
 dataclass 直接把这类坑拦住了：**你在 dataclass 里写可变默认值会被拒绝**。
 
 ```python
