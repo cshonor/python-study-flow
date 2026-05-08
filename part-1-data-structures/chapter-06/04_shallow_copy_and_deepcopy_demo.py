@@ -5,14 +5,55 @@ Run:
   python part-1-data-structures/chapter-06/04_shallow_copy_and_deepcopy_demo.py
 
 脚本说明：
-- 教学演示：浅拷贝三种写法、嵌套可变项、copy/deepcopy 与 Bus、循环结构；请与笔记对照。
+- 教学演示：浅拷贝方式速查（copy.copy / [:] / list / .copy / dict）、赋值 vs 浅 vs 深、嵌套可变项、Bus、循环 deepcopy；请与笔记对照。
 """
 
 from __future__ import annotations
 
 import copy
+from collections.abc import Callable
+from typing import Any
 
 from ch06_demo_support import section
+
+
+def demo_shallow_copy_catalog_and_assignment_contrast() -> None:
+    section("7) Shallow copy catalog + assignment vs shallow vs deep")
+
+    a = [1, 2, [3, 4]]
+    b_alias = a
+    print("assignment (b = a): a is b_alias ->", a is b_alias)
+
+    def check(name: str, fn: Callable[[Any], Any]) -> None:
+        x = [1, 2, [3, 4]]
+        y = fn(x)
+        print(
+            f"{name:12} outer new={x is not y!s:5} inner list shared (x[2] is y[2]) -> {x[2] is y[2]}"
+        )
+
+    check("copy.copy", copy.copy)
+    check("slice [:]", lambda x: x[:])
+    check("list(...)", list)
+    check("list.copy", lambda x: x.copy())
+
+    d1 = {"x": [1, 2]}
+    d2 = dict(d1)
+    print("dict(dict): d1['x'] is d2['x'] ->", d1["x"] is d2["x"])
+
+    src = [1, 2, [3, 4]]
+    shallow = copy.copy(src)
+    shallow[0] = 99
+    shallow[2][0] = 999
+    print("after shallow[0]=99 and shallow[2][0]=999")
+    print("  src    :", src)
+    print("  shallow:", shallow)
+
+    base = [1, 2, [3, 4]]
+    deep = copy.deepcopy(base)
+    base[2][0] = 111
+    print("after deepcopy: mutating base[2][0]=111")
+    print("  base:", base)
+    print("  deep:", deep, "| inner independent ->", base[2] is not deep[2])
 
 
 def demo_shallow_copy_three_ways_and_trap() -> None:
@@ -109,6 +150,7 @@ def demo_shallow_vs_deep_copy() -> None:
 
 
 def main() -> None:
+    demo_shallow_copy_catalog_and_assignment_contrast()
     demo_shallow_copy_three_ways_and_trap()
     demo_copy_vs_deepcopy_bus_and_cycles()
     demo_shallow_vs_deep_copy()
