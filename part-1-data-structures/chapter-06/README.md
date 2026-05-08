@@ -23,7 +23,7 @@
 | 02 | `02-变量不是盒子.md` | 6.2 深入：变量是标签不是盒子；赋值先右后左；别名与术语纠正（含 Gizmo 证据） |
 | 03 | `03-同一性相等与别名.md` | 6.3 深入：同一性 vs 相等性（`is`/`==`）、别名风险、`None` 判断、元组相对不可变与 hash |
 | 04 | `04-浅拷贝为默认.md` | 6.4：**浅拷贝方式速查**（`copy.copy` / `[:]` / `list`/`dict` / `.copy`）+ 嵌套陷阱；copy vs deepcopy |
-| 05 | `05-共享传参与可变默认参数.md` | 6.5 深入：共享传参（call by sharing）、`+=` 差异、可变默认值（HauntedBus）、防御性拷贝（TwilightBus）、`__defaults__` 取证 |
+| 05 | `05-共享传参与可变默认参数.md` | 6.5：**§零 面试背诵**（权威链接 + mutate/rebind + 可变默认）+ `+=`、HauntedBus/TwilightBus、`__defaults__` |
 | 06 | `06-del与垃圾回收.md` | 6.6 深入：`del` 的解绑语义、引用计数与循环 GC、弱引用与 `weakref.finalize`、排查入口 |
 | 07 | `07-不可变类型技巧.md` | 6.7 深入：不可变对象复用/驻留（tuple/frozenset/str/int）、`sys.intern`、`is` 的边界 |
 

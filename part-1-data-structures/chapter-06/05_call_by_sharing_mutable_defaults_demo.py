@@ -5,7 +5,7 @@ Run:
   python part-1-data-structures/chapter-06/05_call_by_sharing_mutable_defaults_demo.py
 
 脚本说明：
-- 教学演示：共享传参与 `+=`、可变默认参数、HauntedBus/TwilightBus、dataclass `default_factory`；请与笔记对照。
+- 教学演示：原地修改 vs 形参重绑定、`+=`、可变默认参数、HauntedBus/TwilightBus、dataclass `default_factory`；请与笔记对照。
 """
 
 from __future__ import annotations
@@ -13,6 +13,24 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 
 from ch06_demo_support import safe, section
+
+
+def demo_parameter_mutate_vs_rebind() -> None:
+    section("14) Call by sharing: mutate shared list vs rebind parameter")
+
+    def append99(x: list[int]) -> None:
+        x.append(99)
+
+    def clear_by_rebind(x: list[int]) -> None:
+        x = []
+
+    a = [1, 2]
+    append99(a)
+    print("after append99(a):", a)
+
+    b = [1, 2]
+    clear_by_rebind(b)
+    print("after clear_by_rebind(b):", b)
 
 
 def f_iadd(a: object, b: object) -> object:
@@ -141,6 +159,7 @@ def demo_dataclass_default_factory_echo() -> None:
 
 
 def main() -> None:
+    demo_parameter_mutate_vs_rebind()
     demo_call_by_sharing_iadd()
     demo_mutable_default_argument()
     demo_dataclass_default_factory_echo()
