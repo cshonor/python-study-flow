@@ -53,6 +53,8 @@ class Bad(NamedTuple):
 
 ### 2.3 `__annotations__` 是“注解信息”，不是运行时校验
 
+一句话：注解 = 给工具看的 “提示”，不是给解释器看的 “强制规则”。
+
 非常重要的一点：**Python 运行时不会因为你标注了 `float` 就拒绝 `str`**。  
 类型注解主要服务于：
 
@@ -62,6 +64,24 @@ class Bad(NamedTuple):
 
 如果你要运行时校验，需要你自己写校验逻辑（或用 pydantic 等库）。
 
+示例（直观看到 __annotations__）
+```python
+# 1. 函数注解
+def greet(name: str, age: int) -> str:
+    return f"Hello {name}, you're {age}"
+
+print(greet.__annotations__)
+# {'name': <class 'str'>, 'age': <class 'int'>, 'return': <class 'str'>}
+
+# 2. 类属性注解（NamedTuple/dataclass 同样适用）
+from typing import NamedTuple
+class User(NamedTuple):
+    id: int
+    name: str
+
+print(User.__annotations__)
+# {'id': <class 'int'>, 'name': <class 'str'>}
+```
 ---
 
 ## 三、`typing.NamedTuple` vs `collections.namedtuple`：现代写法主要赢在“可读性 + 类型”
