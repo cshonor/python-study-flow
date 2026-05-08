@@ -11,6 +11,45 @@
 
 ---
 
+## 〇、一段代码看全（与脚本第 1、2 节一致）
+
+下面可以直接复制进 REPL 或 `.py` 里跑一遍；**注释里是典型输出**，以你本机为准。
+
+```python
+from collections import namedtuple
+
+# 1) 定义：类名字符串与 typename 一致；字段可用空格分隔字符串或列表
+City = namedtuple("City", "name country population coordinates")
+# 等价写法：namedtuple("City", ["name", "country", "population", "coordinates"])
+
+tokyo = City("Tokyo", "JP", 36.933, (35.689722, 139.691667))
+print(tokyo)                    # City(name='Tokyo', country='JP', ...)
+print(tokyo.name, tokyo[0])     # Tokyo Tokyo
+print(City._fields)             # ('name', 'country', 'population', 'coordinates')
+
+delhi = City._make(("Delhi NCR", "IN", 21.935, (28.613889, 77.208889)))
+print(delhi._asdict())          # {'name': 'Delhi NCR', 'country': 'IN', ...}
+
+tokyo2 = tokyo._replace(population=37.0)
+print(tokyo.population, tokyo2.population)  # 36.933 37.0  （原实例不变）
+
+# 2) 默认值：defaults 从右往左对齐最后几个字段
+Coordinate = namedtuple("Coordinate", "lat lon reference", defaults=[None])
+print(Coordinate(0, 0))              # Coordinate(lat=0, lon=0, reference=None)
+print(Coordinate(0, 0, "GPS"))       # reference 显式给出
+```
+
+**tuple 老本行**（同一 `City` 实例上都能用）：
+
+```python
+name, country, pop, coord = tokyo   # 解包
+assert "JP" in tokyo                # 成员检测按元素
+assert len(tokyo) == 4
+assert hash(tokyo) == hash(tuple(tokyo))  # 全字段可哈希时实例可哈希
+```
+
+---
+
 ## 一、先把定位说死：`namedtuple` 是“tuple 子类工厂”
 
 `collections.namedtuple` 不是类，而是一个**工厂函数**：你给它“类名 + 字段名”，它返回一个新类。
@@ -30,21 +69,35 @@
 from collections import namedtuple
 
 City = namedtuple("City", "name country population coordinates")
+# 字段较多时更清晰：
+# City = namedtuple("City", ["name", "country", "population", "coordinates"])
 ```
+
+**注意**：第一个参数是**类名**（`typename`），一般与赋值左侧同名，例如 `City = namedtuple("City", ...)`。
 
 ### 2.2 实例化与访问：点语法与下标语法都可用
 
 ```python
 tokyo = City("Tokyo", "JP", 36.933, (35.689722, 139.691667))
 
-tokyo.name   # 'Tokyo'
-tokyo[0]     # 'Tokyo'
+tokyo.name         # 'Tokyo'
+tokyo[0]           # 'Tokyo'
+tuple(tokyo)       # ('Tokyo', 'JP', 36.933, (35.689722, 139.691667))
 ```
 
 为什么点语法更推荐？
 
 - 可读性更强：`city.population` 比 `city[2]` 更像“字段”
 - 但 tuple 特性仍在：能解包、能迭代、能用于需要 tuple 的 API
+
+**迭代与解包示例**：
+
+```python
+for field_value in tokyo:
+    print(field_value)
+
+name, country, pop, coord = tokyo
+```
 
 ---
 
@@ -109,6 +162,9 @@ Coordinate = namedtuple("Coordinate", "lat lon reference", defaults=[None])
 
 Coordinate(0, 0)          # reference 使用默认值 None
 Coordinate(0, 0, "GPS")   # 显式提供 reference
+
+lat, lon, ref = Coordinate(1.0, 2.0)
+assert ref is None
 ```
 
 把它读成一条规则更好记：
@@ -117,15 +173,22 @@ Coordinate(0, 0, "GPS")   # 显式提供 reference
 
 ### 4.2 动态注入属性/方法：能做，但要知道代价
 
-`namedtuple` 生成的是普通类，所以你可以动态加方法：
+`namedtuple` 生成的是普通类，所以你可以动态加方法（与脚本第 3 节一致，这里只保留骨架）：
 
 ```python
-Card = namedtuple("Card", "rank suit")
+Card = namedtuple("Card", ["rank", "suit"])
 
-def overall_rank(self):
-    ...
+rank_value = {"2": 2, "3": 3, "J": 11, "Q": 12, "K": 13, "A": 14}  # 可按需补全
+Card.suit_values = {"spades": 3, "hearts": 2, "diamonds": 1, "clubs": 0}
+
+def overall_rank(self: Card) -> int:
+    return rank_value[self.rank] * 4 + Card.suit_values[self.suit]
 
 Card.overall_rank = overall_rank
+
+deck = [Card("2", "spades"), Card("A", "hearts"), Card("A", "spades")]
+deck.sort(key=Card.overall_rank)
+# deck[-1] 即为 overall_rank 最大的那张；实例上可调用 deck[-1].overall_rank()
 ```
 
 这种写法的优点：
@@ -148,6 +211,24 @@ Card.overall_rank = overall_rank
 | 父类 | `tuple` | `tuple` |
 | 扩展方法 | 能动态加，但不推荐 | ✅ 直接在 class 里写方法（推荐） |
 | 典型用途 | 极简只读记录、性能敏感 | 现代代码库：只读数据 + 类型检查 |
+
+**与脚本第 4 节一致的最小 `NamedTuple` 例子**（类型注解 + 实例方法写在 class 体内）：
+
+```python
+from typing import NamedTuple, get_type_hints
+
+class CoordinateT(NamedTuple):
+    lat: float
+    lon: float
+
+    def __str__(self) -> str:
+        return f"({self.lat:.3f}, {self.lon:.3f})"
+
+c = CoordinateT(55.756, 37.617)
+print(c)                       # 走你自定义的 __str__
+print(get_type_hints(CoordinateT))  # {'lat': <class 'float'>, 'lon': <class 'float'>}
+print(issubclass(CoordinateT, tuple))  # True
+```
 
 一句话总结：
 

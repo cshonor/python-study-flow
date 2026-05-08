@@ -12,7 +12,7 @@
 |---|---|---|
 | 01 | `01-第5章数据类构建器笔记.md` | **超清爽新手笔记**：怎么选、`namedtuple`/`NamedTuple`/`dataclass`/`TypedDict` |
 | 02 | `02-Coordinate与三种构建器功能矩阵.md` | 5.2 入门：用 Coordinate 对比手写类与三种构建器 + 功能总表 |
-| 03 | `03-典型具名元组namedtuple.md` | 5.3 典型具名元组：namedtuple 的核心语法、API 与进阶技巧 |
+| 03 | `03-典型具名元组namedtuple.md` | 5.3 典型具名元组：**§〇 一段跑通** + API/默认值/Card/`NamedTuple` 示例（对齐 `03_*.py`） |
 | 04 | `04-typing-NamedTuple详解.md` | 5.4 带类型的具名元组：`typing.NamedTuple` 深度解析 |
 | 05 | `05-类型提示入门.md` | 5.5 类型提示入门：注解的本质、运行时行为、三类类结构对比 |
 | 06 | `06-dataclass详解.md` | 5.6 `@dataclass` 详解：参数、field、`__post_init__`、`ClassVar`、`InitVar`、实战建模 |
