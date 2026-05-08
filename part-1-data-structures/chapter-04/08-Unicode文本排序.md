@@ -113,11 +113,21 @@ print(sorted(fruits))
 ```python
 import locale
 
-# 注意：这一步会影响整个进程（全局状态）
+# 只修改“排序规则”这一类别的本地化为 巴西葡萄牙语
 locale.setlocale(locale.LC_COLLATE, "pt_BR.UTF-8")
+
+# 假设已有列表
+fruits = ['caju', 'atemoia', 'cajá', 'açaí', 'acerola']
+
+# 按当前 locale 的语言习惯排序
 sorted_fruits = sorted(fruits, key=locale.strxfrm)
 ```
+- locale.LC_COLLATE：只管字符串排序规则，不影响日期 / 数字 / 货币。
 
+- pt_BR.UTF-8：巴西葡萄牙语（带重音的字母按葡语习惯排）。
+
+- locale.strxfrm(s)：把字符串 s 转换成符合当前 locale 规则的排序键，用于 sorted 的 key=。
+- 
 ### 2.2 三个致命问题（你写项目时必须知道）
 
 1. **平台依赖**：同一个 locale 名字在 Windows/Linux/macOS 可能完全不可用（尤其 Windows）。  
