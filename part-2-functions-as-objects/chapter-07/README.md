@@ -19,7 +19,7 @@
 | `04_lambda_expressions_demo.py` | 配套：7.4 `sorted`/`map`/`filter`、`__name__`、优先 `def` |
 | `05-7.5 Python 的 9 种可调用对象（Callable）：谁能用 ()，以及怎么安全判断.md` | 7.5：**§零** 九类表+面试坑+**§零·四** 九例可复制；`callable`/`inspect`；见 `05_callable_objects_demo.py` |
 | `05_callable_objects_demo.py` | 配套：7.5 列出 9 类 callable，并展示调用后返回的对象类型 |
-| `06-7.6 用户定义的可调用类型：实现 __call__ 让“实例像函数一样工作”.md` | 7.6 用户定义可调用类型：实现 `__call__`，以 BingoCage 为例 |
+| `06-7.6 用户定义的可调用类型：实现 __call__ 让“实例像函数一样工作”.md` | 7.6：**§零** `__call__` 背诵+BingoCage+面试简答+模板；与 `06_user_defined_callable_demo.py` 一致 |
 | `06_user_defined_callable_demo.py` | 配套：7.6 BingoCage（`pick` / `__call__` / 抽空报错） |
 | `07-7.7 从位置参数到仅限关键字参数： args、 kwargs、 与.md` | 7.7：**§零** 合法顺序+`/`*背诵表+`tag`逐段；`*args`/`**kwargs`、`/`、`tag`、生成器坑 |
 | `07_tag_and_positional_only_demo.py` | 配套：7.7 `tag` 多种调用 + `/` 的 TypeError 证据 |
