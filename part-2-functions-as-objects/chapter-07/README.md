@@ -11,7 +11,7 @@
 | 文件 | 说明 |
 |---|---|
 | `01-第 7 章开篇：函数作为「一等对象」是什么意思.md` | 7.x 开篇：**§零 极简背诵**（四条件 + 口诀 + 误区：一等≠高阶）+ Guido 表述与后文衔接 |
-| `02-示例 7-1 7-2：函数是对象、可赋值、可传给 map（高阶函数）.md` | 7-1/7-2：**§零** 直白版 + **§1.25** + **§1.5**（CPython `PyFunctionObject` 选读）+ 书例、`callable` |
+| `02-示例 7-1 7-2：函数是对象、可赋值、可传给 map（高阶函数）.md` | 7-1/7-2：**§零** + **§2.3** `map()`≠`dict`/Map + **§1.25** + **§1.5** + 书例、`callable` |
 | `03-7.3 高阶函数（Higher-Order Function）.md` | 7.3 高阶函数：`sorted(key=)`、`map`/`filter` 与推导式、`reduce` 与 `sum`、`all`/`any` |
 | `01_first_class_functions_demo.py` | 配套：开篇四条件 + 书中 7-1/7-2 与属性演示 |
 | `03_higher_order_functions_demo.py` | 配套：7.3 `sorted`/`map`/`filter`/`reduce`/`all`/`any` 可运行对照 |
