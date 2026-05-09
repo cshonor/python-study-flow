@@ -21,7 +21,7 @@ def factorial(n: int) -> int:
 
 def demo_example_7_1_function_as_object() -> None:
     section("Ex 7-1: function object has __doc__, type, __class__, __name__")
-    print("factorial.__doc__:", repr(factorial.__doc__))
+    print(factorial.__doc__)  # 与书中示例 7-1 一致（非 repr）
     print("type(factorial):", type(factorial))
     print("factorial.__class__:", factorial.__class__)
     print("factorial.__name__:", factorial.__name__)
