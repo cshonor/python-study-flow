@@ -21,7 +21,7 @@
 | `05_callable_objects_demo.py` | 配套：7.5 列出 9 类 callable，并展示调用后返回的对象类型 |
 | `06-7.6 用户定义的可调用类型：实现 __call__ 让“实例像函数一样工作”.md` | 7.6 用户定义可调用类型：实现 `__call__`，以 BingoCage 为例 |
 | `06_user_defined_callable_demo.py` | 配套：7.6 BingoCage（`pick` / `__call__` / 抽空报错） |
-| `07-7.7 从位置参数到仅限关键字参数： args、 kwargs、 与.md` | 7.7 参数特性：`*args`/`**kwargs`、仅限关键字、`/` 仅限位置、`tag` 示例 |
+| `07-7.7 从位置参数到仅限关键字参数： args、 kwargs、 与.md` | 7.7：**§零** 合法顺序+`/`*背诵表+`tag`逐段；`*args`/`**kwargs`、`/`、`tag`、生成器坑 |
 | `07_tag_and_positional_only_demo.py` | 配套：7.7 `tag` 多种调用 + `/` 的 TypeError 证据 |
 | `08-7.8 支持函数式编程的包：operator 与 functools.partial.md` | 7.8 `operator` 与 `functools`：`mul/add/itemgetter/attrgetter/methodcaller`、`partial` 冻结参数 |
 | `08_functional_tools_demo.py` | 配套：7.8 operator + partial 的可运行对照（含 partial 自省） |
