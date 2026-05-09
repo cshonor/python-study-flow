@@ -15,7 +15,7 @@
 | `chapter-05/` | 第 5 章「数据类构建器」 | `01`–`07` 笔记；演示脚本为 `01_`…`07_*.py` 与篇号对齐 |
 | `chapter-06/` | 第 6 章「对象引用、可变性和垃圾回收」 | `01`–`07` 笔记 + 同编号 `NN_*.py`（`01` 为导航）；引用、拷贝、传参、GC |
 
-第 7 章「函数是一等对象」等材料在 **`part-2-functions-as-objects/`**（本书 Part 2 对应目录）；**一页极简**见 `chapter-07/00-极简版-函数一等对象与示例7-1-7-2.md`，目录见该 Part 内 `README` 与 `chapter-07/README.md`。
+第 7 章「函数是一等对象」等材料在 **`part-2-functions-as-objects/`**（本书 Part 2 对应目录），见该 Part 内 `README` 与 `chapter-07/README.md`。
 
 每章目录内约定：**两位编号**的 `NN-主题.md` 为笔记；**`NN_` 前缀**的 `NN_描述_demo.py` 为与篇号对齐的可运行示例（`chapter-01` 仅部分篇目有脚本；`chapter-02` 的 `02` 篇对应两个 `02_*.py`；`chapter-04` 的 `09` 篇对应 `09_unicode_numeric_demo.py` 与 `09_unicode_char_finder.py`）。
 
