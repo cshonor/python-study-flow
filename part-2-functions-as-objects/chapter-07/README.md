@@ -17,7 +17,7 @@
 | `03_higher_order_functions_demo.py` | 配套：7.3 `sorted`/`map`/`filter`/`reduce`/`all`/`any` 可运行对照 |
 | `04-7.4 匿名函数：lambda 表达式.md` | 7.4 `lambda`：语法限制、示例 7-7、反模式、与 `def` 对照、重构四步 |
 | `04_lambda_expressions_demo.py` | 配套：7.4 `sorted`/`map`/`filter`、`__name__`、优先 `def` |
-| `05-7.5 Python 的 9 种可调用对象（Callable）：谁能用 ()，以及怎么安全判断.md` | 7.5 9 种可调用对象：`callable()`、内置/方法/类/实例、generator/coroutine/async generator |
+| `05-7.5 Python 的 9 种可调用对象（Callable）：谁能用 ()，以及怎么安全判断.md` | 7.5：**§零** 九类表+面试坑+**§零·四** 九例可复制；`callable`/`inspect`；见 `05_callable_objects_demo.py` |
 | `05_callable_objects_demo.py` | 配套：7.5 列出 9 类 callable，并展示调用后返回的对象类型 |
 | `06-7.6 用户定义的可调用类型：实现 __call__ 让“实例像函数一样工作”.md` | 7.6 用户定义可调用类型：实现 `__call__`，以 BingoCage 为例 |
 | `06_user_defined_callable_demo.py` | 配套：7.6 BingoCage（`pick` / `__call__` / 抽空报错） |
