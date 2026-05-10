@@ -45,6 +45,73 @@ def demo_positional_only_slash() -> None:
         print("TypeError for keywords:", e)
 
 
+def demo_args_vs_kwargs_plain() -> None:
+    """Exact minimal `f(*args, **kwargs)` from 07-7.7 大白话 §9·三."""
+
+    def f(*args: object, **kwargs: object) -> None:
+        print("args:", args)
+        print("kwargs:", kwargs)
+
+    section("*args vs **kwargs: f(1,2,3, name=..., city=...)")
+    # 与笔记「李四 / 北京」同结构；此处用 ASCII 避免 Windows 控制台编码乱码。
+    f(1, 2, 3, name="Li", city="Beijing")
+
+
+def demo_parameter_kinds_minimal() -> None:
+    """One tiny runnable example per parameter kind (07-7.7 零·二·附)."""
+
+    def pos_only(a: int, b: int, /) -> int:
+        return a + b
+
+    def pos_or_kw(c: int, d: int = 0) -> tuple[int, int]:
+        return (c, d)
+
+    def with_var_pos(first: int, *rest: int) -> tuple[int, tuple[int, ...]]:
+        return (first, rest)
+
+    def kw_after_star(*a: int, e: int, f: int = 100) -> tuple[tuple[int, ...], int, int]:
+        return (a, e, f)
+
+    def collect_kw(**kw: str) -> dict[str, str]:
+        return kw
+
+    section("five parameter kinds: minimal examples")
+    print("1 positional-only:", pos_only(7, 8))
+    print("2 pos-or-kw (keywords):", pos_or_kw(c=3, d=4))
+    print("2 pos-or-kw (positional + default):", pos_or_kw(3))
+    print("3 *args:", with_var_pos(1, 2, 3))
+    print("4 keyword-only after *:", kw_after_star(1, 2, 3, e=4))
+    print("4 keyword-only (e and f):", kw_after_star(9, e=1, f=2))
+    print("5 **kwargs:", collect_kw(a="x", b="y"))
+
+
+def demo_full_parameter_template() -> None:
+    """The full signature from 零·二 / 零·二·附 (Python 3.8+)."""
+
+    def func(
+        a: int,
+        b: int,
+        /,
+        c: int,
+        d: int = 0,
+        *args: int,
+        e: int,
+        f: int = 1,
+        **kwargs: int,
+    ) -> None:
+        print(
+            "binding:",
+            {"a": a, "b": b, "c": c, "d": d, "args": args, "e": e, "f": f, "kwargs": kwargs},
+        )
+
+    section("full parameter template: func(a,b,/,c,d=0,*args,e,f=1,**kwargs)")
+    func(1, 2, 3, 4, 5, 6, e=7, f=8, x=9, y=10)
+    try:
+        func(1, 2, 3, 4, 5)  # type: ignore[call-arg]
+    except TypeError as ex:
+        print("missing keyword e ->", ex)
+
+
 def demo_beginner_walkthrough() -> None:
     """Human-language walkthrough for 07-7.7 大白话新手版 (heavily commented)."""
     section("tag(): *content, class_=, **attrs (+ beginner comments)")
@@ -76,6 +143,9 @@ def demo_beginner_walkthrough() -> None:
 
 def main() -> None:
     demo_beginner_walkthrough()
+    demo_args_vs_kwargs_plain()
+    demo_parameter_kinds_minimal()
+    demo_full_parameter_template()
     demo_positional_only_slash()
 
 

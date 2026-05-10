@@ -21,7 +21,7 @@
 | `05_callable_objects_demo.py` | 配套：7.5 列出 9 类 callable，并展示调用后返回的对象类型 |
 | `06-7.6 用户定义的可调用类型：实现 __call__ 让“实例像函数一样工作”.md` | 7.6：**§零** `__call__` 背诵+BingoCage+面试简答+模板；与 `06_user_defined_callable_demo.py` 一致 |
 | `06_user_defined_callable_demo.py` | 配套：7.6 BingoCage（`pick` / `__call__` / 抽空报错） |
-| `07-7.7 从位置参数到仅限关键字参数： args、 kwargs、 与.md` | 7.7：文首**大白话新手版** + **§零** 合法顺序+`/`*背诵表+`tag`逐段；脚本 **`demo_beginner_walkthrough`** 逐行注释 |
+| `07-7.7 从位置参数到仅限关键字参数： args、 kwargs、 与.md` | 7.7：文首**大白话**（含 **§9** `*args`/``**kwargs``）+ **§零** + **§零·二·附**；脚本 **`demo_args_vs_kwargs_plain`** 等 |
 | `07_tag_and_positional_only_demo.py` | 配套：7.7 `tag` 多种调用 + `/` 的 TypeError 证据 |
 | `08-7.8 支持函数式编程的包：operator 与 functools.partial.md` | 7.8：**§零** 两工具+四抓手+`partial` 一句+速查表+三句结论；正文 **§一～§二**；`08_functional_tools_demo.py` |
 | `08_functional_tools_demo.py` | 配套：7.8 operator + partial 的可运行对照（含 partial 自省） |
