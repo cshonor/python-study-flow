@@ -47,7 +47,7 @@ def demo_positional_only_slash() -> None:
 
 def demo_beginner_walkthrough() -> None:
     """Human-language walkthrough for 07-7.7 大白话新手版 (heavily commented)."""
-    section("beginner walkthrough (commented)")
+    section("tag(): *content, class_=, **attrs (+ beginner comments)")
     # 第一个参数 name：标签名，用位置传最直观。
     print(tag("br"))  # 自闭合风格：没有 *content，也没有多余 attrs
 
