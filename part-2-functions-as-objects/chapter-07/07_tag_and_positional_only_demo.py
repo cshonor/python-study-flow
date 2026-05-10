@@ -36,18 +36,6 @@ def divmod_like(a: int, b: int, /) -> tuple[int, int]:
     return (a // b, a % b)
 
 
-def demo_tag_calls() -> None:
-    section("tag(): *content, class_=, **attrs")
-    print(tag("br"))
-    print(tag("h1", "Hello"))
-    print(tag("p", "Hello", "World"))
-    print(tag("p", "Hello", class_="sidebar"))
-    print(tag("img", src="sunset.jpg", title="Sunset"))
-
-    attrs = {"src": "python.png", "title": "Python"}
-    print(tag("img", **attrs))
-
-
 def demo_positional_only_slash() -> None:
     section("positional-only params: /")
     print("divmod_like(10, 3):", divmod_like(10, 3))
@@ -88,7 +76,6 @@ def demo_beginner_walkthrough() -> None:
 
 def main() -> None:
     demo_beginner_walkthrough()
-    demo_tag_calls()
     demo_positional_only_slash()
 
 
