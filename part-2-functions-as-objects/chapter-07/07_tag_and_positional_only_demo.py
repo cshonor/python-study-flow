@@ -57,7 +57,37 @@ def demo_positional_only_slash() -> None:
         print("TypeError for keywords:", e)
 
 
+def demo_beginner_walkthrough() -> None:
+    """Human-language walkthrough for 07-7.7 大白话新手版 (heavily commented)."""
+    section("beginner walkthrough (commented)")
+    # 第一个参数 name：标签名，用位置传最直观。
+    print(tag("br"))  # 自闭合风格：没有 *content，也没有多余 attrs
+
+    # name="h1"，后面两个位置实参进入 *content 元组。
+    print(tag("h1", "Hello"))
+
+    # 多个正文段都进 *content。
+    print(tag("p", "Hello", "World"))
+
+    # class_ 在 *content 后面：调用时必须写 class_=...（仅限关键字）。
+    print(tag("p", "Hello", class_="sidebar"))
+
+    # src=、title= 等不在签名里的名字，统统进 **attrs 字典。
+    print(tag("img", src="sunset.jpg", title="Sunset"))
+
+    # 先做成 dict，再用 ** 解包成「一堆关键字实参」。
+    attrs = {"src": "python.png", "title": "Python"}
+    print(tag("img", **attrs))
+
+    # 组合：位置 name + *content 两段 + class_= 关键字 + 其它 attrs。
+    print(tag("p", "line1", "line2", class_="note", id="p1"))
+
+    # / 示例：只能 divmod_like(10, 3)，不能写 a=、b=。
+    print("positional-only OK:", divmod_like(10, 3))
+
+
 def main() -> None:
+    demo_beginner_walkthrough()
     demo_tag_calls()
     demo_positional_only_slash()
 
