@@ -23,7 +23,7 @@
 | `06_user_defined_callable_demo.py` | 配套：7.6 BingoCage（`pick` / `__call__` / 抽空报错） |
 | `07-7.7 从位置参数到仅限关键字参数： args、 kwargs、 与.md` | 7.7：**§零** 合法顺序+`/`*背诵表+`tag`逐段；`*args`/`**kwargs`、`/`、`tag`、生成器坑 |
 | `07_tag_and_positional_only_demo.py` | 配套：7.7 `tag` 多种调用 + `/` 的 TypeError 证据 |
-| `08-7.8 支持函数式编程的包：operator 与 functools.partial.md` | 7.8 `operator` 与 `functools`：`mul/add/itemgetter/attrgetter/methodcaller`、`partial` 冻结参数 |
+| `08-7.8 支持函数式编程的包：operator 与 functools.partial.md` | 7.8：**§零** 两工具+四抓手+`partial` 一句+速查表+三句结论；正文 **§一～§二**；`08_functional_tools_demo.py` |
 | `08_functional_tools_demo.py` | 配套：7.8 operator + partial 的可运行对照（含 partial 自省） |
 
 ---
