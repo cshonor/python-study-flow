@@ -41,6 +41,9 @@ class MiniVector:
     def __str__(self) -> str:
         return f"({self.x}, {self.y})"
 
+    def __bytes__(self) -> bytes:
+        return f"{self.x},{self.y}".encode("utf-8")
+
     def __format__(self, fmt: str) -> str:
         return f"({format(self.x, fmt)}, {format(self.y, fmt)})"
 
@@ -60,10 +63,11 @@ class MiniVector:
 
 
 def main() -> None:
-    section("01 cheat sheet: repr / str (sec I)")
+    section("01 cheat sheet: repr / str / bytes (sec I)")
     v = MiniVector(3, 4)
     print("repr(v) :", repr(v))
     print("str(v)  :", str(v))
+    print("bytes(v):", bytes(v))
 
     section("iter + abs + bool (sec II-III)")
     print("tuple(v):", tuple(v))
