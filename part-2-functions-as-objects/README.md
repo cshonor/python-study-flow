@@ -14,7 +14,7 @@
 |------|------|------|
 | `chapter-07/` | 第 7 章「函数是一等对象」 | `01` **§零** 背诵；高阶函数、`lambda`、可调用对象；见 `chapter-07/README.md` |
 | `chapter-08/` | 第 8 章「函数中的类型提示」 | Type Hints：`chapter-08/00-…学习路线.md` 总览 + `01`～`07` 正文与 demo；见 `chapter-08/README.md` |
-| `chapter-09/` | 第 9 章「装饰器和闭包」 | 作用域（LEGB）、闭包、装饰器从基础到参数化；见 `chapter-09/README.md` |
+| `chapter-09/` | 第 9 章「装饰器和闭包」 | `chapter-09/00-…总览.md` + `01`～`10` 与 demo；作用域、闭包、注册/计时/`functools`/参数化/类装饰器；见 `chapter-09/README.md` |
 | `chapter-10/` | 第 10 章「用一等函数实现设计模式」 | 用函数/闭包简化策略、命令等模式；见 `chapter-10/README.md` |
 
 ---
