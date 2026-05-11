@@ -76,4 +76,5 @@ python part-4-control-flow/chapter-19/02_multiprocess_worker_queue_demo.py
 - **[01 … GIL 与术语](<./01-19.2–19.3：并发全景、术语与 GIL（速记版 + 对照表）.md>)**：为什么想到多进程。  
 - **[04 … 旋转指针](<./04-19.4：线程 进程 协程并发模型实战（旋转指针）.md>)**：线程/进程启动与同步直觉。  
 - **[06 … 自建进程池](<./06-19.6：自建进程池与 CPU 密集型并发（素数批量检测）.md>)**：`SimpleQueue`、毒药丸、与 `ProcessPoolExecutor` 的对应关系。  
-- **第 20 章**：`ThreadPoolExecutor` / `ProcessPoolExecutor` 的工程化封装。
+- **第 20 章**：`ThreadPoolExecutor` / `ProcessPoolExecutor` 的工程化封装。  
+- **[03 … 量化场景速查与踩坑](<./03-量化场景下的GIL与并行选型（速查与踩坑）.md>)**：GIL 释放细节、多进程内存坑、选型表。

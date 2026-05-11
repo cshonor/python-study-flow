@@ -7,7 +7,7 @@
 - **上下文管理器**：`with` 语句，`__enter__` / `__exit__` 资源管理。
 - **并发模型**：
   - 多线程 (Threading)：适用于 I/O 密集型。
-  - 多进程 (Multiprocessing)：适用于 CPU 密集型；进程间用 `Queue`/进程池等 IPC 协作（见 `chapter-19/02-多进程如何协作…md`）。
+  - 多进程 (Multiprocessing)：适用于 CPU 密集型；进程间用 `Queue`/进程池等 IPC 协作（见 `chapter-19/02-多进程如何协作…md`；量化选型与踩坑见 `chapter-19/03-量化场景下的GIL与并行选型（速查与踩坑）.md`）。
 - **异步编程 (Asyncio)**：
   - `async/await` 语法。
   - 事件循环与协程 (Coroutine)。

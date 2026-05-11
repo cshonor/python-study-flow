@@ -203,3 +203,4 @@ if __name__ == "__main__":
 python part-4-control-flow/chapter-19/00_concurrency_vs_parallelism_demo.py
 ```
 
+**量化向补充（GIL 释放细节、多进程内存坑、选型速查表）**：[03-量化场景下的GIL与并行选型（速查与踩坑）](<./03-量化场景下的GIL与并行选型（速查与踩坑）.md>)。
