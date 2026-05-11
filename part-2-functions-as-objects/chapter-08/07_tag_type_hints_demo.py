@@ -10,6 +10,11 @@ Run:
 from __future__ import annotations
 
 
+def f(a: int, /, b: str) -> str:
+    """Minimal positional-only + typed params (md §零·1)."""
+    return f"{a}-{b}"
+
+
 def tag(
     name: str,
     /,
@@ -27,6 +32,7 @@ def tag(
 
 
 def main() -> None:
+    print("f(1, 'x') ->", f(1, "x"))
     print(tag("img", "hello", "world", class_="thumb", id="7", alt="x"))
     # name is positional-only; this would be a SyntaxError if attempted:
     # tag(name="img")

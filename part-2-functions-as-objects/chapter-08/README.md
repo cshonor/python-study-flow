@@ -24,9 +24,9 @@
 | `04_duck_nominal_typing_demo.py` | 配套：`Bird`/`Duck`/`quack`，无注解 vs 注解下 mypy 与运行时的对照 |
 | `05-8.5 注解中可用的类型：从 Any 到泛型容器与抽象基类.md` | 8.5：文首**§零** 大白话背诵（`Any`/`|`/容器/入参抽象）+ **§零·八** 避坑；正文 **8.5.x**；`process` 见 **`05_types_in_annotations_demo.py`** |
 | `05_types_in_annotations_demo.py` | 配套：`parse_token`、`tokenize`、`NamedTuple`、`Mapping` 入参等可运行片段 |
-| `06-8.5（续）类型提示进阶：别名、TypeVar、Protocol、Callable、NoReturn.md` | 8.5（续）进阶：类型别名、`Iterable`/`Sequence`、`TypeVar`（受限/有界）、`AnyStr`、`Protocol`、`Callable`、`NoReturn` |
+| `06-8.5（续）类型提示进阶：别名、TypeVar、Protocol、Callable、NoReturn.md` | 8.5（续）：文首**§零** 六大工具背诵 + 一页示例 + **自测三题**；正文 **§一～§八**；`cheat_sheet_snippets` 见 **`06_types_advanced_demo.py`** |
 | `06_types_advanced_demo.py` | 配套：`FromTo` 别名、`SupportsLessThan` + `top`、`apply_func`、`fatal_error` |
-| `07-8.6 仅限位置参数与变长参数的类型注解 · 8.7 类型系统的局限性.md` | 8.6 仅限位置参数与 `*`/`**` 注解；8.7 类型系统局限性（误报/漏报）与测试 |
+| `07-8.6 仅限位置参数与变长参数的类型注解 · 8.7 类型系统的局限性.md` | 8.6+8.7：文首**§零** 背诵（`/`、`*args`、`**kwargs`、三观口诀）+ 正文；`07_tag_type_hints_demo.py`（`f`+`tag`） |
 | `07_tag_type_hints_demo.py` | 配套：`tag(name, /, *content, class_=..., **attrs)` 最小可运行示例 |
 
 ---

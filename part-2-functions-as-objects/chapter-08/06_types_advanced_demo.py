@@ -36,6 +36,44 @@ def fatal_error(msg: str) -> NoReturn:
     raise RuntimeError(msg)
 
 
+# --- § zero: one-screen cheat sheet (see 06 md "零·八") -----------------------
+Point: TypeAlias = tuple[int, int]
+
+
+def first_item(items: list[T]) -> T:
+    return items[0]
+
+
+class Drawable(Protocol):
+    def draw(self) -> None: ...
+
+
+class MiniCanvas:
+    def draw(self) -> None:
+        print("  MiniCanvas.draw()")
+
+
+def paint(obj: Drawable) -> None:
+    obj.draw()
+
+
+def run_noarg(fn: Callable[[], None]) -> None:
+    fn()
+
+
+def cheat_sheet_snippets() -> None:
+    print("\n--- cheat_sheet_snippets (md section zero) ---")
+    pt: Point = (3, 4)
+    print("Point:", pt)
+    print("first_item([7, 8, 9]):", first_item([7, 8, 9]))
+    paint(MiniCanvas())
+    run_noarg(lambda: print("  lambda body"))
+    try:
+        raise SystemExit("demo exit")
+    except SystemExit as e:
+        print("SystemExit (not calling real stop()):", e)
+
+
 def main() -> None:
     # FromTo: type-only; runtime uses plain tuples
     route: FromTo = ("NYC", "LON")
@@ -50,6 +88,8 @@ def main() -> None:
         fatal_error("demo")
     except RuntimeError as e:
         print("fatal_error -> RuntimeError:", e)
+
+    cheat_sheet_snippets()
 
 
 if __name__ == "__main__":
