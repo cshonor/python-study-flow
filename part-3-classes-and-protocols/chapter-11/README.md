@@ -14,7 +14,8 @@
 
 | 文件 | 说明 |
 |---|---|
-| `01-11.x 特殊方法速查表：把对象做成“Pythonic”的最短路径.md` | 常用特殊方法速查表（按“协议/能力”归类），并给出 `Vector2d` 开发清单 |
+| `01-11.x 特殊方法速查表：把对象做成“Pythonic”的最短路径.md` | 常用特殊方法速查表 + **§零** 与脚本对照；`Vector2d` 开发清单 |
+| `01_special_methods_minimal_demo.py` | 配套 **01**：`MiniVector` 触发 `__repr__`/`__str__`/`__iter__`/`__format__`/`__abs__`/`__bool__`/`__eq__`/`__hash__`/`__slots__` |
 | `02-11.x repr() vs str()：用 Vector2d 一次做对 __repr__ __str__ __bytes__ __format__.md` | `repr` vs `str`，以及 `bytes()`/`format()`：用最小 `Vector2d` 一次做对四个协议 |
 | `02_vector2d_repr_demo.py` | 配套：`Vector2d` 的 `__repr__`/`__str__`/`__bytes__`/`__format__` 可运行示例 |
 | `03-11.4 备选构造函数：frombytes（让 bytes(v) 可逆）.md` | 11.4 备选构造函数：`frombytes` 反序列化（让 `bytes(v)` 可逆） |
@@ -41,6 +42,7 @@
 在仓库根目录执行：
 
 ```bash
+python part-3-classes-and-protocols/chapter-11/01_special_methods_minimal_demo.py
 python part-3-classes-and-protocols/chapter-11/02_vector2d_repr_demo.py
 python part-3-classes-and-protocols/chapter-11/03_vector2d_frombytes_demo.py
 python part-3-classes-and-protocols/chapter-11/04_classmethod_staticmethod_demo.py
