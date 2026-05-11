@@ -10,6 +10,8 @@ Optional:
 
 from __future__ import annotations
 
+from typing import Protocol
+
 
 def section(title: str) -> None:
     print("\n" + "=" * 72)
@@ -37,6 +39,22 @@ def alert_duck(birdie: Duck) -> None:
 
 def alert_bird(birdie: Bird) -> None:
     birdie.quack()  # error: Bird has no attribute "quack"
+
+
+class Quackable(Protocol):
+    def quack(self) -> None: ...
+
+
+def alert_quackable(birdie: Quackable) -> None:
+    """Structural: any object with quack() passes static check; no inheritance."""
+    birdie.quack()
+
+
+class Goose:
+    """Not a Bird/Duck subclass; still satisfies Quackable structurally."""
+
+    def quack(self) -> None:
+        print("Honk!")
 
 
 def try_call(label: str, fn, arg) -> None:
@@ -72,6 +90,11 @@ def main() -> None:
         print("ok")
     except Exception as e:
         print(type(e).__name__ + ":", e)
+
+    section("Protocol + Goose (static duck typing, runs like duck typing)")
+    gus = Goose()
+    try_call("alert_quackable", alert_quackable, gus)
+    try_call("alert_quackable on Duck", alert_quackable, daffy)
 
 
 if __name__ == "__main__":
