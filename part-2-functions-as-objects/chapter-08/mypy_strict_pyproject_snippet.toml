@@ -1,0 +1,18 @@
+# Snippet for 03-8.3 §二 — merge into your repo's pyproject.toml under [tool.mypy].
+# Not a standalone config: copy the TOML blocks you need.
+
+[tool.mypy]
+python_version = "3.10"
+show_error_codes = true
+warn_return_any = true
+# Core pair: full signatures required on all defs mypy checks
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+
+# Optional: relax tests (adjust pattern to your layout)
+[[tool.mypy.overrides]]
+module = "tests.*"
+disallow_untyped_defs = false
+
+# New greenfield projects only — old codebases: enable flags incrementally
+# strict = true

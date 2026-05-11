@@ -18,8 +18,9 @@
 | `01_type_hints_mypy_demo.py` | 配套：同一段代码“运行没问题，但 mypy 会报错”的对照证据 |
 | `02-8.2 渐进式类型系统（Gradual Typing）：Python 类型提示的设计哲学与落地方式.md` | 8.2 渐进式类型：可选性、Any、运行时边界、落地原则与误区 |
 | `02_gradual_typing_demo.py` | 配套：Any 逃生舱、逐步收紧边界、运行时 vs 静态检查的对照 |
-| `03-8.3 渐进式类型实践：从 0 注解到可检查的函数签名（show_count 实战）.md` | 8.3 渐进式类型实践：`show_count` 从无注解到 Optional/None 默认值 |
+| `03-8.3 渐进式类型实践：从 0 注解到可检查的函数签名（show_count 实战）.md` | 8.3：`show_count` 实战 + **§二** mypy 收紧（CLI、`pyproject`/`mypy.ini`、`strict`、tests 放宽）；**`mypy_strict_pyproject_snippet.toml`** |
 | `03_show_count_demo.py` | 配套：`show_count` 最终版 + 断言用例 |
+| `mypy_strict_pyproject_snippet.toml` | **8.3 §二**：可复制进项目的 mypy 严格片段（含 `tests.*` 放宽示例） |
 | `04-8.4 类型由受支持的操作定义：鸭子类型 vs 名义类型（静态检查在看什么）.md` | 8.4：文首**大白话速通**（鸭子/名义/`Protocol`）+ `double`/`Sequence` 错位；`04_duck_nominal_typing_demo.py` 含 **`Goose`/`Quackable`** |
 | `04_duck_nominal_typing_demo.py` | 配套：`Bird`/`Duck`/`quack`，无注解 vs 注解下 mypy 与运行时的对照 |
 | `05-8.5 注解中可用的类型：从 Any 到泛型容器与抽象基类.md` | 8.5：文首**§零** 大白话背诵（`Any`/`|`/容器/入参抽象）+ **§零·八** 避坑；正文 **8.5.x**；`process` 见 **`05_types_in_annotations_demo.py`** |
