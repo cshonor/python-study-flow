@@ -56,6 +56,15 @@ def name2hex(name: str, color_map: Mapping[str, int]) -> str:
     return f"#{color_map[name]:06x}"
 
 
+def process(items: Sequence[str], lookup: Mapping[str, int]) -> list[str | int]:
+    """Cheat-sheet example from 05-8.5 §零·七 (wide params, concrete-ish return)."""
+    result: list[str | int] = []
+    for item in items:
+        result.append(item)
+        result.append(lookup.get(item, 0))
+    return result
+
+
 def main() -> None:
     print("double_any(21) ->", double_any(21))
     print("parse_token('3.5') ->", parse_token("3.5"))
@@ -67,6 +76,7 @@ def main() -> None:
     print("first_chunk ->", first_chunk(["a", "b", "c", "d"], 2))
     colors: dict[str, int] = {"red": 0xFF0000, "green": 0x00FF00}
     print("name2hex('red', ...) ->", name2hex("red", colors))
+    print("process(...) ->", process(["a", "b"], {"a": 1, "c": 2}))
 
 
 if __name__ == "__main__":

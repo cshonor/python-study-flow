@@ -22,7 +22,7 @@
 | `03_show_count_demo.py` | 配套：`show_count` 最终版 + 断言用例 |
 | `04-8.4 类型由受支持的操作定义：鸭子类型 vs 名义类型（静态检查在看什么）.md` | 8.4：文首**大白话速通**（鸭子/名义/`Protocol`）+ `double`/`Sequence` 错位；`04_duck_nominal_typing_demo.py` 含 **`Goose`/`Quackable`** |
 | `04_duck_nominal_typing_demo.py` | 配套：`Bird`/`Duck`/`quack`，无注解 vs 注解下 mypy 与运行时的对照 |
-| `05-8.5 注解中可用的类型：从 Any 到泛型容器与抽象基类.md` | 8.5 注解中可用的类型：`Any`/`object`、简单类型、`Optional`/`Union`、泛型容器、元组、`Mapping`/`Sequence`、语法演进 |
+| `05-8.5 注解中可用的类型：从 Any 到泛型容器与抽象基类.md` | 8.5：文首**§零** 大白话背诵（`Any`/`|`/容器/入参抽象）+ **§零·八** 避坑；正文 **8.5.x**；`process` 见 **`05_types_in_annotations_demo.py`** |
 | `05_types_in_annotations_demo.py` | 配套：`parse_token`、`tokenize`、`NamedTuple`、`Mapping` 入参等可运行片段 |
 | `06-8.5（续）类型提示进阶：别名、TypeVar、Protocol、Callable、NoReturn.md` | 8.5（续）进阶：类型别名、`Iterable`/`Sequence`、`TypeVar`（受限/有界）、`AnyStr`、`Protocol`、`Callable`、`NoReturn` |
 | `06_types_advanced_demo.py` | 配套：`FromTo` 别名、`SupportsLessThan` + `top`、`apply_func`、`fatal_error` |
