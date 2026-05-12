@@ -67,7 +67,9 @@
 |---|---|
 | `00-流畅的Python第9章装饰器与闭包学习路线与总览.md` | **总览**：递进骨架、首刷/二刷顺序、`01`～`10` 对照表、极简可运行片段、量化清单 |
 | `01-9.1 开篇路线：为什么装饰器离不开闭包（以及这章怎么学）.md` | 开篇路线：LEGB、闭包与 `nonlocal`、装饰器为何重要、以及“装饰发生在导入时” |
-| `02-9.2 装饰器基础知识：@ 到底做了什么（以及它什么时候执行）.md` | 装饰器基础：`@` 的等价形式、函数替换、装饰发生在导入时（最小例子） |
+| `02-9.2 装饰器基础知识：@ 到底做了什么（以及它什么时候执行）.md` | 装饰器基础：`@` 的等价形式、函数替换、装饰发生在导入时（最小例子）；**`self` 与装饰器分界** |
+| `02_decorator_self_method_compare_demo.py` | **9.2 补充**：顶层装饰器 vs `Person.run(self)` / `staticmethod` / `classmethod` 三合一对照 |
+| `02_decorators_basics_demo.py` | 配套：最小 `@` 等价、`deco` 替换 |
 | `03-9.3 注册式装饰器：为什么 import 一下就“执行了代码”.md` | 注册式装饰器：`registry` 收集函数引用，脚本运行 vs import 的执行时机对照 |
 | `03_registration.py` | 配套：`@register` + 全局 `registry`，展示导入时执行装饰过程 |
 | `04-9.4 注册装饰器（实战）：装饰器与被装饰对象不在同一模块时怎么组织.md` | 9.4 注册装饰器实战：包装式 vs 注册式、跨模块组织、工程注意点 |
@@ -95,6 +97,7 @@
 ```bash
 python part-2-functions-as-objects/chapter-09/03_registration.py
 python part-2-functions-as-objects/chapter-09/02_decorators_basics_demo.py
+python part-2-functions-as-objects/chapter-09/02_decorator_self_method_compare_demo.py
 python part-2-functions-as-objects/chapter-09/05_scope_dis_demo.py
 python part-2-functions-as-objects/chapter-09/05_scope_closure_nonlocal_demo.py
 python part-2-functions-as-objects/chapter-09/02_decorator_and_cache_demo.py
